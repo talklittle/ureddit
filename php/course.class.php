@@ -18,7 +18,10 @@ class course extends object
   function get_owner()
   {
     $this->get_parents('user','owner');
-    $this->owner = $this->parents['user'][0];
+    if(isset($this->parents['user']))
+      $this->owner = $this->parents['user'][0];
+    else
+      $this->owner = array();
   }
 
   function get_roster()
