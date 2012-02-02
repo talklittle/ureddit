@@ -1,0 +1,53 @@
+RewriteEngine On
+RewriteRule ^v2/?(.*)$ /$1 [R]
+RewriteRule ^user/([^/]*)/?$ user.php?id=$1
+RewriteRule ^class/([0-9]+)/?$ class.php?id=$1
+RewriteRule ^class/([0-9]+)/files/?$ files/class$1/files
+RewriteRule ^teach/?$ teach.php
+RewriteRule ^settings/?$ preferences.php
+RewriteRule ^confirm/?$ confirm.php
+RewriteRule ^hi/?$ hi.php
+RewriteRule ^recover_password/?$ recover_password.php
+RewriteRule ^messages/?$ messages.php
+RewriteRule ^messages/sent/?$ sent_messages.php
+RewriteRule ^login/?$ login.php
+RewriteRule ^logout/?$ logout.php
+RewriteRule ^register/?$ register.php
+RewriteRule ^help/?$ help.php
+RewriteRule ^class/([0-9]+)/message/?$ teachers/msg_class.php?id=$1
+RewriteRule ^class/([0-9]+)/edit/?$ teachers/edit_class.php?id=$1
+RewriteRule ^c([0-9]+)/?$ class.php?id=$1
+RewriteRule ^/$ index.php
+RewriteRule ^/teachers/?$ /teachers/index.php
+#RewriteRule ^blog\.ureddit\.com http://ureddit.com/blog
+#RewriteRule ^blog\.(u|universityof|uof)reddit\.com/?(.*)$ ureddit.com/blog/$1
+#RewriteRule ^files\.(u|universityof|uof)reddit\.com/?(.*)$ ureddit.com/files/$1
+
+#RewriteCond %{HTTP_HOST} ^blog\.ureddit\.com
+#RewriteRule ^(.*)$ /blog/$1 [L]
+
+RewriteCond %{HTTP_HOST} ^blog\.(u|uof|universityof)reddit\.com [OR]
+RewriteCond %{HTTP_HOST} ^www\.blog\.(u|uof|universityof)reddit\.com
+RewriteRule ^(.*)$ http://ureddit.com/blog/$1 [L]
+
+RewriteCond %{HTTP_HOST} ^files\.(u|uof|universityof)reddit\.com$ [OR]
+RewriteCond %{HTTP_HOST} ^www\.files\.(u|uof|universityof)reddit\.com$
+RewriteRule ^(.*)$ http://ureddit.com/files/$1 [L]
+
+
+RewriteRule ^index\.php$ - [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /blog/index.php [L]
+
+
+# compress text, html, javascript, css, xml:
+AddOutputFilterByType DEFLATE text/plain
+AddOutputFilterByType DEFLATE text/html
+AddOutputFilterByType DEFLATE text/xml
+AddOutputFilterByType DEFLATE text/css
+AddOutputFilterByType DEFLATE application/xml
+AddOutputFilterByType DEFLATE application/xhtml+xml
+AddOutputFilterByType DEFLATE application/rss+xml
+AddOutputFilterByType DEFLATE application/javascript
+AddOutputFilterByType DEFLATE application/x-javascript
