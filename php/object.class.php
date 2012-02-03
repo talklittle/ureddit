@@ -79,7 +79,7 @@ class object extends base
   function get_attributes($type = '%')
   {
     $this->attributes = array();
-    $attributes = $this->dbpdo->query("SELECT * FROM `object_attributes` WHERE `object_id` = ?", array($this->id));
+    $attributes = $this->dbpdo->query("SELECT * FROM `object_attributes` WHERE `object_id` = ? AND `type` LIKE ?", array($this->id, $type));
     foreach($attributes as $attribute)
       {
 	$this->attributes[$attribute['type']] = array(
