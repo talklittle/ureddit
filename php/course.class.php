@@ -233,7 +233,7 @@ class course extends object
 	    if(logged_in())
 	      {
 		?>
-		<span id="report<?=$class->id ?>">[<a href="#" class="link-class-desc" onclick="$.post('<?=PREFIX ?>/report.php',{class: <?=$class->id ?>},function(response){$('#report<?=$class->id ?>').html(response); return false;});">report class]</a></span>
+		<span id="report<?=$this->id ?>">[<a href="#" class="link-class-desc" onclick="$.post('<?=PREFIX ?>/report.php',{class: <?=$this->id ?>},function(response){$('#report<?=$this->id ?>').html(response); return false;});">report class]</a></span>
 		<?php
 	      }
 	    ?>
