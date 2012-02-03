@@ -2,7 +2,7 @@
 
 require_once('init.php');
 
-if(!logged_in())
+if(logged_in())
   send_user_to("/user/" . $_SESSION['username']);
 
 $error = array();

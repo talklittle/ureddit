@@ -176,7 +176,7 @@ class course extends object
 		<?php
 		  if($this->teachers === NULL)
 		    $this->get_teachers();
-		  if(in_array($_SESSION['user_id'], $this->teachers))
+		if(in_array($this->session('user_id'), $this->teachers))
 		    {
 		      ?>
 		      <span style="font-weight: normal; font-size: 0.8em;">

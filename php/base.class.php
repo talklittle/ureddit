@@ -18,6 +18,13 @@ class base {
     return date($format);
   }
 
+  function session($key)
+  {
+    if(isset($_SESSION) && isset($_SESSION[$key]))
+      return $_SESSION['key'];
+    return NULL;
+  }
+
   function error($arg, $log = false)
   {
     if($log)
