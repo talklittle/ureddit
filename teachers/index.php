@@ -18,9 +18,9 @@ require('../init.php');
     Your Classes <span style="font-size: 0.6em; font-weight: normal; color: black;">[<a href="<?=PREFIX ?>/teach" style="color: black;">create new class</a>]</span>
   </div>
   <?php
-    list_teacher_classes($_SESSION['user_id']);
+  list_teacher_classes(new user($dbpdo, $_SESSION['user_id']));
   ?>
 </div>
-
+<?php require('../footer.php'); ?>
 </body>
 </html>

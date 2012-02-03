@@ -169,8 +169,20 @@ class course extends object
 		<img src="<?=PREFIX ?>/images/live.png" alt="live class!" style="height: 0.8em; margin-left: 3px;" />
 	        <span style="font-style: italic; font-weight: normal; font-size: 0.8em;">
 		  live lectures!
-                </span><br />
-                <?php
+                </span>
+		<?php
+		  if($this->teachers === NULL)
+		    $this->get_teachers();
+		  if(in_array($_SESSION['user_id'], $this->teachers))
+		    {
+		      ?>
+		      <span style="font-weight: normal; font-size: 0.8em;">
+			[ <a href="<?=PREFIX ?>/class/<?=$this->id ?>/edit">edit</a> ]
+			[ <a href="<?=PREFIX ?>/class/<?=$this->id ?>/message">mass message</a> ]
+		      </span>
+			<?php
+		    }
+		?><br /><?php
               }
 	  }
 	catch (ObjectAttributeNotFoundException $e)

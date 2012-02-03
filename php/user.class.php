@@ -7,6 +7,7 @@ class user extends object
   public $schedule = NULL;
   public $inbox = NULL;
   public $outbox = NULL;
+  public $teaching = NULL;
 
   function __construct($dbpdo, $id = NULL)
   {
@@ -16,6 +17,15 @@ class user extends object
   function hash_password($password)
   {
     return md5(md5($password) . "uofr!1336");
+  }
+
+  function get_taught_classes()
+  {
+    $this->get_children('class','teacher');
+    if(isset($this->children['class']))
+      $this->teaching = $this->children['class'];
+    else
+      $this->teachgin = array();
   }
 
   function verify_credentials($username, $password)
