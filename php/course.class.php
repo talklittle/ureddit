@@ -4,10 +4,11 @@ class CourseNotFoundException extends Exception {}
 
 class course extends object
 {
-  public $roster = array();
-  public $teachers = array();
-  public $reports = array();
+  public $roster = NULL;
+  public $teachers = NULL;
+  public $reports = NULL;
   public $owner = NULL;
+  public $categories = NULL;
 
   function __construct($dbpdo, $id = NULL)
   {
@@ -22,6 +23,14 @@ class course extends object
       $this->owner = $this->parents['user'][0];
     else
       $this->owner = array();
+  }
+
+  function assign_owner($id)
+  {
+    if($this->owner !== NULL)
+      $this->remove_association($this->owner, $this->id, 'owner');
+    $this->add_parent($id, 'owner', '0');
+    $this->owner = $id;
   }
 
   function get_roster()
@@ -42,10 +51,53 @@ class course extends object
       $this->teachers = array();
   }
 
+  function add_teacher($id)
+  {
+    if($this->teachers == NULL)
+      {
+	$this->add_parent($id, 'teacher', 0);
+	$this->teachers = array($id);
+      }
+    elseif(is_array($this->teachers) && !in_array($this->teachers, $id))
+      {
+	$this->add_parent($id, 'teacher', 0);
+	$this->teachers[] = $id;
+      }
+  }
+
   function get_reports()
   {
     $this->get_parents('user','report');
-    $this->reports = $this->parents['user'];
+    if(isset($this->parents['user']))
+      $this->reports = $this->parents['user'];
+    else
+      $this->reports = array();
+  }
+
+  function get_categories()
+  {
+    $this->get_parents('category', 'categorization');
+    if(isset($this->parents['category']))
+      $this->categories = $this->parents['category'];
+    else
+      $this->categories = array();
+  }
+
+  function add_to_category($id)
+  {
+    if($this->categories == NULL)
+      $this->get_categories();
+    if(!in_array($this->categories, $id))
+      {
+	$this->add_parent($id, 'categorization', 0);
+	$this->categories[] = $id;
+      }
+  }
+
+  function remove_from_category($id)
+  {
+    $this->remove_parent($id, 'categorization');
+    $this->get_categories();
   }
 
   function mass_message($subject, $message, $author)

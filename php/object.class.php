@@ -257,12 +257,13 @@ class object extends base
       }
     elseif($this->unsaved = true)
       {
-	$this->dbpdo->query("UPDATE `objects` SET `type` = ?, `value` = ?, `ring` = ?, `modification` = ?", 
+	$this->dbpdo->query("UPDATE `objects` SET `type` = ?, `value` = ?, `ring` = ?, `modification` = ? WHERE `id` = ?", 
 					array(
 					      $this->type,
 					      $this->value,
 					      $this->ring,
-					      $date
+					      $date,
+					      $this->id
 					      ));
       }	
 

@@ -4,6 +4,24 @@ define('COOKIE_SESSID','ureddit_sessid');
 define('PREFIX','/dev');
 define('USE_MARKDOWN','true');
 
+function tweet($config,$status)
+{
+  return;
+  $t = new Twitter($config->twitterConsumerKey, $config->twitterConsumerSecret, $config->twitterAccessToken, $config->twitterAccessTokenSecret);
+  $t->send($status);
+}
+
+function category_dropdown($dbpdo, $name, $selected_val = "")
+{
+  $categories = $dbpdo->query("SELECT * FROM `objects` WHERE `type` = ? ORDER BY `value` ASC", array('category'));
+  ?><select name="<?=$name ?>" class="teach"><?php
+  foreach($categories as $cat)
+  {
+    ?><option <?=($cat['id'] == $selected_val ? "SELECTED" : "") ?> value="<?=$cat['id'] ?>"><?=$cat['value'] ?></option><?php
+  }
+  ?></select><?
+}
+
 function num_sent_messages($user)
 {
   $sent = $user->dbpdo->query("SELECT COUNT(*) FROM associations WHERE type = ? AND parent_id = ?", array('message','$user->id'));
