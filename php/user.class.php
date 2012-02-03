@@ -9,9 +9,9 @@ class user extends object
   public $outbox = NULL;
   public $teaching = NULL;
 
-  function __construct($dbpdo, $id = NULL)
+  function __construct($dbpdo, $id = NULL, $attribute_type = NULL)
   {
-    parent::__construct($dbpdo, $id);
+    parent::__construct($dbpdo, $id, $attribute_type);
   }
 
   function is_taking_class($id)
@@ -93,11 +93,15 @@ class user extends object
   function add_class($id)
   {
     $this->add_parent($id, 'enrolled_student', 0);
+    if($this->config->memcache())
+      $this->memecache_delete('v3_roster_' . $id . '_with_attribute_' . 'reddit_username');
   }
 
   function drop_class($id)
   {
     $this->remove_parent($id, 'enrolled_student');
+    if($this->config->memcache())
+      $this->memecache_delete('v3_roster_' . $id . '_with_attribute_' . 'reddit_username');
   }
 
   function get_schedule()

@@ -33,6 +33,33 @@ class course extends object
     $this->owner = $id;
   }
 
+  function get_roster_with_attribute($attribute)
+  {
+    if($this->config->memcache())
+      {
+	$data = $this->memcache_get('v3_roster_' . $this->id . '_with_attribute_' . $attribute);
+	if(!$data)
+	  $data = $this->dbpdo->query("SELECT o.value, oa.value FROM (associations AS a INNER JOIN objects AS o ON a.parent_id = ? AND o.id = a.child_id AND a.type = ?) LEFT OUTER JOIN object_attributes AS oa ON o.id = oa.object_id AND oa.type = ?",
+				      array(
+					    $this->id,
+					    'enrolled_student',
+					    $attribute
+					    ));
+	$this->memcache_set('v3_roster_' . $this->id . '_with_attribute_' . $attribute, $data);
+	return $data;
+      }
+    else
+      {
+	return $this->dbpdo->query("SELECT o.value, oa.value FROM (associations AS a INNER JOIN objects AS o ON a.parent_id = ? AND o.id = a.child_id AND a.type = ?) LEFT OUTER JOIN object_attributes AS oa ON o.id = oa.object_id AND oa.type = ?",
+				   array(
+					 $this->id,
+					 'enrolled_student',
+					 $attribute
+					 ));
+      }
+
+  }
+
   function get_roster()
   {
     $this->get_children('user','enrolled_student');
@@ -145,6 +172,8 @@ class course extends object
   {
     if($this->session('user_id') !== false)
       $user = new user($this->dbpdo, $this->session('user_id'));
+    else
+      $user = $this->dbpdo;
 
     ?>
     <div id="class<?=$this->id ?>">
@@ -177,19 +206,19 @@ class course extends object
 		  live lectures!
                 </span>
 		<?php
-		  if($this->teachers === NULL)
-		    $this->get_teachers();
-		if(in_array($this->session('user_id'), $this->teachers))
-		    {
-		      ?>
-		      <span style="font-weight: normal; font-size: 0.8em;">
-			[ <a href="<?=PREFIX ?>/class/<?=$this->id ?>/edit">edit</a> ]
-			[ <a href="<?=PREFIX ?>/class/<?=$this->id ?>/message">mass message</a> ]
-		      </span>
-			<?php
-		    }
-		?><br /><?php
-              }
+	      }
+	    if($this->teachers === NULL)
+	      $this->get_teachers();
+	    if(in_array($this->session('user_id'), $this->teachers))
+	      {
+		?>
+		<span style="font-weight: normal; font-size: 0.8em;">
+		  [ <a href="<?=PREFIX ?>/class/<?=$this->id ?>/edit">edit</a> ]
+		  [ <a href="<?=PREFIX ?>/class/<?=$this->id ?>/message">mass message</a> ]
+		</span>
+		<?php
+	      }
+	    ?><br /><?php
 	  }
 	catch (ObjectAttributeNotFoundException $e)
 	  {
@@ -221,7 +250,7 @@ class course extends object
                 $teacher = new user($this->dbpdo, $this->owner);
                 ?>taught by <a href="<?=PREFIX ?>/user/<?=$teacher->value ?>" class="link-class-desc"><?=$teacher->value ?></a>
 		<?php
-		$ru = $teacher->get_attribute_value('reddit_username');
+		//$ru = $teacher->get_attribute_value('reddit_username');
 		?>
                     [<a href="http://reddit.com/user/<?=$ru ?>" class="link-class-desc">teacher reddit user page</a>]
                     <?php
@@ -337,20 +366,36 @@ class course extends object
 	        Roster
 	      </div>
 	      <div class="class-desc">
-	      <?php
-	      $this->get_roster();
+	      <?php 
+	      $data = $this->get_roster_with_attribute('reddit_username');
+	      /*
 	      $count = 0;
 	      foreach($this->roster as $user_id)
 		{
-		  $user = new user($this->dbpdo, $user_id);
+		  $user = new user($this->dbpdo, $user_id, 'reddit_username');
 		  echo ++$count . '. <a href="' . PREFIX . '/user/' . $user->value . '" style="color: black;">' . $user->value . '</a>';
 		  try
 		    {
-		      echo ' <a href="http://www.reddit.com/message/compose/?to=' . $user->get_attribute_value('reddit_username') . '"><img src="' . PREFIX . '/images/reddit.png" style="border: 0; height: 1em;" /></a>';
+		      echo ' <a href="http://www.reddit.com/message/compose/?to=' . $user->get_attribute_value('reddit_username',false) . '"><img src="' . PREFIX . '/images/reddit.png" style="border: 0; height: 1em;" /></a>';
 		    }
 		  catch(ObjectAttributeNotFoundException $e)
 		    {
-		      
+
+		    }
+		  echo '<br />';
+		}
+	      if($count == 0)
+		{
+		  echo "<em>no students found</em>";
+		}
+	      */
+	      $count = 0;
+	      foreach($data as $user)
+		{
+		  echo ++$count . '. <a href="' . PREFIX . '/user/' . $user[0] . '" style="color: black;">' . $user[0] . '</a>';
+		  if(isset($user[1]))
+		    {
+		      echo ' <a href="http://www.reddit.com/message/compose/?to=' . $user[1] . '"><img src="' . PREFIX . '/images/reddit.png" style="border: 0; height: 1em;" /></a>';
 		    }
 		  echo '<br />';
 		}

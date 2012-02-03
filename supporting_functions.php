@@ -17,7 +17,10 @@ class statuses:
 4 running, closed to signups
 5 finished
 */
-  $class = new course($user->dbpdo, $class_id);
+  if($user === false)
+    $class = new course($user, $class_id);
+  else
+    $class = new course($user->dbpdo, $class_id);
   $status = $class->get_attribute_value('status');
   echo "<div id=\"button" . $class->id . "\">\n";
 
@@ -65,13 +68,13 @@ class statuses:
 	}
       else
 	{
-          ?>
-          <div class="teacher-button">
+	  ?>
+	  <div class="teacher-button">
 	    <a href="<?=PREFIX ?>/teachers/" class="link-signup-button">
 	    teacher
 	    </a>
 	  </div>
-	  <?php	  
+	  <?php 
 	}
     }
   else
@@ -423,9 +426,14 @@ function logged_in()
   return true;
 }
 
-function logout()
+function logout($dbpdo)
 {
+  $dbpdo->query("DELETE FROM `sessions` WHERE `object_id` = ?", array($dbpdo->session('user_id')));
+  setcookie('ureddit_sessid',"",time()-60*60*24);
+  
   $_SESSION = array();
+  session_destroy();
+  send_user_to("/");
 }
 
 function cookie_exists()

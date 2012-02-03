@@ -26,12 +26,21 @@ class object extends base
     require_once("$class.class.php");
   }
 
-  function __construct($dbpdo, $id = NULL)
+  function __construct($dbpdo, $id = NULL, $attribute_type = NULL)
   {
     parent::__construct($dbpdo->config);
     $this->dbpdo = $dbpdo;
     if($id !== NULL)
-      $this->lookup($id);
+      {
+	if($attribute_type !== NULL)
+	  {
+	    $this->lookup_with_attribute($id, $attribute_type);
+	  }
+	else
+	  {
+	    $this->lookup($id);
+	  }
+      }
   }
 
   function use_connection($mh)
@@ -70,6 +79,48 @@ class object extends base
     $this->created = $data['creation'];
     $this->modified = $data['modification'];
     $this->unsaved = false;
+  }
+
+  function lookup_with_attribute($id, $attribute_type)
+  {
+    if($this->config->memcache())
+      {
+	$data = $this->memcache_get('v3_object_' . $id . '_with_attribute_' . $attribute_type);
+	if(!$data)
+	  {
+	    $data = $this->dbpdo->query("SELECT o.id AS o_id, o.type AS o_type, o.value AS o_value, o.ring AS o_ring, o.creation AS o_creation, o.modification AS o_modification, oa.id AS oa_id, oa.type AS oa_type, oa.value AS oa_value, oa.ring AS oa_ring FROM objects AS o LEFT OUTER JOIN object_attributes AS oa ON oa.object_id = o.id AND oa.type = ? WHERE o.id = ?", array($attribute_type, $id));
+	    if(count($data) == 0)
+	      throw new ObjectNotFoundException;
+	    $this->memcache_set('v3_object_' . $id , '_with_attribute_' . $attribute_type, $data);
+	  }
+      }
+    else
+      {
+	$data = $this->dbpdo->query("SELECT o.id AS o_id, o.type AS o_type, o.value AS o_value, o.ring AS o_ring, o.creation AS o_creation, o.modification AS o_modification, oa.id AS oa_id, oa.type AS oa_type, oa.value AS oa_value, oa.ring AS oa_ring FROM objects AS o LEFT OUTER JOIN object_attributes AS oa ON oa.object_id = o.id AND oa.type = ? WHERE o.id = ?", array($attribute_type, $id));
+	if(count($data) == 0)
+	  throw new ObjectNotFoundException;
+      }
+
+    $this->new = false;
+
+    $this->id = $id;
+    $this->type = $data[0]['o_type'];
+    $this->value = $data[0]['o_value'];
+    $this->ring = $data[0]['o_ring'];
+    $this->created = $data[0]['o_creation'];
+    $this->modified = $data[0]['o_modification'];
+    $this->unsaved = false;
+
+    $this->attributes = array();
+    foreach($data as $attribute)
+      {
+	$this->attributes[$attribute['oa_type']] = array(
+						      'id' => $attribute['oa_id'],
+						      'value' => $attribute['oa_value'],
+						      'ring' => $attribute['oa_ring'],
+						      'modified' => false
+						      );
+      }
   }
 
   function update_type($type)
@@ -135,19 +186,22 @@ class object extends base
     $this->unsaved = true;
   }
 
-  function get_attribute_value($type)
+  function get_attribute_value($type, $redo_search = true)
   {
     if($this->config->memcache())
       {
 	$value = $this->memcache_get('v3_object_' . $this->id . '_attribute_' . $type);
 	if($value !== false)
-	  return $value;
-      }
-    $this->get_attributes($type);
+	  return $value;      
+    }
+
+    if($redo_search)
+      $this->get_attributes($type);
     if(isset($this->attributes[$type]))
       {
 	if($this->config->memcache())
 	  $this->memcache_set('v3_object_' . $this->id . '_attribute_' . $type, $this->attributes[$type]['value']);
+	
 	return $this->attributes[$type]['value'];
       }
     else
@@ -175,9 +229,12 @@ class object extends base
 
     if($offset === NULL && $limit === NULL && $this->config->memcache())
       {
-	$data = $this->memcache_get('v3_object_ '. $this->id . '_parents_' . $parent_type . '_' . $association_type);
+	$data = $this->memcache_get('v3_object_' . $this->id . '_parents_' . $parent_type . '_' . $association_type);
 	if(!$data)
-	  $data = $this->dbpdo->query($q, array($this->id, $association_type, $parent_type));
+	  {
+	    $data = $this->dbpdo->query($q, array($this->id, $association_type, $parent_type));
+	    $this->memcache_set('v3_object_' . $this->id . '_parents_' . $parent_type . '_' . $association_type, $data);
+	  }
       }
     else
       {
@@ -188,9 +245,6 @@ class object extends base
 	    $q .= "LIMIT $offset";
 	
 	$data = $this->dbpdo->query($q, array($this->id, $association_type, $parent_type));
-
-	if($offset === NULL && $limit === NULL && $this->config->memcache())
-	  $this->memcache_set('v3_object_ '. $this->id . '_parents_' . $parent_type . '_' . $association_type, $data);
       }
     foreach($data as $assoc)
       {
@@ -211,9 +265,12 @@ class object extends base
 
     if($offset === NULL && $limit === NULL && $this->config->memcache())
       {
-	$data = $this->memcache_get('v3_object_ '. $this->id . '_children_' . $child_type . '_' . $association_type);
+	$data = $this->memcache_get('v3_object_'. $this->id . '_children_' . $child_type . '_' . $association_type);
 	if(!$data)
-	  $data = $this->dbpdo->query($q, array($this->id, $association_type, $child_type));
+	  {
+	    $data = $this->dbpdo->query($q, array($this->id, $association_type, $child_type));
+	    $this->memcache_set('v3_object_'. $this->id . '_children_' . $child_type . '_' . $association_type, $data);
+	  }
       }
     else
       {
@@ -224,9 +281,6 @@ class object extends base
 	    $q .= "LIMIT $offset";
 
 	$data = $this->dbpdo->query($q, array($this->id, $association_type, $child_type));
-
-	if($offset === NULL && $limit === NULL && $this->config->memcache())
-	  $this->memcache_set('v3_object_ '. $this->id . '_children_' . $child_type . '_' . $association_type, $data);
       }
 
     foreach($data as $assoc)
@@ -253,7 +307,10 @@ class object extends base
   function get_object_type($id)
   {
     $obj = $this->dbpdo->query("SELECT `type` FROM `objects` WHERE `id` = ?", array($id));
-    return $obj[0]['type'];
+    if(count($obj) > 0)
+      return $obj[0]['type'];
+    else
+      return false;
   }
 
   function create_association($parent_id, $child_id, $type, $ring)
