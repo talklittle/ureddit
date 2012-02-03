@@ -19,29 +19,17 @@ class catalog extends object
       $this->categories = array();
   }
 
-  function display($expand_classes = false, $class_details = false)
+  function display($expand_categories = true, $expand_classes = false, $class_details = false)
   {
     $categories = array();
     foreach($this->categories as $category_id)
       {
 	$category = new category($this->dbpdo, $category_id);
 	$this->category_objects[] = $category;
-	?>
-        <div id="category<?=$this->id ?>">
-          <div class="category">
-            <div class="category-name">
-              <?=$category->value; ?>
-                <span class="showhide">
-                  <a
-                    onclick="$.get('<?=PREFIX ?>/category.php',{id: '<?=$category->id ?>', show: 'false', user_id: '-1', teacher: 'false'}, function(data) { $('#category<?=$category->id ?>').html(data)});"
-                    class="link-showhide"
-                  >[hide]</a>
-                </span>
-              </div>
-	   <?php $category->display($expand_classes, $class_details); ?>
-            </div>
-          </div>
-        <?php
+
+	?><div class="category" id="category<?=$category->id ?>"><?php
+	$category->display($expand_categories, $expand_classes, $class_details);
+	?></div><?php
       }
   }
 }
