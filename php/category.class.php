@@ -2,7 +2,7 @@
 
 class category extends object
 {
-  public $classes = array();
+  public $classes = NULL;
 
   function __construct($dbpdo, $id = NULL)
   {
@@ -16,6 +16,8 @@ class category extends object
     $this->get_children('class','categorization');
     if(isset($this->children['class']))
       $this->classes = $this->children['class'];
+    else
+      $this->classes = array();
   }
 
   function display($expand_classes = false, $class_details = false)
