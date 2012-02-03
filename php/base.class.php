@@ -16,7 +16,7 @@ class base {
       {
 	$this->memcache = new Memcache;
 	if(!$this->memcache->pconnect($this->config->memcache_host(), $this->config->memcache_port()))
-	  $this->error("Connected to memcached failed.");
+	  $this->error("Connection to memcached failed.");
       }
   }
 
@@ -43,7 +43,7 @@ class base {
   function session($key)
   {
     if(isset($_SESSION) && isset($_SESSION[$key]))
-      return $_SESSION['key'];
+      return $_SESSION[$key];
     return NULL;
   }
 

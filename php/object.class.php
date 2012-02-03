@@ -164,15 +164,28 @@ class object extends base
   function get_parents($parent_type = '%', $association_type='%', $offset = NULL, $limit = NULL)
   {
     $this->parents = array();
-    
-    $q = "SELECT p.id AS parent_id, p.type AS parent_type, a.id AS association_id, a.type AS association_type FROM objects AS p INNER JOIN (associations AS a INNER JOIN objects AS c ON a.child_id=c.id AND c.id = ? AND a.type LIKE ?) ON p.id=a.parent_id AND p.type LIKE ?";
-    if($offset !== NULL)
-      if($limit !== NULL)
-	$q .= "LIMIT $offset, $limit";
-      else
-	$q .= "LIMIT $offset";
 
-    $data = $this->dbpdo->query($q, array($this->id, $association_type, $parent_type));
+    $q = "SELECT p.id AS parent_id, p.type AS parent_type, a.id AS association_id, a.type AS association_type FROM objects AS p INNER JOIN (associations AS a INNER JOIN objects AS c ON a.child_id=c.id AND c.id = ? AND a.type LIKE ?) ON p.id=a.parent_id AND p.type LIKE ?";
+
+    if($offset === NULL && $limit === NULL && $this->config->memcache())
+      {
+	$data = $this->memcache_get('v3_object_ '. $this->id . '_parents_' . $parent_type . '_' . $association_type);
+	if(!$data)
+	  $data = $this->dbpdo->query($q, array($this->id, $association_type, $parent_type));
+      }
+    else
+      {
+	if($offset !== NULL)
+	  if($limit !== NULL)
+	    $q .= "LIMIT $offset, $limit";
+	  else
+	    $q .= "LIMIT $offset";
+	
+	$data = $this->dbpdo->query($q, array($this->id, $association_type, $parent_type));
+
+	if($offset === NULL && $limit === NULL && $this->config->memcache())
+	  $this->memcache_set('v3_object_ '. $this->id . '_parents_' . $parent_type . '_' . $association_type, $data);
+      }
     foreach($data as $assoc)
       {
 	if(!isset($this->parents[$assoc['parent_type']]) || !is_array($this->parents[$assoc['parent_type']]))
@@ -189,12 +202,27 @@ class object extends base
     $this->children = array();
 
     $q = "SELECT c.id AS child_id, c.type AS child_type, a.id AS association_id, a.type AS association_type FROM objects AS c INNER JOIN (associations AS a INNER JOIN objects AS p ON a.parent_id=p.id AND p.id = ? AND a.type LIKE ?) ON c.id=a.child_id AND c.type LIKE ?";
-    if($offset !== NULL)
-      if($limit !== NULL)
-	$q .= "LIMIT $offset, $limit";
-      else
-	$q .= "LIMIT $offset";
-    $data = $this->dbpdo->query($q, array($this->id, $association_type, $child_type));
+
+    if($offset === NULL && $limit === NULL && $this->config->memcache())
+      {
+	$data = $this->memcache_get('v3_object_ '. $this->id . '_children_' . $child_type . '_' . $association_type);
+	if(!$data)
+	  $data = $this->dbpdo->query($q, array($this->id, $association_type, $parent_type));
+      }
+    else
+      {
+	if($offset !== NULL)
+	  if($limit !== NULL)
+	    $q .= "LIMIT $offset, $limit";
+	  else
+	    $q .= "LIMIT $offset";
+
+	$data = $this->dbpdo->query($q, array($this->id, $association_type, $child_type));
+
+	if($offset === NULL && $limit === NULL && $this->config->memecache())
+	  $this->memcache_set('v3_object_ '. $this->id . '_children_' . $child_type . '_' . $association_type, $data);
+      }
+
     foreach($data as $assoc)
       {
 	if(!isset($this->children[$assoc['child_type']]) || !is_array($this->children[$assoc['child_type']]))
@@ -216,9 +244,45 @@ class object extends base
     return $this->create_association($id, $this->id, $type, $ring);
   }
 
+  function get_object_type($id)
+  {
+    $obj = $this->dbpdo->query("SELECT `type` FROM `objects` WHERE `id` = ?", array($id));
+    return $obj[0]['type'];
+  }
+
   function create_association($parent_id, $child_id, $type, $ring)
   {
     $date = $this->timestamp();
+    if($this->config->memcache())
+      {
+	if($this->id == $parent_id)
+	  {
+	    $child_type = $this->get_object_type($child_id);
+	    $this->memcache_delete('v3_object_' . $this->id . '_children_' . $child_type . '_' . $type);
+	    $this->memcache_delete('v3_object_' . $this->id . '_children_%_' . $type);
+	    $this->memcache_delete('v3_object_' . $this->id . '_children_' . $child_type . '_%');
+	    $this->memcache_delete('v3_object_' . $this->id . '_children_%_%');
+
+	    $this->memcache_delete('v3_object_' . $child_id . '_parents_' . $this->type . '_' . $type);
+	    $this->memcache_delete('v3_object_' . $child_id . '_parents_%_' . $type);
+	    $this->memcache_delete('v3_object_' . $child_id . '_parents_' . $this->type . '_%');
+	    $this->memcache_delete('v3_object_' . $child_id . '_parents_%_%');
+	  }
+	elseif($this->id == $child_id)
+	  {
+	    $parent_type = $this->get_object_type($parent_id);
+	    $this->memcache_delete('v3_object_' . $this->id . '_parents_' . $parent_type . '_' . $type);
+	    $this->memcache_delete('v3_object_' . $this->id . '_parents_%_' . $type);
+	    $this->memcache_delete('v3_object_' . $this->id . '_parents_' . $parent_type . '_%');
+	    $this->memcache_delete('v3_object_' . $this->id . '_parents_%_%');
+
+	    $this->memcache_delete('v3_object_' . $parent_id . '_children_' . $this->type . '_' . $type);
+	    $this->memcache_delete('v3_object_' . $parent_id . '_children_%_' . $type);
+	    $this->memcache_delete('v3_object_' . $parent_id . '_children_' . $this->type . '_%');
+	    $this->memcache_delete('v3_object_' . $parent_id . '_children_%_%');
+	  }
+      }
+
     return $this->dbpdo->query("INSERT INTO `associations` (`parent_id`,`type`,`child_id`,`ring`,`creation`,`modification`) VALUES(?, ?, ?, ?, ?, ?)", 
 			array(
 			      $parent_id,

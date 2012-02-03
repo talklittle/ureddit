@@ -21,7 +21,7 @@ class statuses:
   $status = $class->get_attribute_value('status');
   echo "<div id=\"button" . $class->id . "\">\n";
 
-  if(logged_in())
+  if(!logged_in())
     {
       $text = array("0" => "canceled", "1" => "+add", "2" => "closed", "3" => "+add", "4" => "closed", "5" => "finished");
       ?>
@@ -34,7 +34,7 @@ class statuses:
   else
     $user = new user($dbpdo, $dbpdo->session('user_id'));
 
-  if(!$user->is_taking_class($class->id)) // if student is not in class
+  if(isset($user) && !$user->is_taking_class($class->id)) // if student is not in class
     {
       if(!$user->is_teaching_class($class->id))
 	{
@@ -93,6 +93,7 @@ function display_schedule($user)
 {
   $user->get_schedule();
   $categories = array();
+
   foreach($user->schedule as $class_id)
     {
       $class = new course($user->dbpdo, $class_id);
@@ -103,7 +104,7 @@ function display_schedule($user)
   foreach($categories as $category_id => $classes)
     {
       $category = new category($user->dbpdo, $category_id);
-  ?>
+      ?>
       <div id="category<?=$cat->id ?>">
       <div class="category">
 	<div class="category-name">
