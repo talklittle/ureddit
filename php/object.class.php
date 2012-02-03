@@ -41,7 +41,19 @@ class object extends base
 
   function lookup($id)
   {
-    $data = $this->dbpdo->query("SELECT * FROM `objects` WHERE `id` = ?", array($id));
+    if($this->config->memcache())
+      {
+	$data = $this->memcache_get('v3_objects_' . $id);
+	if(!$data)
+	  {
+	    $data = $this->dbpdo->query("SELECT * FROM `objects` WHERE `id` = ?", array($id));
+	    $this->memcache_set('v3_objects_' . $id, $data);
+	  }
+      }
+    else
+      {
+	$data = $this->dbpdo->query("SELECT * FROM `objects` WHERE `id` = ?", array($id));
+      }
 
     if(count($data) == 0)
       throw new ObjectNotFoundException;
@@ -93,11 +105,11 @@ class object extends base
 
   function define_attribute($type, $value, $ring = NULL)
   {
-    if($this->attributes === NULL)
-      $this->get_attributes();
-
     if(strlen($value) == 0)
       return;
+
+    if($this->attributes === NULL)
+      $this->get_attributes($type);
 
     if(!isset($this->attributes[$type]))
       {
@@ -123,6 +135,12 @@ class object extends base
 
   function get_attribute_value($type)
   {
+    if($this->config->memcache)
+      {
+	$value = $this->memcache->get('v3_object_' . $this->id . '_attribute_' . $type);
+	if($value !== false)
+	  return $value;
+      }
     $this->get_attributes($type);
     if(isset($this->attributes[$type]))
       return $this->attributes[$type]['value'];
@@ -139,6 +157,8 @@ class object extends base
 			      ));
     if(isset($this->attributes[$type]))
       unset($this->attributes[$type]);
+    if($this->config->memcache())
+      $this->memecache_delete('v3_object_' . $this->id . '_attribute_' . $type);
   }
 
   function get_parents($parent_type = '%', $association_type='%', $offset = NULL, $limit = NULL)
@@ -269,6 +289,8 @@ class object extends base
 					      $date,
 					      $this->id
 					      ));
+	if($this->config->memcache())
+	  $this->memcache->delete('v3_objects_' . $this->id);
       }
 
     if($this->attributes !== NULL)
@@ -296,6 +318,8 @@ class object extends base
 					  $date,
 					  $info['id']
 					  ));
+		if($this->memcache())
+		  $this->memcache_delete('v3_object_' . $this->id . '_attribute_' . $attribute);
 	      }
 	  }
       }

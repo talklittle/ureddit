@@ -57,19 +57,13 @@ if(!empty($_POST))
      $class->define_attribute('status', '1', 0);
      $class->save();
 
-     $memcache = new Memcache;
-     $memcache->connect("localhost", 11211);
-     $memcache->delete("v3-catalog-expanded");
-     $memcache->delete("v3-catalog-collapsed");
-
-
-       $url = "http://ureddit.com" . PREFIX . "/c" . $class->id;
-       //$url = make_bitly_url($url);
-       $tweet = $teacher->value . " has created a class! $url \"" . $plain_name . "\"";
-       if(strlen($tweet) > 140)
-	 $tweet = substr($config,$tweet, 0, 136) . "...\"";
-       tweet($tweet);
-       send_user_to("/class/" . $class->id);
+     $url = "http://ureddit.com" . PREFIX . "/c" . $class->id;
+     //$url = make_bitly_url($url);
+     $tweet = $teacher->value . " has created a class! $url \"" . $plain_name . "\"";
+     if(strlen($tweet) > 140)
+       $tweet = substr($config,$tweet, 0, 136) . "...\"";
+     tweet($tweet);
+     send_user_to("/class/" . $class->id);
    }
 }
 

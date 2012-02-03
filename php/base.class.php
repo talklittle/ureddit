@@ -1,7 +1,8 @@
 <?php
 
 class base {
-  public $config;
+  public $config = NULL;
+  public $memcache = NULL;
 
   function __autoload($class)
   {
@@ -11,6 +12,26 @@ class base {
   function __construct($config)
   {
     $this->config = $config;
+    if($this->config->memcache())
+      {
+	$this->memcache = new Memcache;
+	$this->memcache->pconnect($this->config->memcache_host(), $this->config->memcache_port());
+      }
+  }
+
+  function memcache_get($key)
+  {
+    return $this->memcache->get($key);
+  }
+
+  function memcache_set($key, $value)
+  {
+    $this->memcache_set($key, $value, MEMCACHE_COMPRESSED, 60*60*24);
+  }
+
+  function memcache_delete($key)
+  {
+    $this->memcache_set($key);
   }
 
   function timestamp($format = "Y-m-d H:i:s")
