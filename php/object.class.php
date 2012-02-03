@@ -272,11 +272,12 @@ class object extends base
 	  }
 	if(isset($info['modified']) && $info['modified'] == true)
 	  {
-	    $this->$dbpdo->query("UPDATE `object_attributes` SET `value` = ?, `ring` = ?, `modification` = ?", 
+	    $this->$dbpdo->query("UPDATE `object_attributes` SET `value` = ?, `ring` = ?, `modification` = ? WHERE `id` = ?", 
 				 array(
 				       $info['value'],
 				       $info['ring'],
-				       $date
+				       $date,
+				       $info['id']
 				       ));
 	  }
       }
