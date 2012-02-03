@@ -78,11 +78,11 @@ class user extends object
     $this->schedule = $this->parents['class'];
   }
 
-  function message($receipient_id, $subject, $message)
+  function message($recepient_id, $subject, $message)
   {
     $association_id = $this->create_association($this->id, $recepient_id, 'message', 0);
     $date = $this->timestamp();
-    $this->dbpdo->query("INSERT INTO `association_attributes` (`association_id`, `type`,`value`,`ring`,`creation`,`modification`) VALUES ?, ?, ?, ?, ?, ?)",
+    $this->dbpdo->query("INSERT INTO `association_attributes` (`association_id`, `type`,`value`,`ring`,`creation`,`modification`) VALUES (?, ?, ?, ?, ?, ?)",
 			array(
 			      $association_id,
 			      'subject',
@@ -92,11 +92,21 @@ class user extends object
 			      $date
 			      ));
 
-    $this->dbpdo->query("INSERT INTO `association_attributes` (`association_id`, `type`,`value`,`ring`,`creation`,`modification`) VALUES ?, ?, ?, ?, ?, ?)",
+    $this->dbpdo->query("INSERT INTO `association_attributes` (`association_id`, `type`,`value`,`ring`,`creation`,`modification`) VALUES (?, ?, ?, ?, ?, ?)",
 			array(
 			      $association_id,
 			      'body',
 			      $message,
+			      0,
+			      $date,
+			      $date
+			      ));
+
+    $this->dbpdo->query("INSERT INTO `association_attributes` (`association_id`, `type`,`value`,`ring`,`creation`,`modification`) VALUES (?, ?, ?, ?, ?, ?)",
+			array(
+			      $association_id,
+			      'unread',
+			      'true',
 			      0,
 			      $date,
 			      $date

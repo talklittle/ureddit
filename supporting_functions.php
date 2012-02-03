@@ -4,6 +4,15 @@ define('COOKIE_SESSID','ureddit_sessid');
 define('PREFIX','/dev');
 define('USE_MARKDOWN','true');
 
+function object_type_value_to_id($dbpdo, $type, $value)
+{
+  return $dbpdo->query("SELECT `id` FROM `objects` WHERE `type` = ? AND `value` = ?",
+			   array(
+				 $type,
+				 $value
+				 ));
+}
+
 function tweet($config,$status)
 {
   return;
@@ -98,7 +107,7 @@ function display_messages($user, $offset = 0, $limit=1)
 		 $subject = $attr['value'];
 		 break;
 	       case "body":
-		 $message = $attr['value'];
+		 $body = $attr['value'];
 		 break;
 	       case "read":
 		 $read = true;
@@ -108,11 +117,12 @@ function display_messages($user, $offset = 0, $limit=1)
 	 if($read)
 	   continue;
 	 $unread[] = $association_id;
+	 $found = 1;
       ?>
       <div class="class">
         <div class="class-name"><?=$subject ?></div>
         <div class="class-desc"><?=$body ?></div>
-        <div class="class-info-noindent">from <strong><?=$sender->value ?></strong> at <?=$association[0]['created'] ?> [<a href="<?=PREFIX ?>/user/<?=$sender->value ?>" class="link-class-desc">reply</a>]</div>
+        <div class="class-info-noindent">from <strong><?=$sender->value ?></strong> at <?=$association[0]['creation'] ?> [<a href="<?=PREFIX ?>/user/<?=$sender->value ?>" class="link-class-desc">reply</a>]</div>
       </div>
       <?php
        }
@@ -145,7 +155,7 @@ function display_messages($user, $offset = 0, $limit=1)
 		 $subject = $attr['value'];
 		 break;
 	       case "body":
-		 $message = $attr['value'];
+		 $body = $attr['value'];
 		 break;
 	       case "read":
 		 $read = true;
@@ -175,7 +185,14 @@ function display_messages($user, $offset = 0, $limit=1)
     </div><?php
 	$date = $user->timestamp();
 	foreach($unread as $id)
-	  $user->dbpdo->query("INSERT INTO association_attributes (association_id, type, value, ring, creation, modification) VALUES (?, ?, ?, ?, ?, ?)",
+	  {
+	    $user->dbpdo->query("DELETE FROM association_attributes WHERE association_id = ? AND type = ? AND value = ?",
+			      array(
+				    $id,
+				    'unread',
+				    'true'
+				    ));
+	    $user->dbpdo->query("INSERT INTO association_attributes (association_id, type, value, ring, creation, modification) VALUES (?, ?, ?, ?, ?, ?)",
 			      array(
 				    $id,
 				    "read",
@@ -184,6 +201,7 @@ function display_messages($user, $offset = 0, $limit=1)
 				    $date,
 				    $date
 				    ));
+	  }
 }
 
 function display_sent_messages($user, $offset = 0, $limit=1) {
@@ -206,7 +224,7 @@ function display_sent_messages($user, $offset = 0, $limit=1) {
 	      $subject = $attr['value'];
 	      break;
 	    case "body":
-	      $message = $attr['value'];
+	      $body = $attr['value'];
 	      break;
 	    }
 	}
@@ -596,7 +614,7 @@ function to64 ($v, $n)
 
 function has_new_messages($dbpdo, $user_id)
 {
-  $unread = $dbpdo->query("SELECT * FROM associations AS a INNER JOIN association_attributes AS aa ON aa.type = 'read' AND aa.association_id = a.id AND a.child_id = ?", array($user_id));
+  $unread = $dbpdo->query("SELECT * FROM associations AS a INNER JOIN association_attributes AS aa ON aa.type = 'unread' AND aa.association_id = a.id AND a.child_id = ?", array($user_id));
   return (bool) count($unread);
 }
 
