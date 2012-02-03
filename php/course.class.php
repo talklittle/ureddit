@@ -102,6 +102,9 @@ class course extends object
 
   function mass_message($subject, $message, $author)
   {
+    if($this->roster === NULL)
+      $this->get_roster();
+
     foreach($this->roster as $user_id)
       {
 	$association_id = $this->create_association($this->id, $user_id, 'mass_message', 0);
