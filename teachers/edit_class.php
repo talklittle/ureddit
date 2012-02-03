@@ -72,9 +72,7 @@ if(!empty($_POST))
      $memcache = new Memcache;
      $memcache->connect("localhost", 11211);
      $memcache->delete("v3_catalog-expanded");
-     $memcache->delete("v3_catalog-expanded-teacher");
      $memcache->delete("v3_catalog-collapsed");
-     $memcache->delete("v3_catalog-collapsed-teacher");
      $memcache->delete("v3_class" . $class_id);
 
      if($status == 0 && $old_status != 0)

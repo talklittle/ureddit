@@ -60,9 +60,7 @@ if(!empty($_POST))
      $memcache = new Memcache;
      $memcache->connect("localhost", 11211);
      $memcache->delete("v3-catalog-expanded");
-     $memcache->delete("v3-catalog-expanded-teacher");
      $memcache->delete("v3-catalog-collapsed");
-     $memcache->delete("v3-catalog-collapsed-teacher");
 
 
        $url = "http://ureddit.com" . PREFIX . "/c" . $class->id;
