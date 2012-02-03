@@ -14,6 +14,24 @@ class user extends object
     parent::__construct($dbpdo, $id);
   }
 
+  function is_taking_class($id)
+  {
+    if($this->schedule === NULL)
+      $this->get_schedule();
+    if(in_array($id, $this->schedule))
+      return true;
+    return false;
+  }
+
+  function is_teaching_class($id)
+  {
+    if($this->teaching === NULL)
+      $this->get_taught_classes();
+    if(in_array($this->id, $this->teaching))
+      return true;
+    return false;
+  }
+
   function hash_password($password)
   {
     return md5(md5($password) . "uofr!1336");

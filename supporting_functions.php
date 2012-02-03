@@ -4,6 +4,90 @@ define('COOKIE_SESSID','ureddit_sessid');
 define('PREFIX','/dev');
 define('USE_MARKDOWN','true');
 
+function signup_button($dbpdo, $class_id)
+{
+
+/*
+class statuses:
+
+0 cancelled
+1 has not begun, open for signups
+2 has not begun, closed to signups
+3 running, open for signups
+4 running, closed to signups
+5 finished
+*/
+  $class = new course($dbpdo, $class_id);
+  echo "<div id=\"button" . $class->id . "\">\n";
+
+  if(logged_in())
+    {
+      $text = array("0" => "canceled", "1" => "+add", "2" => "closed", "3" => "+add", "4" => "closed", "5" => "finished");
+      ?>
+      <div class="signup-button">
+        <a href="<?=PREFIX ?>/login" class="link-signup-button"><?=$text[$class->get_attribute_value('status')] ?></a>
+      </div></div>
+      <?php
+      return;
+    }
+  else
+    $user = new user($dbpdo, $dbpdo->session('user_id'));
+
+  if(!$user->is_taking_class($class->id)) // if student is not in class
+    {
+      if(!$user->is_teaching_class($class->id))
+	{
+          if($class['status'] == "1" || $class['status'] == "3")
+          {
+            ?>
+            <div class="signup-button">
+	      <a onclick="$.get('<?=PREFIX ?>/enroll.php',{id: '<?=$class->id ?>'}, function(data) { $('#button<?=$class->id ?>').html(data) });" class="link-signup-button">
+	      +add
+	      </a>
+	    </div>
+	    <?php
+          } elseif($class['status'] == "5") {
+            ?>
+            <div class="signup-button">
+	      <a class="link-signup-button">
+	      finished
+	      </a>
+	    </div>
+	    <?php
+          } else {
+            ?>
+            <div class="signup-button">
+	      <a class="link-signup-button">
+	      closed
+	      </a>
+	    </div>
+	    <?php
+          }
+	}
+      else
+	{
+          ?>
+          <div class="teacher-button">
+	    <a href="<?=PREFIX ?>/teachers/" class="link-signup-button">
+	    teacher
+	    </a>
+	  </div>
+	  <?php	  
+	}
+    }
+  else
+    {
+      ?>
+  <div class="deregister-button">
+    <a onclick="$.get('<?=PREFIX ?>/drop_class.php',{id: '<?=$class->id ?>'}, function(data) { $('#button<?=$class->id ?>').html(data) });" class="link-signup-button">
+    -drop
+    </a>
+  </div>
+     <?
+    }
+  echo "</div>\n";
+}
+
 function display_schedule($user)
 {
   $user->get_schedule();
