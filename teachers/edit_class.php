@@ -69,15 +69,13 @@ if(!empty($_POST))
 
      $class->save();
 
-     /*   
      $memcache = new Memcache;
      $memcache->connect("localhost", 11211);
-     $memcache->delete("catalog-expanded");
-     $memcache->delete("catalog-expanded-teacher");
-     $memcache->delete("catalog-collapsed");
-     $memcache->delete("catalog-collapsed-teacher");
-     $memcache->delete("class" . $class_id);
-     */
+     $memcache->delete("v3_catalog-expanded");
+     $memcache->delete("v3_catalog-expanded-teacher");
+     $memcache->delete("v3_catalog-collapsed");
+     $memcache->delete("v3_catalog-collapsed-teacher");
+     $memcache->delete("v3_class" . $class_id);
 
      if($status == 0 && $old_status != 0)
        {

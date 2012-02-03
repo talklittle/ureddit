@@ -63,7 +63,7 @@ if(!preg_match($validation,$username))
 	try
 	  {
 	    $ru = $user->get_attribute_value('reddit_username');
-	    echo "You have already linked your UofR account to <a href=\"http://www.reddit.com/user/" . get_reddit_username(get_id_from_username(mysql_real_escape_string($username))) . "\">your Reddit acount.</a><br />";
+	    echo "You have already linked your UofR account to <a href=\"http://www.reddit.com/user/" . $ru . "\">your Reddit acount.</a><br />";
 	  }
 	catch (ObjectAttributeNotFoundException $e)
 	  {

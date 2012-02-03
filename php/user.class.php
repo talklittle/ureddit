@@ -25,7 +25,7 @@ class user extends object
     if(isset($this->children['class']))
       $this->teaching = $this->children['class'];
     else
-      $this->teachgin = array();
+      $this->teaching = array();
   }
 
   function verify_credentials($username, $password)
@@ -85,7 +85,10 @@ class user extends object
   function get_schedule()
   {
     $this->get_parents('class','enrolled_student');
-    $this->schedule = $this->parents['class'];
+    if(isset($this->parents['class']))
+      $this->schedule = $this->parents['class'];
+    else
+      $this->schedule = array();
   }
 
   function message($recepient_id, $subject, $message)

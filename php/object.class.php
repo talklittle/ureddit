@@ -96,6 +96,9 @@ class object extends base
     if($this->attributes === NULL)
       $this->get_attributes();
 
+    if(strlen($value) == 0)
+      return;
+
     if(!isset($this->attributes[$type]))
       {
 	if($ring === NULL)
@@ -235,6 +238,7 @@ class object extends base
     $this->value = $value;
     $this->ring = $ring;
     $this->unsaved = true;
+    $this->save();
   }
 
   function save()
@@ -265,7 +269,7 @@ class object extends base
 					      $date,
 					      $this->id
 					      ));
-      }	
+      }
 
     foreach($this->attributes as $attribute => $info)
       {
@@ -294,7 +298,6 @@ class object extends base
       }
 
     $this->unsaved = false;
-
   }
 
   function __destruct()

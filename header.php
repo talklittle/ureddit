@@ -1,13 +1,14 @@
 <? require_once('init.php'); ?>
 <div id="header">
   <a href="<?=PREFIX ?>/">
-    <img src="<?=PREFIX ?>/images/logo.png" alt="Universift of Reddit" />
+    <img src="<?=PREFIX ?>/images/logo.png" alt="University of Reddit" />
   </a>
   <div id="links">
     <a href="<?=PREFIX ?>/" class="<?=(PREFIX."/index.php" == $_SERVER['PHP_SELF'] ? "nav-current" : "nav") ?>">course catalog</a> - 
    <?php
-   $teacher = @mysql_fetch_assoc(mysql_query("SELECT COUNT(*) FROM `classes` WHERE `teacher_id`='" . $_SESSION['user_id'] . "'"));
-     if($teacher['COUNT(*)'] == "0") {
+
+   $teacher = $dbpdo->query("SELECT COUNT(*) FROM `associations` WHERE `parent_id` = ? AND `type` = ?", array($_SESSION['user_id'],'class'));
+     if($teacher[0]['COUNT(*)'] == "0") {
        ?><a href="<?=PREFIX ?>/teach" class="<?=(PREFIX."/teach.php" == $_SERVER['PHP_SELF'] ? "nav-current" : "nav") ?>">become an instructor</a> - <?php
      } else {
        ?><a href="<?=PREFIX ?>/teachers/" class="<?=(PREFIX."/teachers/index.php" == $_SERVER['PHP_SELF'] ? "nav-current" : "nav") ?>">teacher admin panel</a> - <?php

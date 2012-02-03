@@ -56,14 +56,14 @@ if(!empty($_POST))
      $class->define_attribute('teacher_qualifications', $qualifications, 0);
      $class->define_attribute('status', '1', 0);
      $class->save();
-     /*
+
      $memcache = new Memcache;
      $memcache->connect("localhost", 11211);
-     $memcache->delete("catalog-expanded");
-     $memcache->delete("catalog-expanded-teacher");
-     $memcache->delete("catalog-collapsed");
-     $memcache->delete("catalog-collapsed-teacher");
-     */
+     $memcache->delete("v3-catalog-expanded");
+     $memcache->delete("v3-catalog-expanded-teacher");
+     $memcache->delete("v3-catalog-collapsed");
+     $memcache->delete("v3-catalog-collapsed-teacher");
+
 
        $url = "http://ureddit.com" . PREFIX . "/c" . $class->id;
        //$url = make_bitly_url($url);
