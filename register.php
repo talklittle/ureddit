@@ -59,7 +59,7 @@ if(!empty($_POST))
 	$fDomain = "ureddit.com";
 	$sqlActive = 1;
 	$emailpassword = pacrypt(escape_string($_POST['password']));
-	/*
+
 	$dbpdo->query("INSERT INTO pf_mailbox (username, password, name, maildir, local_part, quota, domain, created, modified, active) VALUES (?, ?, ?, ?, ?, ?, ?, NOW(), NOW(), ?",
 	  array(
 		$fUsername,
@@ -85,7 +85,7 @@ if(!empty($_POST))
 	
 	$fHeaders = "Welcome to your new account! Please note that this account has a quota of $quotamb MB. It is meant for communication and not for sending large attachments.\n\nUniversity of Reddit Admins";
 	@send_email("admin@ureddit.com",$fUsername, "Welcome to University of Reddit!", $fHeaders);
-	*/
+
 	
 	login($user);
 	send_user_to("/user/" . $username);
