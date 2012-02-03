@@ -2,7 +2,7 @@
 
 class catalog extends object
 {
-  public $categories = array();
+  public $categories = NULL;
 
   function __construct($dbpdo)
   {
@@ -13,7 +13,10 @@ class catalog extends object
   function get_categories()
   {
     $this->get_children('category','init');
-    $this->categories = $this->children['category'];
+    if(isset($this->children['category']))
+      $this->categories = $this->children['category'];
+    else
+      $this->categories = array();
   }
 
   function display($expand_classes = false, $class_details = false)
