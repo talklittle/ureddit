@@ -36,7 +36,10 @@ class course extends object
   function get_teachers()
   {
     $this->get_parents('user','teacher');
-    $this->teachers = $this->parents['user'];
+    if(isset($this->parents['user']))
+      $this->teachers = $this->parents['user'];
+    else
+      $this->teachers = array();
   }
 
   function get_reports()
