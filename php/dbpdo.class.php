@@ -61,9 +61,8 @@ class dbpdo extends base
     try
       {
 	$this->mh->beginTransaction();
-	if($statement->execute($values))
+	if(@$statement->execute($values))
 	  {
-
 	    if($inserting)
 	      {
 		$last_insert_id = $this->mh->lastInsertId();

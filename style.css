@@ -8,6 +8,24 @@ p
     padding: 3px;
 }
 
+img#logo
+{
+    width: 237px;
+    height: 75px;
+}
+
+img#live
+{
+    width: 30px;
+    height: 10px;
+}
+
+img#message
+{
+    width: 15px;
+    height: 10px;
+}
+
 body {
     font-family: verdana;
 }

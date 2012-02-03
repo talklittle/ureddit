@@ -58,7 +58,7 @@ if(!preg_match($validation,$username))
 
   <div class="desc" style="margin-bottom: 30px;">
     <?php
-    if(logged_in())
+  if(logged_in() && $_GET['id'] == $dbpdo->session('username'))
       {
 	try
 	  {

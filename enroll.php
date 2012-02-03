@@ -10,7 +10,7 @@ if($user_id && $class_id != 0)
     $user = new user($dbpdo, $user_id);
     $user->add_class($class_id);
     
-    signup_button($dbpdo,$class_id);
+    signup_button($user,$class_id);
   }
 
 ?>

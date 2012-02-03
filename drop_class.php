@@ -2,9 +2,9 @@
 
 require_once('init.php');
 
-$user = new user($dbpdo, $_GET['id']);
+$user = new user($dbpdo, $dbpdo->session('user_id'));
 $user->drop_class($_GET['id']);
 
-signup_button($_GET['id']);
+signup_button($user,$_GET['id']);
 
 ?>

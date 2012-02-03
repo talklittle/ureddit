@@ -97,11 +97,14 @@ class user extends object
 
   function drop_class($id)
   {
-    $this->remove_parent($id, 'enrolled_student', 0);
+    $this->remove_parent($id, 'enrolled_student');
   }
 
   function get_schedule()
   {
+    if($this->schedule !== NULL)
+      return;
+
     $this->get_parents('class','enrolled_student');
     if(isset($this->parents['class']))
       $this->schedule = $this->parents['class'];

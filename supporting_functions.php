@@ -4,7 +4,7 @@ define('COOKIE_SESSID','ureddit_sessid');
 define('PREFIX','/dev');
 define('USE_MARKDOWN','true');
 
-function signup_button($dbpdo, $class_id)
+function signup_button($user, $class_id)
 {
 
 /*
@@ -17,7 +17,7 @@ class statuses:
 4 running, closed to signups
 5 finished
 */
-  $class = new course($dbpdo, $class_id);
+  $class = new course($user->dbpdo, $class_id);
   $status = $class->get_attribute_value('status');
   echo "<div id=\"button" . $class->id . "\">\n";
 
@@ -31,10 +31,8 @@ class statuses:
       <?php
       return;
     }
-  else
-    $user = new user($dbpdo, $dbpdo->session('user_id'));
 
-  if(isset($user) && !$user->is_taking_class($class->id)) // if student is not in class
+  if(!$user->is_taking_class($class->id)) // if student is not in class
     {
       if(!$user->is_teaching_class($class->id))
 	{

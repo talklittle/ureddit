@@ -1,7 +1,7 @@
 <? require_once('init.php'); ?>
 <div id="header">
   <a href="<?=PREFIX ?>/">
-    <img src="<?=PREFIX ?>/images/logo.png" alt="University of Reddit" />
+    <img src="<?=PREFIX ?>/images/logo.png" alt="University of Reddit" id="logo" />
   </a>
   <div id="links">
     <a href="<?=PREFIX ?>/" class="<?=(PREFIX."/index.php" == $_SERVER['PHP_SELF'] ? "nav-current" : "nav") ?>">course catalog</a> - 
@@ -22,7 +22,7 @@
   <a href="<?=PREFIX ?>/user/<?=$_SESSION['username'] ?>" class="<?=(PREFIX."/user.php" == $_SERVER['PHP_SELF'] && isset($_GET['id']) && $_GET['id'] == $_SESSION['username'] ? "nav-current" : "nav") ?>">
     <?=$_SESSION['username'] ?>
   </a>
-  <a href="<?=PREFIX ?>/messages" class="nav"><img src="<?=PREFIX ?>/images/<?=(has_new_messages($dbpdo, $_SESSION['user_id']) ? "new_messages.png" : "messages.png") ?>" style="border: 0;" /></a> 
+  <a href="<?=PREFIX ?>/messages" class="nav"><img src="<?=PREFIX ?>/images/<?=(has_new_messages($dbpdo, $_SESSION['user_id']) ? "new_messages.png" : "messages.png") ?>" style="border: 0;" id="message" /></a> 
   (<a href="<?=PREFIX ?>/settings" class="nav<?=(PREFIX."/preferences.php" == $_SERVER['PHP_SELF'] ? "-current" : "" )?>">settings</a> - 
 <a href="<?=PREFIX ?>/logout" class="nav">logout</a>) - 
   <?php

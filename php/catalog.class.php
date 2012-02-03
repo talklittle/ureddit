@@ -25,8 +25,6 @@ class catalog extends object
     foreach($this->categories as $category_id)
       {
 	$category = new category($this->dbpdo, $category_id);
-	$this->category_objects[] = $category;
-
 	?><div class="category" id="category<?=$category->id ?>"><?php
 	$category->display($expand_categories, $show_canceled_classes, $expand_classes, $class_details);
 	?></div><?php

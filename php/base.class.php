@@ -27,12 +27,12 @@ class base {
 
   function memcache_set($key, $value)
   {
-    $this->memcache_set($key, $value, MEMCACHE_COMPRESSED, 86400);
+    $this->memcache->set($key, $value, FALSE, 3600);
   }
 
   function memcache_delete($key)
   {
-    $this->memcache_set($key);
+    $this->memcache->delete($key);
   }
 
   function timestamp($format = "Y-m-d H:i:s")

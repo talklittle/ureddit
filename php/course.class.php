@@ -143,6 +143,9 @@ class course extends object
 
   function display($expanded = false, $full = false)
   {
+    if($this->session('user_id') !== false)
+      $user = new user($this->dbpdo, $this->session('user_id'));
+
     ?>
     <div id="class<?=$this->id ?>">
       <div class="class">
@@ -157,7 +160,7 @@ class course extends object
               ><?=($expanded == true ? "-" : "+") ?></a>]
             </div> 
             <?php
-            signup_button($this->dbpdo,$this->id);
+            signup_button($user,$this->id);
 	  }
         ?>
       <div class="class-name">
@@ -169,7 +172,7 @@ class course extends object
 	    if($this->get_attribute_value('live') == 'true')
 	      {
 		?>
-		<img src="<?=PREFIX ?>/images/live.png" alt="live class!" style="height: 0.8em; margin-left: 3px;" />
+		<img src="<?=PREFIX ?>/images/live.png" alt="live class!" id="live"  />
 	        <span style="font-style: italic; font-weight: normal; font-size: 0.8em;">
 		  live lectures!
                 </span>
@@ -223,9 +226,9 @@ class course extends object
                     [<a href="http://reddit.com/user/<?=$ru ?>" class="link-class-desc">teacher reddit user page</a>]
                     <?php
               }
-	    catch (UserNotFoundException $e)
+	    catch (ObjectNotFoundException $e)
 	      {
-		
+	      echo 'error: teacher not found ';
 	      }
 	    catch (ObjectAttributeNotFoundException $e)
 	      {

@@ -1,3 +1,15 @@
+<IfModule mod_deflate.c>
+AddOutputFilterByType DEFLATE text/css text/javascript application/x-javascript text/html
+<IfModule mod_setenvif.c>
+<FilesMatch "\.(css|js)$">
+ExpiresActive ON
+ExpiresDefault "access plus 1 week"
+</FilesMatch>
+
+<FilesMatch "\.png$">
+Header set Cache-Control "max-age=172800, public, must-revalidate"
+</FilesMatch>
+
 RewriteEngine On
 RewriteRule ^v2/?(.*)$ /$1 [R]
 RewriteRule ^user/([^/]*)/?$ user.php?id=$1

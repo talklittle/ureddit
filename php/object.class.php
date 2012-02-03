@@ -43,22 +43,24 @@ class object extends base
   {
     if($this->config->memcache())
       {
-	$data = $this->memcache_get('v3_objects_' . $id);
+	$data = $this->memcache_get('v3_object_' . $id);
 	if(!$data)
 	  {
 	    $data = $this->dbpdo->query("SELECT * FROM `objects` WHERE `id` = ?", array($id));
-	    $this->memcache_set('v3_objects_' . $id, $data);
+	    if(count($data) == 0)
+	      throw new ObjectNotFoundException;
+	    $data = $data[0];
+	    $this->memcache_set('v3_object_' . $id, $data);
 	  }
       }
     else
       {
 	$data = $this->dbpdo->query("SELECT * FROM `objects` WHERE `id` = ?", array($id));
+	if(count($data) == 0)
+	  throw new ObjectNotFoundException;
+	$data = $data[0];
       }
 
-    if(count($data) == 0)
-      throw new ObjectNotFoundException;
-
-    $data = $data[0];
     $this->new = false;
 
     $this->id = $id;
@@ -143,7 +145,11 @@ class object extends base
       }
     $this->get_attributes($type);
     if(isset($this->attributes[$type]))
-      return $this->attributes[$type]['value'];
+      {
+	if($this->config->memcache())
+	  $this->memcache_set('v3_object_' . $this->id . '_attribute_' . $type, $this->attributes[$type]['value']);
+	return $this->attributes[$type]['value'];
+      }
     else
       throw new ObjectAttributeNotFoundException;
   }
@@ -158,7 +164,7 @@ class object extends base
     if(isset($this->attributes[$type]))
       unset($this->attributes[$type]);
     if($this->config->memcache())
-      $this->memecache_delete('v3_object_' . $this->id . '_attribute_' . $type);
+      $this->memcache_delete('v3_object_' . $this->id . '_attribute_' . $type);
   }
 
   function get_parents($parent_type = '%', $association_type='%', $offset = NULL, $limit = NULL)
@@ -207,7 +213,7 @@ class object extends base
       {
 	$data = $this->memcache_get('v3_object_ '. $this->id . '_children_' . $child_type . '_' . $association_type);
 	if(!$data)
-	  $data = $this->dbpdo->query($q, array($this->id, $association_type, $parent_type));
+	  $data = $this->dbpdo->query($q, array($this->id, $association_type, $child_type));
       }
     else
       {
@@ -219,7 +225,7 @@ class object extends base
 
 	$data = $this->dbpdo->query($q, array($this->id, $association_type, $child_type));
 
-	if($offset === NULL && $limit === NULL && $this->config->memecache())
+	if($offset === NULL && $limit === NULL && $this->config->memcache())
 	  $this->memcache_set('v3_object_ '. $this->id . '_children_' . $child_type . '_' . $association_type, $data);
       }
 
@@ -302,6 +308,35 @@ class object extends base
 			      $child_id,
 			      $type
 			      ));
+    if($this->config->memcache())
+      {
+	if($this->id == $parent_id)
+	  {
+	    $child_type = $this->get_object_type($child_id);
+	    $this->memcache_delete('v3_object_' . $this->id . '_children_' . $child_type . '_' . $type);
+	    $this->memcache_delete('v3_object_' . $this->id . '_children_%_' . $type);
+	    $this->memcache_delete('v3_object_' . $this->id . '_children_' . $child_type . '_%');
+	    $this->memcache_delete('v3_object_' . $this->id . '_children_%_%');
+
+	    $this->memcache_delete('v3_object_' . $child_id . '_parents_' . $this->type . '_' . $type);
+	    $this->memcache_delete('v3_object_' . $child_id . '_parents_%_' . $type);
+	    $this->memcache_delete('v3_object_' . $child_id . '_parents_' . $this->type . '_%');
+	    $this->memcache_delete('v3_object_' . $child_id . '_parents_%_%');
+	  }
+	elseif($this->id == $child_id)
+	  {
+	    $parent_type = $this->get_object_type($parent_id);
+	    $this->memcache_delete('v3_object_' . $this->id . '_parents_' . $parent_type . '_' . $type);
+	    $this->memcache_delete('v3_object_' . $this->id . '_parents_%_' . $type);
+	    $this->memcache_delete('v3_object_' . $this->id . '_parents_' . $parent_type . '_%');
+	    $this->memcache_delete('v3_object_' . $this->id . '_parents_%_%');
+
+	    $this->memcache_delete('v3_object_' . $parent_id . '_children_' . $this->type . '_' . $type);
+	    $this->memcache_delete('v3_object_' . $parent_id . '_children_%_' . $type);
+	    $this->memcache_delete('v3_object_' . $parent_id . '_children_' . $this->type . '_%');
+	    $this->memcache_delete('v3_object_' . $parent_id . '_children_%_%');
+	  }
+      }
   }
       
   function remove_parent($id, $type = '%')
@@ -354,7 +389,7 @@ class object extends base
 					      $this->id
 					      ));
 	if($this->config->memcache())
-	  $this->memcache_delete('v3_objects_' . $this->id);
+	  $this->memcache_delete('v3_object_' . $this->id);
       }
 
     if($this->attributes !== NULL)
