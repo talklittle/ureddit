@@ -48,7 +48,7 @@ class course extends object
     $this->reports = $this->parents['user'];
   }
 
-  function mass_message($subject, $message)
+  function mass_message($subject, $message, $author)
   {
     foreach($this->roster as $user_id)
       {
@@ -78,7 +78,7 @@ class course extends object
 			array(
 			      $association_id,
 			      'author',
-			      $this->owner,
+			      $author->id,
 			      0,
 			      $date,
 			      $date
