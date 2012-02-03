@@ -7,7 +7,8 @@
     <a href="<?=PREFIX ?>/" class="<?=(PREFIX."/index.php" == $_SERVER['PHP_SELF'] ? "nav-current" : "nav") ?>">course catalog</a> - 
    <?php
 
-   $teacher = $dbpdo->query("SELECT COUNT(*) FROM `associations` WHERE `parent_id` = ? AND `type` = ?", array($dbpdo->session('user_id'),'class'));
+   $teacher = $dbpdo->query("SELECT COUNT(*) FROM `associations` WHERE `parent_id` = ? AND `type` = ?", array($dbpdo->session('user_id'),'teacher'));
+
      if($teacher[0]['COUNT(*)'] == "0") {
        ?><a href="<?=PREFIX ?>/teach" class="<?=(PREFIX."/teach.php" == $_SERVER['PHP_SELF'] ? "nav-current" : "nav") ?>">become an instructor</a> - <?php
      } else {
