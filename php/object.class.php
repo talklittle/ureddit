@@ -135,9 +135,9 @@ class object extends base
 
   function get_attribute_value($type)
   {
-    if($this->config->memcache)
+    if($this->config->memcache())
       {
-	$value = $this->memcache->get('v3_object_' . $this->id . '_attribute_' . $type);
+	$value = $this->memcache_get('v3_object_' . $this->id . '_attribute_' . $type);
 	if($value !== false)
 	  return $value;
       }
@@ -290,7 +290,7 @@ class object extends base
 					      $this->id
 					      ));
 	if($this->config->memcache())
-	  $this->memcache->delete('v3_objects_' . $this->id);
+	  $this->memcache_delete('v3_objects_' . $this->id);
       }
 
     if($this->attributes !== NULL)

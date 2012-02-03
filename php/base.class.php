@@ -15,7 +15,8 @@ class base {
     if($this->config->memcache())
       {
 	$this->memcache = new Memcache;
-	$this->memcache->pconnect($this->config->memcache_host(), $this->config->memcache_port());
+	if(!$this->memcache->pconnect($this->config->memcache_host(), $this->config->memcache_port()))
+	  $this->error("Connected to memcached failed.");
       }
   }
 
@@ -26,7 +27,7 @@ class base {
 
   function memcache_set($key, $value)
   {
-    $this->memcache_set($key, $value, MEMCACHE_COMPRESSED, 60*60*24);
+    $this->memcache_set($key, $value, MEMCACHE_COMPRESSED, 86400);
   }
 
   function memcache_delete($key)

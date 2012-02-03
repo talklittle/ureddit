@@ -157,7 +157,7 @@ class course extends object
               ><?=($expanded == true ? "-" : "+") ?></a>]
             </div> 
             <?php
-            signup_button($this->dbpdo,$this->id)
+            signup_button($this->dbpdo,$this->id);
 	  }
         ?>
       <div class="class-name">

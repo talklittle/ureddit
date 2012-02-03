@@ -18,6 +18,7 @@ class statuses:
 5 finished
 */
   $class = new course($dbpdo, $class_id);
+  $status = $class->get_attribute_value('status');
   echo "<div id=\"button" . $class->id . "\">\n";
 
   if(logged_in())
@@ -25,7 +26,7 @@ class statuses:
       $text = array("0" => "canceled", "1" => "+add", "2" => "closed", "3" => "+add", "4" => "closed", "5" => "finished");
       ?>
       <div class="signup-button">
-        <a href="<?=PREFIX ?>/login" class="link-signup-button"><?=$text[$class->get_attribute_value('status')] ?></a>
+        <a href="<?=PREFIX ?>/login" class="link-signup-button"><?=$text[$status] ?></a>
       </div></div>
       <?php
       return;
@@ -37,7 +38,7 @@ class statuses:
     {
       if(!$user->is_teaching_class($class->id))
 	{
-          if($class['status'] == "1" || $class['status'] == "3")
+          if($status == "1" || $status == "3")
           {
             ?>
             <div class="signup-button">
@@ -46,7 +47,7 @@ class statuses:
 	      </a>
 	    </div>
 	    <?php
-          } elseif($class['status'] == "5") {
+          } elseif($status == "5") {
             ?>
             <div class="signup-button">
 	      <a class="link-signup-button">
