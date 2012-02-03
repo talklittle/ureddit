@@ -28,7 +28,7 @@ class object extends base
 
   function __construct($dbpdo, $id = NULL)
   {
-    parent::__construct($dbpdo);
+    parent::__construct($dbpdo->config);
     $this->dbpdo = $dbpdo;
     if($id !== NULL)
       $this->lookup($id);

@@ -4,6 +4,41 @@ define('COOKIE_SESSID','ureddit_sessid');
 define('PREFIX','/dev');
 define('USE_MARKDOWN','true');
 
+
+// this function is not original, it was found online
+// I have lost my record of who the author was; if found,
+// I will give credit
+function encrypt($toEncrypt,$privatekey)
+{
+  $priv = openssl_pkey_get_private ($privatekey);
+
+  $toEncrypt = unpack('H*', $toEncrypt);
+  $toEncrypt = $toEncrypt[1];
+
+  $result = "";
+
+  while(strlen($toEncrypt)%16 != 0){
+    $toEncrypt .= "00";
+  }
+
+  $iv = "1234567812345678";
+  for($i = 0; $i < strlen($toEncrypt); $i+=16){
+    $p = substr($toEncrypt, $i, 16);
+    $x = $p ^ $iv;
+
+    if(!openssl_private_encrypt($x, $e, $priv, OPENSSL_NO_PADDING)){
+      throw new Exception(openssl_error_string());
+    }
+
+    $iv = $e ^ $p;
+
+    $result .= $e;
+  }
+
+  $result = unpack('H*', $result);
+  return $result[1];
+}
+
 function post($name, $default = "")
 {
   if(!empty($_POST) && isset($_POST[$name]))

@@ -5,20 +5,9 @@ $loginmsg = "";
 
 if(!empty($_POST))
   {
-    $username = $_POST['username'];
-    if(!preg_match('/^([A-Z0-9_.-]*)$/i', $username))
-      die('The username you submitted is not a valid username. Are you trying to use your email address to log in? <a href="login.php">Click here to try again.</a><br /><br />(Yes, we are aware that this method of handling this error is cumbersome; we will fix it sometime in the near future.)');
-    $hash = md5(md5($_POST['password']) . "uofr!1336");
-
-    $users = $dbpdo->query("SELECT objects.id FROM objects INNER JOIN object_attributes ON objects.value = ? AND object_attributes.type = 'password_hash' AND object_attributes.object_id = objects.id AND object_attributes.value = ?",
-			   array(
-				 $username,
-				 $hash
-				 ));
-
-    if(count($users) != 0)
+    $user = new user($dbpdo);
+    if($user->verify_credentials($_POST['username'], $_POST['password']))
       {
-	$user = new user($users[0]['id']);
 	try
 	  {
 	    $user->get_attribute_value('banned');

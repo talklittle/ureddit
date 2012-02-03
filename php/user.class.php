@@ -13,6 +13,32 @@ class user extends object
     parent::__construct($dbpdo, $id);
   }
 
+  function hash_password($password)
+  {
+    return md5(md5($password) . "uofr!1336");
+  }
+
+  function verify_credentials($username, $password)
+  {
+    $hash = $this->hash_password($password);
+    $users = $this->dbpdo->query("SELECT objects.id FROM objects INNER JOIN object_attributes ON objects.value = ? AND object_attributes.type = 'password_hash' AND object_attributes.object_id = objects.id AND object_attributes.value = ?",
+			   array(
+				 $username,
+				 $hash
+				 ));
+    if(count($users) > 0)
+      {
+	if($this->id === NULL)
+	  {
+	    $this->id = $users[0]['id'];
+	    $this->lookup($this->id);
+	    return true;
+	  }
+      }
+    else
+      return false;
+  }
+
   function get_inbox()
   {
     $this->get_parents('user','message');

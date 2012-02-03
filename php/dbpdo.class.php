@@ -14,8 +14,8 @@ class dbpdo extends base
 
   function __construct($config)
   {
-    $this->config = $config;
     parent::__construct($config);
+    $this->config = $config;
     $this->connect();
   }
 
