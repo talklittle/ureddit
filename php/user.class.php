@@ -43,7 +43,7 @@ class user extends object
   function get_schedule()
   {
     $this->get_parents('class','enrolled_student');
-    $this->schedule = $this->parents;
+    $this->schedule = $this->parents['class'];
   }
 
   function message($receipient_id, $subject, $message)
