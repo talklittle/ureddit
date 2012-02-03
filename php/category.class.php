@@ -20,7 +20,7 @@ class category extends object
       $this->classes = array();
   }
 
-  function display($expand_category = true, $expand_classes = false, $class_details = false)
+  function display($expand_category = true, $show_canceled_classes = false, $expand_classes = false, $class_details = false)
   {
     ?>
     <div class="category-name">
@@ -34,7 +34,15 @@ class category extends object
 	  foreach($this->classes as $class_id)
 	    {
 	      $class = new course($this->dbpdo, $class_id);
-	      $class->display($expand_classes, $class_details);
+	      try
+	        {
+		  if($show_canceled_classes || $class->get_attribute_value('status') != '0')
+		    $class->display($expand_classes, $class_details);
+		}
+	      catch (ObjectAttributeNotFoundException $e)
+	      {
+		$class->display($expand_classes, $class_details);
+	      }
 	    }
 	}
       else

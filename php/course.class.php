@@ -87,7 +87,7 @@ class course extends object
   {
     if($this->categories == NULL)
       $this->get_categories();
-    if(!in_array($this->categories, $id))
+    if(!in_array($id, $this->categories))
       {
 	$this->add_parent($id, 'categorization', 0);
 	$this->categories[] = $id;

@@ -271,29 +271,32 @@ class object extends base
 					      ));
       }
 
-    foreach($this->attributes as $attribute => $info)
+    if($this->attributes !== NULL)
       {
-	if(isset($info['new']) && $info['new'] == true)
+	foreach($this->attributes as $attribute => $info)
 	  {
-	    $this->dbpdo->query("INSERT INTO `object_attributes` (`object_id`,`type`,`value`,`ring`,`creation`,`modification`) VALUES (?, ?, ?, ?, ?, ?)",
-				array(
-				      $this->id,
-				      $attribute,
-				      $info['value'],
-				      $info['ring'],
-				      $date,
-				      $date
-				      ));
-	  }
-	if(isset($info['modified']) && $info['modified'] == true)
-	  {
-	    $this->dbpdo->query("UPDATE `object_attributes` SET `value` = ?, `ring` = ?, `modification` = ? WHERE `id` = ?", 
-				 array(
-				       $info['value'],
-				       $info['ring'],
-				       $date,
-				       $info['id']
-				       ));
+	    if(isset($info['new']) && $info['new'] == true)
+	      {
+		$this->dbpdo->query("INSERT INTO `object_attributes` (`object_id`,`type`,`value`,`ring`,`creation`,`modification`) VALUES (?, ?, ?, ?, ?, ?)",
+				    array(
+					  $this->id,
+					  $attribute,
+					  $info['value'],
+					  $info['ring'],
+					  $date,
+					  $date
+					  ));
+	      }
+	    if(isset($info['modified']) && $info['modified'] == true)
+	      {
+		$this->dbpdo->query("UPDATE `object_attributes` SET `value` = ?, `ring` = ?, `modification` = ? WHERE `id` = ?", 
+				    array(
+					  $info['value'],
+					  $info['ring'],
+					  $date,
+					  $info['id']
+					  ));
+	      }
 	  }
       }
 
