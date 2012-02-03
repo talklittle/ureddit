@@ -4,6 +4,36 @@ define('COOKIE_SESSID','ureddit_sessid');
 define('PREFIX','/dev');
 define('USE_MARKDOWN','true');
 
+function display_schedule($user)
+{
+  $user->get_schedule();
+  $categories = array();
+  foreach($user->schedule as $class_id)
+    {
+      $class = new course($user->dbpdo, $class_id);
+      $class->get_categories();
+      foreach($class->categories as $category_id)
+	$categories[$category_id][] = $class;
+    }
+  foreach($categories as $category_id => $classes)
+    {
+      $category = new category($user->dbpdo, $category_id);
+  ?>
+      <div id="category<?=$cat->id ?>">
+      <div class="category">
+	<div class="category-name">
+	<?=$category->value ?>
+	</div>
+       <?php
+	 foreach($classes as $class)
+	 $class->display();
+      ?>
+      </div>
+      </div>
+      <?php
+    }
+}
+
 function list_teacher_classes($user)
 {
   $user->get_taught_classes();
