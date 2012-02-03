@@ -135,8 +135,8 @@ Your qualifications:<br />
 
 Will you be giving live lectures?<br />
 <select name="live">
-<option value="1">Yes</option>
-<option value="0">No</option>
+<option value="true">Yes</option>
+<option value="false">No</option>
 </select><br /><br />
 
 <input type="submit" style="padding: 3px;" />
