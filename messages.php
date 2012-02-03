@@ -2,7 +2,7 @@
 
 require_once('init.php');
 
-if(!logged_in() != "true")
+if(!logged_in())
     send_user_to("/");
 
 $pagesize = 25;
@@ -28,7 +28,8 @@ $pagesize = 25;
   <div class="desc" style="margin-bottom: 30px;">
     <?php
     $offset = isset($_GET['offset']) ? (int)$_GET['offset'] : 0;
-    display_messages(new user($dbpdo, $_SESSION['user_id']), $offset, $pagesize);
+    $user = new user($dbpdo, $_SESSION['user_id']);
+    display_messages($user, $offset, $pagesize);
     ?>
   </div>
 
@@ -39,7 +40,7 @@ $pagesize = 25;
       ?>  <a href="?offset=<?=$offset - $pagesize ?>" class="link-class-desc" style="font-size: 1.5em;">previous</a><?php
     }
 
-    if(num_messages($_SESSION['user_id']) > $offset + $pagesize)
+    if(num_messages($user) > $offset + $pagesize)
     {
       ?>  <a href="?offset=<?=$offset + $pagesize ?>"class="link-class-desc" style="font-size: 1.5em;">next</a><?php
     }

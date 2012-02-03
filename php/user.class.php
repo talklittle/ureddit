@@ -39,16 +39,22 @@ class user extends object
       return false;
   }
 
-  function get_inbox()
+  function get_inbox($offset = NULL, $limit = NULL)
   {
-    $this->get_parents('user','message');
-    $this->inbox = $this->associations['message'];
+    $this->get_parents('user','message', $offset, $limit);
+    if($this->associations['message'] !== NULL)
+      $this->inbox = $this->associations['message'];
+    else
+      $this->inbox = array();
   }
 
-  function get_outbox()
+  function get_outbox($offset = NULL, $limit = NULL)
   {
-    $this->get_children('user','message');
-    $this->outbox = $this->associations['message'];
+    $this->get_children('user','message', $offset, $limit);
+    if($this->associations['message'] !== NULL)
+      $this->outbox = $this->associations['message'];
+    else
+      $this->outbox = array();
   }
 
   function report_class($id)

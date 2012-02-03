@@ -28,7 +28,8 @@ $pagesize = 25;
   <div class="desc" style="margin-bottom: 30px;">
     <?php
     $offset = isset($_GET['offset']) ? $_GET['offset'] : 0;
-    display_sent_messages(new user($dbpdo,$_SESSION['user_id']), $offset, $pagesize);
+$user = new user($dbpdo,$_SESSION['user_id']);
+    display_sent_messages($user, $offset, $pagesize);
     ?>
   </div>
  
@@ -39,7 +40,7 @@ $pagesize = 25;
       ?>  <a href="?offset=<?=$offset - $pagesize ?>" class="link-class-desc" style="font-size: 1.5em;">previous</a><?php
     }
  
-    if(num_sent_messages($_SESSION['user_id']) > $offset + $pagesize)
+    if(num_sent_messages($user) > $offset + $pagesize)
     {
       ?>  <a href="?offset=<?=$offset + $pagesize ?>" class="link-class-desc" style="font-size: 1.5em;">next</a><?php
     }

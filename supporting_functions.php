@@ -4,6 +4,17 @@ define('COOKIE_SESSID','ureddit_sessid');
 define('PREFIX','/dev');
 define('USE_MARKDOWN','true');
 
+function num_sent_messages($user)
+{
+  $sent = $user->dbpdo->query("SELECT COUNT(*) FROM associations WHERE type = ? AND parent_id = ?", array('message','$user->id'));
+  return $sent[0]['COUNT(*)'];
+}
+
+function num_messages($user)
+{
+  $num = $user->dbpdo->query("SELECT COUNT(*) FROM associations WHERE type = ? AND child_id = ?", array('message','$user->id'));
+  return $num[0]['COUNT(*)'];
+}
 
 // this function is not original, it was found online
 // I have lost my record of who the author was; if found,
@@ -50,7 +61,7 @@ function display_messages($user, $offset = 0, $limit=1)
 {
     $found = 0;
     $unread = array();
-    $user->get_inbox();
+    $user->get_inbox($offset, $limit);
     arsort($user->inbox);
     ?><div class="category">
     <div class="category-name">Unread Messages</div><?php
@@ -144,7 +155,7 @@ function display_messages($user, $offset = 0, $limit=1)
     }
     ?></div>
     </div><?php
-	$date = $user->datetime();
+	$date = $user->timestamp();
 	foreach($unread as $id)
 	  $user->dbpdo->query("INSERT INTO association_attributes (association_id, type, value, ring, creation, modification) VALUES (?, ?, ?, ?, ?, ?)",
 			      array(
@@ -161,7 +172,7 @@ function display_sent_messages($user, $offset = 0, $limit=1) {
   $found = 0;
     ?><div class="category">
     <div class="category-name">Sent Messages</div><?php
-       $user->get_outbox();
+       $user->get_outbox($offset, $limit);
   arsort($user->outbox);
   foreach($user->outbox as $association_id)
     {

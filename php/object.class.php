@@ -138,11 +138,16 @@ class object extends base
       unset($this->attributes[$type]);
   }
 
-  function get_parents($parent_type = '%', $association_type='%')
+  function get_parents($parent_type = '%', $association_type='%', $offset = NULL, $limit = NULL)
   {
     $this->parents = array();
     
     $q = "SELECT p.id AS parent_id, p.type AS parent_type, a.id AS association_id, a.type AS association_type FROM objects AS p INNER JOIN (associations AS a INNER JOIN objects AS c ON a.child_id=c.id AND c.id = ? AND a.type LIKE ?) ON p.id=a.parent_id AND p.type LIKE ?";
+    if($offset !== NULL)
+      if($limit !== NULL)
+	$q .= "LIMIT $offset, $limit";
+      else
+	$q .= "LIMIT $offset";
 
     $data = $this->dbpdo->query($q, array($this->id, $association_type, $parent_type));
     foreach($data as $assoc)
@@ -156,11 +161,16 @@ class object extends base
       }
   }
 
-  function get_children($child_type = '%', $association_type='%')
+  function get_children($child_type = '%', $association_type='%', $offset = NULL, $limit = NULL)
   {
     $this->children = array();
 
     $q = "SELECT c.id AS child_id, c.type AS child_type, a.id AS association_id, a.type AS association_type FROM objects AS c INNER JOIN (associations AS a INNER JOIN objects AS p ON a.parent_id=p.id AND p.id = ? AND a.type LIKE ?) ON c.id=a.child_id AND c.type LIKE ?";
+    if($offset !== NULL)
+      if($limit !== NULL)
+	$q .= "LIMIT $offset, $limit";
+      else
+	$q .= "LIMIT $offset";
     $data = $this->dbpdo->query($q, array($this->id, $association_type, $child_type));
     foreach($data as $assoc)
       {
