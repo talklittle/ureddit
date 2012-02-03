@@ -120,7 +120,7 @@ if(!preg_match($validation,$username))
   Class schedule:
   </div>
   <?php
-  display_schedule($id);
+  display_schedule(new user($dbpdo, $id));
   ?>
 </div>
 
