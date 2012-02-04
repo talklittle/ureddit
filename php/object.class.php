@@ -221,7 +221,7 @@ class object extends base
       $this->memcache_delete('v3_object_' . $this->id . '_attribute_' . $type);
   }
 
-  function get_parents($parent_type = '%', $association_type='%', $offset = NULL, $limit = NULL)
+  function get_parents($parent_type = '%', $association_type='%', $offset = NULL, $limit = NULL, $orderfield = NULL, $order = NULL)
   {
     $this->parents = array();
 
@@ -229,20 +229,24 @@ class object extends base
 
     if($offset === NULL && $limit === NULL && $this->config->memcache())
       {
-	$data = $this->memcache_get('v3_object_' . $this->id . '_parents_' . $parent_type . '_' . $association_type);
+	$key = 'v3_object_' . $this->id . '_parents_' . $parent_type . '_' . $association_type;
+	$data = $this->memcache_get($key);
 	if(!$data)
 	  {
 	    $data = $this->dbpdo->query($q, array($this->id, $association_type, $parent_type));
-	    $this->memcache_set('v3_object_' . $this->id . '_parents_' . $parent_type . '_' . $association_type, $data);
+	    $this->memcache_set($key, $data);
 	  }
       }
     else
       {
+	if($orderfield !== NULL && $order !== NULL)
+	  $q .= " ORDER BY $orderfield $order";
+
 	if($offset !== NULL)
 	  if($limit !== NULL)
-	    $q .= "LIMIT $offset, $limit";
+	    $q .= " LIMIT $offset, $limit";
 	  else
-	    $q .= "LIMIT $offset";
+	    $q .= " LIMIT $offset";
 	
 	$data = $this->dbpdo->query($q, array($this->id, $association_type, $parent_type));
       }
@@ -261,24 +265,27 @@ class object extends base
   {
     $this->children = array();
 
-    $q = "SELECT c.id AS child_id, c.type AS child_type, a.id AS association_id, a.type AS association_type FROM objects AS c INNER JOIN (associations AS a INNER JOIN objects AS p ON a.parent_id=p.id AND p.id = ? AND a.type LIKE ?) ON c.id=a.child_id AND c.type LIKE ?";
+    $q = "SELECT c.id AS child_id, c.type AS child_type, a.id AS association_id, a.type AS association_type FROM objects AS c INNER JOIN (associations AS a INNER JOIN objects AS p ON a.parent_id=p.id AND p.id = ? AND a.type LIKE ? ) ON c.id=a.child_id AND c.type LIKE ?";
 
     if($offset === NULL && $limit === NULL && $this->config->memcache())
       {
-	$data = $this->memcache_get('v3_object_'. $this->id . '_children_' . $child_type . '_' . $association_type);
+	$key = 'v3_object_' . $this->id . '_children_' . $child_type . '_' . $association_type;
+	$data = $this->memcache_get($key);
 	if(!$data)
 	  {
 	    $data = $this->dbpdo->query($q, array($this->id, $association_type, $child_type));
-	    $this->memcache_set('v3_object_'. $this->id . '_children_' . $child_type . '_' . $association_type, $data);
+	    $this->memcache_set($key, $data);
 	  }
       }
     else
       {
+	if($orderfield !== NULL && $order !== NULL)
+	  $q .= " ORDER BY $orderfield $order";
 	if($offset !== NULL)
 	  if($limit !== NULL)
-	    $q .= "LIMIT $offset, $limit";
+	    $q .= " LIMIT $offset, $limit";
 	  else
-	    $q .= "LIMIT $offset";
+	    $q .= " LIMIT $offset";
 
 	$data = $this->dbpdo->query($q, array($this->id, $association_type, $child_type));
       }

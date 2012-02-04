@@ -9,6 +9,8 @@ $class = new course($dbpdo, $_GET['id']);
 $user = new user($dbpdo, $_SESSION['user_id']);
 
 $class->get_teachers();
+$class->get_owner();
+
 if($class->owner != $user->id || !in_array($user->id,$class->teachers))
   send_user_to("/teachers/index.php");
 

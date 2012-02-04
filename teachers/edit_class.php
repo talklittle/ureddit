@@ -7,6 +7,7 @@ if(!logged_in())
 
 $user = new course($dbpdo, $_SESSION['user_id']);
 $class = new course($dbpdo, $_GET['id']);
+$class->get_owner();
 $class->get_teachers();
 $class->get_categories();
 

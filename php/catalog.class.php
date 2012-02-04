@@ -21,7 +21,6 @@ class catalog extends object
 
   function display($expand_categories = true, $show_canceled_classes = false, $expand_classes = false, $class_details = false)
   {
-    $categories = array();
     foreach($this->categories as $category_id)
       {
 	$category = new category($this->dbpdo, $category_id);

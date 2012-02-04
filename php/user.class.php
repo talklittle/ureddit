@@ -54,35 +54,38 @@ class user extends object
 				 $username,
 				 $hash
 				 ));
+
     if(count($users) > 0)
       {
 	if($this->id === NULL)
 	  {
 	    $this->id = $users[0]['id'];
 	    $this->lookup($this->id);
-	    return true;
 	  }
+	return true;
       }
     else
       return false;
   }
 
-  function get_inbox($offset = NULL, $limit = NULL)
+  function get_inbox($offset, $limit)
   {
-    $this->get_parents('user','message', $offset, $limit);
-    if($this->associations['message'] !== NULL)
-      $this->inbox = $this->associations['message'];
-    else
-      $this->inbox = array();
+    $this->inbox = $this->dbpdo->query("SELECT * FROM associations AS a INNER JOIN association_attributes AS aa ON aa.association_id = a.id AND a.child_id = ? AND (a.type = ? OR a.type = ?) ORDER BY a.creation DESC LIMIT $offset, $limit",
+				       array(
+					     $this->id,
+					     'read_message',
+					     'unread_message',
+					     ));
   }
 
-  function get_outbox($offset = NULL, $limit = NULL)
+  function get_outbox($offset, $limit)
   {
-    $this->get_children('user','message', $offset, $limit);
-    if($this->associations['message'] !== NULL)
-      $this->outbox = $this->associations['message'];
-    else
-      $this->outbox = array();
+    $this->outbox = $this->dbpdo->query("SELECT * FROM associations AS a INNER JOIN association_attributes AS aa ON aa.association_id = a.id AND a.parent_id = ? AND (a.type = ? OR a.type = ?) ORDER BY a.creation DESC LIMIT $offset, $limit",
+					array(
+					      $this->id,
+					      'read_message',
+					      'unread_message'
+					      ));
   }
 
   function report_class($id)
@@ -118,7 +121,7 @@ class user extends object
 
   function message($recepient_id, $subject, $message)
   {
-    $association_id = $this->create_association($this->id, $recepient_id, 'message', 0);
+    $association_id = $this->create_association($this->id, $recepient_id, 'unread_message', 0);
     $date = $this->timestamp();
     $this->dbpdo->query("INSERT INTO `association_attributes` (`association_id`, `type`,`value`,`ring`,`creation`,`modification`) VALUES (?, ?, ?, ?, ?, ?)",
 			array(
@@ -140,17 +143,7 @@ class user extends object
 			      $date
 			      ));
 
-    $this->dbpdo->query("INSERT INTO `association_attributes` (`association_id`, `type`,`value`,`ring`,`creation`,`modification`) VALUES (?, ?, ?, ?, ?, ?)",
-			array(
-			      $association_id,
-			      'unread',
-			      'true',
-			      0,
-			      $date,
-			      $date
-			      ));
   }
-
 }
 
 ?>

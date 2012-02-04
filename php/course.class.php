@@ -13,7 +13,6 @@ class course extends object
   function __construct($dbpdo, $id = NULL)
   {
     parent::__construct($dbpdo, $id);
-    $this->get_owner();
   }
 
   function get_owner()
@@ -195,13 +194,12 @@ class course extends object
       <div class="class-name">
         <?php
         echo htmlspecialchars(stripslashes($this->value));
-
         try
 	  {
 	    if($this->get_attribute_value('live') == 'true')
 	      {
 		?>
-		<img src="<?=PREFIX ?>/images/live.png" alt="live class!" id="live"  />
+		<img src="<?=PREFIX ?>/images/live.png" alt="live class!" class="live"  />
 	        <span style="font-style: italic; font-weight: normal; font-size: 0.8em;">
 		  live lectures!
                 </span>
@@ -247,9 +245,14 @@ class course extends object
             <?php
             try
               {
-                $teacher = new user($this->dbpdo, $this->owner);
-                ?>taught by <a href="<?=PREFIX ?>/user/<?=$teacher->value ?>" class="link-class-desc"><?=$teacher->value ?></a>
-		<?php
+		$users = array();
+		foreach($this->teachers as $teach)
+		  {
+		    $user = new user($this->dbpdo, $teach);
+		    $teachers[] = "<a href=\"" . PREFIX  . "/user/" . $user->value . "\" class=\"link-class-desc\">" . $user->value . "</a>";
+		  }
+		echo 'taught by ' . implode($teachers, ", ");
+
 		//$ru = $teacher->get_attribute_value('reddit_username');
 		?>
                     [<a href="http://reddit.com/user/<?=$ru ?>" class="link-class-desc">teacher reddit user page</a>]

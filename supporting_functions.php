@@ -231,45 +231,26 @@ function post($name, $default = "")
   return htmlspecialchars(stripslashes($default));
 }
 
-function display_messages($user, $offset = 0, $limit=1)
+function display_messages($user, $offset = 0, $limit=15)
 {
     $found = 0;
     $unread = array();
-    $user->get_inbox($offset, $limit);
-    arsort($user->inbox);
-    ?><div class="category">
-    <div class="category-name">Unread Messages</div><?php
-       foreach($user->inbox as $association_id)
-       {
-	 $read = false;
-	 $association = $user->dbpdo->query("SELECT * FROM associations WHERE id = ?", array($association_id));
-	 $association_attributes = $user->dbpdo->query("SELECT * FROM association_attributes WHERE association_id = ?", array($association_id));
-	 $sender = new user($user->dbpdo, $association[0]['parent_id']);
-	 
-	 foreach($association_attributes as $attr)
-	   {
-	     switch($attr['type'])
-	       {
-	       case "subject":
-		 $subject = $attr['value'];
-		 break;
-	       case "body":
-		 $body = $attr['value'];
-		 break;
-	       case "read":
-		 $read = true;
-		 break;
-	       }
-	   }
-	 if($read)
-	   continue;
-	 $unread[] = $association_id;
-	 $found = 1;
+    $user->get_inbox($offset, $limit*2);
+    ?><div class="category"><?php
+    for($i = 0; $i < count($user->inbox)/2; $i++)
+	 {
+	   $sender = new user($user->dbpdo, $user->inbox[2*$i]['parent_id']);
+	   $found = 1;
+	   $user->dbpdo->query("UPDATE `associations` SET `type` = ? WHERE `id` = ?",
+			       array(
+				     'read_message',
+				     $user->inbox[2*$i]
+				     ));
       ?>
       <div class="class">
-        <div class="class-name"><?=$subject ?></div>
-        <div class="class-desc"><?=$body ?></div>
-        <div class="class-info-noindent">from <strong><?=$sender->value ?></strong> at <?=$association[0]['creation'] ?> [<a href="<?=PREFIX ?>/user/<?=$sender->value ?>" class="link-class-desc">reply</a>]</div>
+        <div class="class-name"><?=$user->inbox[2*$i]['value'] ?></div>
+	 <div class="class-desc"><?=process($user->inbox[2*$i+1]['value']) ?></div>
+        <div class="class-info-noindent">from <strong><?=$sender->value ?></strong> at <?=$user->inbox[$i]['creation'] ?> [<a href="<?=PREFIX ?>/user/<?=$sender->value ?>" class="link-class-desc">reply</a>]</div>
       </div>
       <?php
        }
@@ -282,116 +263,32 @@ function display_messages($user, $offset = 0, $limit=1)
       </div>
       <?php
     }
-    $found = 0;
+}
 
-    ?></div>
-    <div class="category">
-    <div class="category-name">Read Messages</div><?php
-       foreach($user->inbox as $association_id)
-       {
-	 $read = false;
-	 $association = $user->dbpdo->query("SELECT * FROM associations WHERE id = ?", array($association_id));
-	 $association_attributes = $user->dbpdo->query("SELECT * FROM association_attributes WHERE association_id = ?", array($association_id));
-	 $sender = new user($user->dbpdo, $association[0]['parent_id']);
-	 
-	 foreach($association_attributes as $attr)
-	   {
-	     switch($attr['type'])
-	       {
-	       case "subject":
-		 $subject = $attr['value'];
-		 break;
-	       case "body":
-		 $body = $attr['value'];
-		 break;
-	       case "read":
-		 $read = true;
-		 break;
-	       }
-	   }
-	 if(!$read)
-	   continue;
-      $found = 1;
+function display_sent_messages($user, $offset = 0, $limit=15)
+{
+    $found = 0;
+    $unread = array();
+    $user->get_outbox($offset, $limit*2);
+    ?><div class="category"><?php
+    for($i = 0; $i < count($user->outbox)/2; $i++)
+	 {
+	   $sender = new user($user->dbpdo, $user->outbox[2*$i]['parent_id']);
+	   $found = 1;
       ?>
       <div class="class">
-        <div class="class-name"><?=$subject ?></div>
-        <div class="class-desc"><?=$body ?></div>
-        <div class="class-info-noindent">from <strong><?=$sender->value ?></strong> at <?=$association[0]['creation'] ?> [<a href="<?=PREFIX ?>/user/<?=$sender->value ?>" class="link-class-desc">reply</a>]</div>
+        <div class="class-name"><?=$user->outbox[2*$i]['value'] ?></div>
+	 <div class="class-desc"><?=process($user->outbox[2*$i+1]['value']) ?></div>
+        <div class="class-info-noindent">from <strong><?=$sender->value ?></strong> at <?=$user->outbox[$i]['creation'] ?> [<a href="<?=PREFIX ?>/user/<?=$sender->value ?>" class="link-class-desc">reply</a>]</div>
       </div>
       <?php
        }
-    if($found == 0)
-    {
-      ?>
-      <div class="class-white">
-        <div class="class-desc"><em>you have no messages</em></div>
-      </div>
-      <?php
-    }
-    ?></div>
-    </div><?php
-	$date = $user->timestamp();
-	foreach($unread as $id)
-	  {
-	    $user->dbpdo->query("DELETE FROM association_attributes WHERE association_id = ? AND type = ? AND value = ?",
-			      array(
-				    $id,
-				    'unread',
-				    'true'
-				    ));
-	    $user->dbpdo->query("INSERT INTO association_attributes (association_id, type, value, ring, creation, modification) VALUES (?, ?, ?, ?, ?, ?)",
-			      array(
-				    $id,
-				    "read",
-				    "true",
-				    0,
-				    $date,
-				    $date
-				    ));
-	  }
-}
-
-function display_sent_messages($user, $offset = 0, $limit=1) {
-  $found = 0;
-    ?><div class="category">
-    <div class="category-name">Sent Messages</div><?php
-       $user->get_outbox($offset, $limit);
-  arsort($user->outbox);
-  foreach($user->outbox as $association_id)
-    {
-      $association = $user->dbpdo->query("SELECT * FROM associations WHERE id = ?", array($association_id));
-      $association_attributes = $user->dbpdo->query("SELECT * FROM association_attributes WHERE association_id = ?", array($association_id));
-      $recepient = new user($user->dbpdo, $association[0]['child_id']);
-
-      foreach($association_attributes as $attr)
-	{
-	  switch($attr['type'])
-	    {
-	    case "subject":
-	      $subject = $attr['value'];
-	      break;
-	    case "body":
-	      $body = $attr['value'];
-	      break;
-	    }
-	}
-      $found = 1;
-      ?>
-      <div class="class">
-        <div class="class-name"><?=$subject ?></div>
-        <div class="class-desc"><?=$body ?></div>
-        <div class="class-info-noindent">
-          to <strong><?=$recepient->value ?></strong> at <?=$association[0]['creation'] ?> [<a href="<?=PREFIX ?>/user/<?=$receipient->value ?>" class="link-class-desc">send another</a>]
-        </div>
-      </div>
-      <?php
-    }
 
     if($found == 0)
     {
       ?>
       <div class="class-white">
-        <div class="class-desc"><em>you haven<?="'"?>t sent any messages yet</em></div>
+        <div class="class-desc"><em>you have no new messages</em></div>
       </div>
       <?php
     }
@@ -766,8 +663,8 @@ function to64 ($v, $n)
 
 function has_new_messages($dbpdo, $user_id)
 {
-  $unread = $dbpdo->query("SELECT * FROM associations AS a INNER JOIN association_attributes AS aa ON aa.type = 'unread' AND aa.association_id = a.id AND a.child_id = ?", array($user_id));
-  return (bool) count($unread);
+  $unread = $dbpdo->query("SELECT COUNT(*) FROM associations WHERE child_id = ? AND type = ?",array($user_id, 'unread_message'));
+  return (bool) $unread[0]['COUNT(*)'];
 }
 
 function smtp_get_response ($fh)
