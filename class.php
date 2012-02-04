@@ -3,7 +3,7 @@
 require_once('init.php');
 
 if((int)$_GET['id'] < 2000)
-  send_user_to("/class/" . translate_class_id($dbpdo, $_GET['id']));
+  send_user_to("/class/" . translate_class_id($dbpdo, $_GET['id']),"ureddit.com","301 Moved Permanently");
 
 try
 {

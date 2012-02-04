@@ -308,9 +308,11 @@ function generate_random_password()
     return $pass;
 }
 
-function send_user_to($place,$domain="ureddit.com",$msg)
+function send_user_to($place,$domain="ureddit.com",$http_code = NULL)
 {
   $s = isset($_SERVER['HTTPS']) && strlen($_SERVER['HTTPS']) > 0 ? "s" : "";
+  if($http_code !== NULL)
+    header("HTTP/1.1 $http_code");
   header("Location: http$s://" . $domain .PREFIX . $place);
   die();
 }
