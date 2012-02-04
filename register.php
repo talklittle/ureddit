@@ -60,7 +60,8 @@ if(!empty($_POST))
 	$sqlActive = 1;
 	$emailpassword = pacrypt(escape_string($_POST['password']));
 
-	$dbpdo->query("INSERT INTO pf_mailbox (username, password, name, maildir, local_part, quota, domain, created, modified, active) VALUES (?, ?, ?, ?, ?, ?, ?, NOW(), NOW(), ?",
+	$now = $dbpdo->timestamp();
+	$dbpdo->query("INSERT INTO pf_mailbox (username, password, name, maildir, local_part, quota, domain, created, modified, active) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
 	  array(
 		$fUsername,
 		$emailpassword,
@@ -69,16 +70,18 @@ if(!empty($_POST))
 		$local_part,
 		$quota,
 		$fDomain,
+		$now,
+		$now,
 		$sqlActive
 		));
 	
-	$dbpdo->query("INSERT INTO pf_alias (address, goto, domain, created, modified, active) VALUES (?, ?, ?, NOW(), NOW(), ?)", 
+	$dbpdo->query("INSERT INTO pf_alias (address, goto, domain, created, modified, active) VALUES (?, ?, ?, ?, ?, ?)", 
 		      array(
 			    $fUsername,
 			    $fUsername,
 			    $fDomain,
-			    NOW(),
-			    NOW(),
+			    $now,
+			    $now,
 			    $sqlActive
 			    ));
 	
