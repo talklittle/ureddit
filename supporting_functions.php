@@ -169,7 +169,6 @@ function object_type_value_to_id($dbpdo, $type, $value)
 
 function tweet($config,$status)
 {
-  return;
   $t = new Twitter($config->twitterConsumerKey, $config->twitterConsumerSecret, $config->twitterAccessToken, $config->twitterAccessTokenSecret);
   $t->send($status);
 }
