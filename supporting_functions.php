@@ -4,6 +4,13 @@ define('COOKIE_SESSID','ureddit_sessid');
 define('PREFIX','/dev');
 define('USE_MARKDOWN','true');
 
+function translate_class_id($dbpdo,$old_id)
+{
+  $translation = $dbpdo->query("SELECT new_id FROM class_id_translation WHERE old_id = ?", array($old_id));
+  if(count($translation) > 0)
+    return $translation[0]['new_id'];
+}
+
 function signup_button($user, $class_id)
 {
 

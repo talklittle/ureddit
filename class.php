@@ -2,13 +2,16 @@
 
 require_once('init.php');
 
+if((int)$_GET['id'] < 2000)
+  send_user_to("/class/" . translate_class_id($dbpdo, $_GET['id']));
+
 try
 {
   $class = new course($dbpdo, $_GET['id']);
 }
 catch (CourseNotFoundException $e)
 {
-  send_user_to("/index.php");
+  send_user_to("/");
 }
 
 ?>
