@@ -50,7 +50,7 @@ if(!preg_match($validation,$username))
 <div id="main">
   <?php
   if(logged_in()&& $_GET['id'] == $dbpdo->session('username'))
-	echo "<div style=\"background-color: yellow; padding: 5px;\">Did you know that you are automatically given an @ureddit.com email address? Check <a href=\"http://ureddit.com/blog/?p=38\">here</a> and <a href=\"http://ureddit.com/blog/?p=49\">here</a> for the details. You can also set up a forwarding address <a href=\"" . PREFIX . "/settings\">here</a>.</div><br />";
+	echo "<div style=\"background-color: #FDED93; border: 1px solid #FFAE00; padding: 5px;\">Did you know that you are automatically given an @ureddit.com email address? Check <a href=\"http://ureddit.com/blog/?p=38\">here</a> and <a href=\"http://ureddit.com/blog/?p=49\">here</a> for the details. You can also set up a forwarding address <a href=\"" . PREFIX . "/settings\">here</a>.</div><br />";
   ?>
   <div class="pagetitle">
   User: <?=$username ?>
