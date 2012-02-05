@@ -20,6 +20,13 @@ class base {
       }
   }
 
+  function process_text($text)
+  {
+    if($this->config->use_markdown() == true)
+      return Markdown(htmlspecialchars(stripslashes($text)));
+    return nl2br(htmlspecialchars(stripslashes($text)));
+  }
+
   function memcache_get($key)
   {
     return $this->memcache->get($key);

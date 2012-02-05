@@ -143,6 +143,8 @@ class user extends object
 			      $date
 			      ));
 
+    $recepient = new user($this->dbpdo, $recepient_id);
+    @send_email($this->value . '@ureddit.com', $recepient->value . '@ureddit.com', $subject, $this->process_text($message));
   }
 }
 
