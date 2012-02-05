@@ -247,10 +247,11 @@ function display_messages($user, $offset = 0, $limit=15)
 	 {
 	   $sender = new user($user->dbpdo, $user->inbox[2*$i]['parent_id']);
 	   $found = 1;
-	   $user->dbpdo->query("UPDATE `associations` SET `type` = ? WHERE `id` = ?",
+	   $user->dbpdo->query("UPDATE `associations` SET `type` = ? WHERE `id` = ? AND type = ?",
 			       array(
 				     'read_message',
-				     $user->inbox[2*$i]
+				     $user->inbox[2*$i]['association_id'],
+				     'unread_message'
 				     ));
       ?>
       <div class="class">
