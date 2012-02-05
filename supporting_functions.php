@@ -150,7 +150,7 @@ function list_teacher_classes($user)
 	</div>
        <?php
 	 foreach($classes as $class)
-	 $class->display();
+	 $class->display(true);
       ?>
       </div>
       </div>
