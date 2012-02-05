@@ -24,8 +24,7 @@ if(!empty($_POST))
     date_default_timezone_set('UTC');
     $datetime = date("Y-m-d H:i:s");
     $user->message($to, $subj, $msg);
-    send_email(strtolower($user->value . "@ureddit.com"), $_GET['id'] . "@ureddit.com", $subj,process($msg));
-     $success = true;
+    $success = true;
   }
 }
 
