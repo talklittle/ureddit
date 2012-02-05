@@ -10,6 +10,7 @@ $class = new course($dbpdo, $_GET['id']);
 $class->get_owner();
 $class->get_teachers();
 $class->get_categories();
+$class->get_attributes();
 
 $teacher_check = @mysql_fetch_assoc(mysql_query("SELECT COUNT(*) FROM `classes` WHERE `id`='$class_id' AND `teacher_id`='$user_id'"));
 if($class->owner != $user->id && !in_array($user->id, $class->teachers))
@@ -73,9 +74,9 @@ if(!empty($_POST))
      if($status == 0 && $old_status != 0)
        {
 	 $tweet = "(" . date("U") . ") Unfortunately, " . $user->value . " has cancelled \"$name\".";
-	   if(strlen($tweet) > 140)
-	     $tweet = substr($tweet,0,135) . "...\".";
-	   tweet($tweet);
+	 if(strlen($tweet) > 140)
+	   $tweet = substr($tweet,0,135) . "...\".";
+	 tweet($tweet);
 	 }
        else
 	 {

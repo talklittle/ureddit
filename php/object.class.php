@@ -158,9 +158,6 @@ class object extends base
 
   function define_attribute($type, $value, $ring = NULL)
   {
-    if(strlen($value) == 0)
-      return;
-
     if($this->attributes === NULL)
       $this->get_attributes($type);
 
@@ -177,6 +174,11 @@ class object extends base
       }
     else
       {
+	if($this->config->memcache())
+	  {
+	    $this->memcache_delete('v3_object_' . $this->id . '_attribute_' . $type);
+	    $this->memcache_delete('v3_object_' . $this->id . '_attribute_%');
+	  }
 	$this->attributes[$type]['value'] = $value;
 	$this->attributes[$type]['modified'] = true;
 	if($ring !== NULL)
