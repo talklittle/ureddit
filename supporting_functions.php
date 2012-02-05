@@ -102,6 +102,7 @@ function display_schedule($user)
 {
   $user->get_schedule();
   $categories = array();
+  $sorted_categories = array();
 
   foreach($user->schedule as $class_id)
     {
@@ -110,18 +111,27 @@ function display_schedule($user)
       foreach($class->categories as $category_id)
 	$categories[$category_id][] = $class;
     }
-  foreach($categories as $category_id => $classes)
+
+  foreach($categories as $category_id => &$classes)
     {
       $category = new category($user->dbpdo, $category_id);
+      $category_objects[$category_id] = $category;
+      $sorted_categories[$category_id] = $category->value;
+    }
+
+  asort($sorted_categories);
+
+  foreach($sorted_categories as $category_id => $category_value)
+    {
       ?>
       <div id="category<?=$cat->id ?>">
       <div class="category">
 	<div class="category-name">
-	<?=$category->value ?>
+	<?=$category_value ?>
 	</div>
        <?php
-	 foreach($classes as $class)
-	 $class->display();
+	 foreach($categories[$category_id] as $class)
+   	  $class->display();
       ?>
       </div>
       </div>
