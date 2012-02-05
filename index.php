@@ -20,7 +20,7 @@ require('init.php');
   </div>
   <div class="pagetitle">
     Classes 
-  <span class="class" style="font-size: 0.5em; font-weight: normal; padding: 5px;">filter: <a href="<?=PREFIX ?>/filter/open" <?=$_GET['show']=='open' ? 'style="font-weight:bold; text-decoration: none;"' : '' ?>>open</a> | <a href="<?=PREFIX ?>/filter/closed" <?=$_GET['show']=='closed' ? 'style="font-weight:bold; text-decoration: none;"' : '' ?>>closed</a> | <a href="<?=PREFIX ?>/filter/completed" <?=$_GET['show']=='completed' ? 'style="font-weight:bold; text-decoration: none;"' : '' ?>>completed</a></span>
+  <span class="class" style="font-size: 0.5em; font-weight: normal; padding: 5px;">filter by status: <a href="<?=PREFIX ?>/filter/open" <?=$_GET['show']=='open' ? 'style="font-weight:bold; text-decoration: none;"' : '' ?>>open</a> | <a href="<?=PREFIX ?>/filter/closed" <?=$_GET['show']=='closed' ? 'style="font-weight:bold; text-decoration: none;"' : '' ?>>closed</a> | <a href="<?=PREFIX ?>/filter/completed" <?=$_GET['show']=='completed' ? 'style="font-weight:bold; text-decoration: none;"' : '' ?>>completed</a></span> <span style="font-size: 0.5em; font-style: italic; color: red"> <- new!</span>
   </div>
   <?php
 
