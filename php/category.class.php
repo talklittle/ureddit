@@ -20,7 +20,7 @@ class category extends object
       $this->classes = array();
   }
 
-  function display($expand_category = true, $show_canceled_classes = false, $expand_classes = false, $class_details = false)
+  function display($expand_category = true, $show_statuses = array('1','3'), $expand_classes = false, $class_details = false)
   {
     ?>
     <div class="category-name">
@@ -36,12 +36,12 @@ class category extends object
 	      $class = new course($this->dbpdo, $class_id);
 	      try
 	        {
-		  if($show_canceled_classes || $class->get_attribute_value('status') != '0')
+		  if(in_array($class->get_attribute_value('status'), $show_statuses))
 		    $class->display($expand_classes, $class_details);
 		}
 	      catch (ObjectAttributeNotFoundException $e)
 	      {
-		$class->display($expand_classes, $class_details);
+		//$class->display($expand_classes, $class_details);
 	      }
 	    }
 	}

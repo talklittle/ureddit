@@ -1,18 +1,10 @@
-<IfModule mod_deflate.c>
-AddOutputFilterByType DEFLATE text/css text/javascript application/x-javascript text/html
-<IfModule mod_setenvif.c>
-<FilesMatch "\.(css|js)$">
-ExpiresActive ON
-ExpiresDefault "access plus 1 week"
-</FilesMatch>
-
-<FilesMatch "\.png$">
-Header set Cache-Control "max-age=172800, public, must-revalidate"
-</FilesMatch>
-
 RewriteEngine On
 RewriteRule ^v2/?(.*)$ /$1 [R]
 RewriteRule ^user/([^/]*)/?$ user.php?id=$1
+RewriteRule ^/?$ index.php?show=open
+RewriteRule ^filter/open/?$ index.php?show=open
+RewriteRule ^filter/closed/?$ index.php?show=closed
+RewriteRule ^filter/completed/?$ index.php?show=completed
 RewriteRule ^class/([0-9]+)/?$ class.php?id=$1
 RewriteRule ^class/([0-9]+)/files/?$ files/class$1/files
 RewriteRule ^teach/?$ teach.php

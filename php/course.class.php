@@ -188,8 +188,8 @@ class course extends object
               ><?=($expanded == true ? "-" : "+") ?></a>]
             </div> 
             <?php
-            signup_button($user,$this->id);
 	  }
+            signup_button($user,$this->id);
         ?>
       <div class="class-name">
         <?php
@@ -370,6 +370,7 @@ class course extends object
 	      </div>
 	      <div class="class-desc">
 	      <?php 
+	      //$data = $this->get_children_with_attribute('user','enrolled_student','reddit_username');
 	      $data = $this->get_roster_with_attribute('reddit_username');
 	      /*
 	      $count = 0;

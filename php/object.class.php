@@ -263,6 +263,36 @@ class object extends base
       }
   }
 
+  function get_children_with_attribute($child_type, $association_type, $attribute)
+  {
+    if($this->config->memcache())
+      {
+	$key = 'v3_object_' . $this->id . '_children_' . $child_type . '_association_' . $association_type . '_with_attribute_' . $attribute;
+	$data = $this->memcache_get($key);
+	if(!$data)
+	  $data = $this->dbpdo->query("SELECT o.value, oa.value FROM (associations AS a INNER JOIN objects AS o ON a.parent_id = ? AND o.id = a.child_id AND a.type = ? AND o.type = ?) LEFT OUTER JOIN object_attributes AS oa ON o.id = oa.object_id AND oa.type = ?",
+				      array(
+					    $this->id,
+					    $association_type,
+					    $child_type,
+					    $attribute
+					    ));
+	$this->memcache_set($key, $data);
+	return $data;
+      }
+    else
+      {
+	  return $data = $this->dbpdo->query("SELECT o.value, oa.value FROM (associations AS a INNER JOIN objects AS o ON a.parent_id = ? AND o.id = a.child_id AND a.type = ? AND o.type = ?) LEFT OUTER JOIN object_attributes AS oa ON o.id = oa.object_id AND oa.type = ?",
+				      array(
+					    $this->id,
+					    $association_type,
+					    $child_type,
+					    $attribute
+					    ));
+      }
+
+  }
+
   function get_children($child_type = '%', $association_type='%', $offset = NULL, $limit = NULL)
   {
     $this->children = array();
@@ -486,6 +516,13 @@ class object extends base
 		if($this->config->memcache())
 		  $this->memcache_delete('v3_object_' . $this->id . '_attribute_' . $attribute);
 	      }
+	    $this->get_parents();
+	    if($this->config->memcache())
+	    foreach($this->parents as $parent_type => $parents)
+	      foreach($parents as $parent_id)
+	        foreach($this->attributes as $attribute => &$values)
+	          foreach($this->associations as $association_type => $association_id)
+	            $this->memcache_delete('v3_object_' . $parent_id . '_children_' . $this->type . '_association_' . $association_type . '_with_attribute_' . $attribute);
 	  }
       }
 
