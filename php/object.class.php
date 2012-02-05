@@ -481,7 +481,7 @@ class object extends base
 					  $date,
 					  $info['id']
 					  ));
-		if($this->memcache())
+		if($this->config->memcache())
 		  $this->memcache_delete('v3_object_' . $this->id . '_attribute_' . $attribute);
 	      }
 	  }

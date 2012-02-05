@@ -87,7 +87,7 @@ if(!empty($_POST))
 		 $tweet = substr($tweet, 0, 136) . "...\"";
 	     }
 	   
-	   tweet($tweet);
+	   tweet($config, $tweet);
 	 }
      
      send_user_to("/class/" . $class->id . "/edit");
@@ -129,43 +129,44 @@ Course category:<br />
 <br /><br />
 
 URL to Reddit post about this course:<br />
-<input type="text" name="url" class="teach" value="<?=post('url',$class->get_attribute_value('url')) ?>" />
+<input type="text" name="url" class="teach" value="<?  try { echo post('url',$class->get_attribute_value('url')); } catch ( ObjectAttributeNotFoundException $e) {} ?>" />
 <br /><br />
 
 Course description:<br />
-<textarea name="desc" class="teach"><?=post('desc',$class->get_attribute_value('description')) ?></textarea>
+<textarea name="desc" class="teach"><? try { echo post('desc',$class->get_attribute_value('description')); } catch ( ObjectAttributeNotFoundException $e) {} ?></textarea>
 <br /><br />
 
 Syllabus:<br />
-<textarea name="syllabus" class="teach"><?=post('syllabus',$class->get_attribute_value('syllabus')) ?></textarea>
+<textarea name="syllabus" class="teach"><? try { echo post('syllabus',$class->get_attribute_value('syllabus')); } catch ( ObjectAttributeNotFoundException $e) {} ?></textarea>
 <br /><br />
 
 Course prerequisites:<br />
-<textarea name="prereq" class="teach"><?=post('prereq',$class->get_attribute_value('prerequisites')) ?></textarea>
+<textarea name="prereq" class="teach"><? try { echo post('prereq',$class->get_attribute_value('prerequisites')); } catch ( ObjectAttributeNotFoundException $e) {} ?></textarea>
 <br /><br />
 
 Additional information:<br />
-<textarea name="addinfo" class="teach"><?=post('addinfo',$class->get_attribute_value('additional_information')) ?></textarea>
+<textarea name="addinfo" class="teach"><? try { echo post('addinfo',$class->get_attribute_value('additional_information')); } catch ( ObjectAttributeNotFoundException $e) {} ?></textarea>
 <br /><br />
 
 Teacher qualifications:<br />
-<textarea name="qualifications" class="teach"><?=post('qualifications',$class->get_attribute_value('teacher_qualifications')) ?></textarea>
+<textarea name="qualifications" class="teach"><? try { echo post('qualifications',$class->get_attribute_value('teacher_qualifications')); } catch ( ObjectAttributeNotFoundException $e) {} ?></textarea>
 <br /><br />
 
 Is this a live class?<br />
 <select name="live">
-<option <? echo $class->get_attribute_value('live') == "true" ? "SELECTED" : "" ?> value="true">Yes</option>
-<option <? echo $class->get_attribute_value('live') == "false" ? "SELECTED" : "" ?> value="false">No</option>
+<option <? try { echo $class->get_attribute_value('live') == "true" ? "SELECTED" : "" ; } catch ( ObjectAttributeNotFoundException $e) {}?> value="true">Yes</option>
+<option <? try { echo $class->get_attribute_value('live') == "false" ? "SELECTED" : "" ; } catch ( ObjectAttributeNotFoundException $e) {}?> value="false">No</option>
 </select><br /><br />
 
 What is the status of your class?<br />
-  <select name="status">
-  <option <? echo $class->get_attribute_value('status') == "1" ? "SELECTED" : "" ?> value="1">has not begun, open for signups</option>
-  <option <? echo $class->get_attribute_value('status') == "2" ? "SELECTED" : "" ?> value="2">has not begun, closed to signups</option>
-  <option <? echo $class->get_attribute_value('status') == "3" ? "SELECTED" : "" ?> value="3">running and open for signups</option>
-  <option <? echo $class->get_attribute_value('status') == "4" ? "SELECTED" : "" ?> value="4">running but closed to signups</option>
-  <option <? echo $class->get_attribute_value('status') == "5" ? "SELECTED" : "" ?> value="5">completed</option>
-  <option <? echo $class->get_attribute_value('status') == "0" ? "SELECTED" : "" ?> value="0">cancelled</option>
+<select name="status">
+  <? try { $status = $class->get_attribute_value('status'); } catch ( ObjectAttributeNotFoundException $e) {} ?>
+  <option <? echo $status == "1" ? "SELECTED" : "" ?> value="1">has not begun, open for signups</option>
+  <option <? echo $status == "2" ? "SELECTED" : "" ?> value="2">has not begun, closed to signups</option>
+  <option <? echo $status == "3" ? "SELECTED" : "" ?> value="3">running and open for signups</option>
+  <option <? echo $status == "4" ? "SELECTED" : "" ?> value="4">running but closed to signups</option>
+  <option <? echo $status == "5" ? "SELECTED" : "" ?> value="5">completed</option>
+  <option <? echo $status == "0" ? "SELECTED" : "" ?> value="0">cancelled</option>
 </select><br /><br />
 
 <input type="submit" style="padding: 3px;" />

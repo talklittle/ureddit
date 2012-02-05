@@ -169,7 +169,7 @@ function object_type_value_to_id($dbpdo, $type, $value)
 
 function tweet($config,$status)
 {
-  $t = new Twitter($config->twitterConsumerKey, $config->twitterConsumerSecret, $config->twitterAccessToken, $config->twitterAccessTokenSecret);
+  $t = new Twitter($config::twitterConsumerKey, $config::twitterConsumerSecret, $config::twitterAccessToken, $config::twitterAccessTokenSecret);
   $t->send($status);
 }
 
@@ -554,6 +554,7 @@ function pacrypt ($pw, $pw_db="")
 
 function escape_string ($string)
 {
+
   // if the string is actually an array, do a recursive cleaning.
   // Note, the array keys are not cleaned.
   if(is_array($string)) {
