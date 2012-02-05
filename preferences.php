@@ -98,6 +98,7 @@ $forwarded_email = $user->value . '@ureddit.com';
   <div class="pagetitle">
     Account Settings
   </div>
+  <div class="class">
   <?php
   if(!empty($_POST) && count($error) > 0)
     {
@@ -155,6 +156,7 @@ else
     }
   ?>
   </form>
+  </class>
 </div>
 
 <?php require('footer.php'); ?>
