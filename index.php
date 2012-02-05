@@ -19,8 +19,8 @@ require('init.php');
   Follow <a href="http://twitter.com/uofreddit">@uofreddit on Twitter</a> for new class announcements, existing class' updates, site changes, and more!
   </div>
   <div class="pagetitle">
-    Classes
-    <span class="class" style="font-size: 0.5em; font-weight: normal; padding: 5px;">filter: <a href="<?=PREFIX ?>/filter/open" <?=$_GET['show']=='open' ? 'style="font-weight:bold; text-decoration: none;"' : '' ?>>open</a> | <a href="<?=PREFIX ?>/filter/closed" <?=$_GET['show']=='closed' ? 'style="font-weight:bold; text-decoration: none;"' : '' ?>>closed</a> | <a href="<?=PREFIX ?>/filter/completed" <?=$_GET['show']=='completed' ? 'style="font-weight:bold; text-decoration: none;"' : '' ?>>completed</a></span>
+    Classes 
+  <span class="class" style="font-size: 0.5em; font-weight: normal; padding: 5px;">filter: <a href="<?=PREFIX ?>/filter/open" <?=$_GET['show']=='open' ? 'style="font-weight:bold; text-decoration: none;"' : '' ?>>open</a> | <a href="<?=PREFIX ?>/filter/closed" <?=$_GET['show']=='closed' ? 'style="font-weight:bold; text-decoration: none;"' : '' ?>>closed</a> | <a href="<?=PREFIX ?>/filter/completed" <?=$_GET['show']=='completed' ? 'style="font-weight:bold; text-decoration: none;"' : '' ?>>completed</a></span>
   </div>
   <?php
 
