@@ -9,7 +9,7 @@ if(!logged_in() && cookie_exists())
       {
 	try
 	  {
-	    $user = new user($dbpdo, $user[0]['user_id']);
+	    $user = new user($dbpdo, $user[0]['object_id']);
 	    if($user->get_attribute_value('banned') == 'true')
 	      die('banned');
 	    
