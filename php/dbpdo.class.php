@@ -51,9 +51,10 @@ class dbpdo extends base
 
   function get_prepared_statement($q)
   {
-    if(!in_array($q, $this->ps))
-      $this->ps[$q] = $this->mh->prepare($q);
-    return $this->ps[$q];
+    $hash = md5($q);
+    if(!in_array($hash, $this->ps))
+      $this->ps[$hash] = $this->mh->prepare($q);
+    return $this->ps[$hash];
   }
 
   function exec_statement($statement, $values, $inserting = false)

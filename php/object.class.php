@@ -85,10 +85,10 @@ class object extends base
   {
     if($this->config->memcache())
       {
-	$data = $this->memcache_get('v3_object_' . $id . '_with_attribute_' . $attribute_type);
+	$data = false && $this->memcache_get('v3_object_' . $id . '_with_attribute_' . $attribute_type);
 	if(!$data)
 	  {
-	    $data = $this->dbpdo->query("SELECT o.id AS o_id, o.type AS o_type, o.value AS o_value, o.ring AS o_ring, o.creation AS o_creation, o.modification AS o_modification, oa.id AS oa_id, oa.type AS oa_type, oa.value AS oa_value, oa.ring AS oa_ring FROM objects AS o LEFT OUTER JOIN object_attributes AS oa ON oa.object_id = o.id AND oa.type = ? WHERE o.id = ?", array($attribute_type, $id));
+	    $data = $this->dbpdo->query("SELECT o.id AS o_id, o.type AS o_type, o.value AS o_value, o.ring AS o_ring, o.creation AS o_creation, o.modification AS o_modification, oa.id AS oa_id, oa.type AS oa_type, oa.value AS oa_value, oa.ring AS oa_ring FROM objects AS o LEFT OUTER JOIN object_attributes AS oa ON oa.object_id = o.id WHERE oa.type = ? AND o.id = ?", array($attribute_type, $id));
 	    if(count($data) == 0)
 	      throw new ObjectNotFoundException;
 	    $this->memcache_set('v3_object_' . $id , '_with_attribute_' . $attribute_type, $data);
@@ -96,7 +96,7 @@ class object extends base
       }
     else
       {
-	$data = $this->dbpdo->query("SELECT o.id AS o_id, o.type AS o_type, o.value AS o_value, o.ring AS o_ring, o.creation AS o_creation, o.modification AS o_modification, oa.id AS oa_id, oa.type AS oa_type, oa.value AS oa_value, oa.ring AS oa_ring FROM objects AS o LEFT OUTER JOIN object_attributes AS oa ON oa.object_id = o.id AND oa.type = ? WHERE o.id = ?", array($attribute_type, $id));
+	$data = $this->dbpdo->query("SELECT o.id AS o_id, o.type AS o_type, o.value AS o_value, o.ring AS o_ring, o.creation AS o_creation, o.modification AS o_modification, oa.id AS oa_id, oa.type AS oa_type, oa.value AS oa_value, oa.ring AS oa_ring FROM objects AS o LEFT OUTER JOIN object_attributes AS oa ON oa.object_id = o.id WHERE oa.type = ? AND o.id = ?", array($attribute_type, $id));
 	if(count($data) == 0)
 	  throw new ObjectNotFoundException;
       }
@@ -227,7 +227,7 @@ class object extends base
   {
     $this->parents = array();
 
-    $q = "SELECT p.id AS parent_id, p.type AS parent_type, a.id AS association_id, a.type AS association_type FROM objects AS p INNER JOIN (associations AS a INNER JOIN objects AS c ON a.child_id=c.id AND c.id = ? AND a.type LIKE ?) ON p.id=a.parent_id AND p.type LIKE ?";
+    $q = "SELECT p.id AS parent_id, p.type AS parent_type, a.id AS association_id, a.type AS association_type FROM objects AS p INNER JOIN associations AS a ON p.id = a.parent_id WHERE a.child_id = ? AND a.type LIKE ? AND p.type LIKE ?";
 
     if($offset === NULL && $limit === NULL && $this->config->memcache())
       {
@@ -296,8 +296,7 @@ class object extends base
   function get_children($child_type = '%', $association_type='%', $offset = NULL, $limit = NULL)
   {
     $this->children = array();
-
-    $q = "SELECT c.id AS child_id, c.type AS child_type, a.id AS association_id, a.type AS association_type FROM objects AS c INNER JOIN (associations AS a INNER JOIN objects AS p ON a.parent_id=p.id AND p.id = ? AND a.type LIKE ? ) ON c.id=a.child_id AND c.type LIKE ?";
+    $q = "SELECT c.id AS child_id, c.type AS child_type, a.id AS association_id, a.type AS association_type FROM objects AS c INNER JOIN associations AS a ON a.child_id = c.id WHERE a.parent_id = ? AND a.type LIKE ? AND c.type LIKE ?";
 
     if($offset === NULL && $limit === NULL && $this->config->memcache())
       {
