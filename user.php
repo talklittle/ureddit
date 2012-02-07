@@ -92,7 +92,6 @@ if(!preg_match($validation,$username))
   <div class="pagetitle">
   Message this user:
   </div>
-  <div class="category">
   <div class="class" style="margin-bottom: 30px; padding-bottom: 0px;">
     <form method="post" action="<?=PREFIX ?>/user/<?=$username ?>">
     <?php
@@ -111,7 +110,6 @@ if(!preg_match($validation,$username))
     <textarea name="msg" style="font-family: verdana; font-size: 1em; width: 600px; height: 100px; padding: 3px;"><?=!empty($_POST) && isset($error) && count($error) > 0 ? htmlspecialchars(stripslashes($_POST['msg'])) : "" ?></textarea><br /><br />
     <input type="submit" value="Send PM" style="padding: 2px;" />
     </form><br />
-  </div>
   </div>
   <?php } ?>
 

@@ -131,11 +131,20 @@ class course extends object
     if($this->roster === NULL)
       $this->get_roster();
 
+    try
+      {
+	$author = new user($this->dbpdo, $this->session('user_id'));
+      }
+    catch(ObjectNotFoundException $e)
+      {
+	return;
+      }
+
     foreach($this->roster as $user_id)
       {
-	$association_id = $this->create_association($this->id, $user_id, 'mass_message', 0);
+	$association_id = $this->create_association($this->id, $user_id, 'unread_mass_message', 0);
 	$date = $this->timestamp();
-	$this->dbpdo->query("INSERT INTO `association_attributes` (`association_id`, `type`,`value`,`ring`,`creation`,`modification`) VALUES ?, ?, ?, ?, ?, ?)",
+	$this->dbpdo->query("INSERT INTO `association_attributes` (`association_id`, `type`,`value`,`ring`,`creation`,`modification`) VALUES (?, ?, ?, ?, ?, ?)",
 			array(
 			      $association_id,
 			      'subject',
@@ -145,7 +154,7 @@ class course extends object
 			      $date
 			      ));
 
-	$this->dbpdo->query("INSERT INTO `association_attributes` (`association_id`, `type`,`value`,`ring`,`creation`,`modification`) VALUES ?, ?, ?, ?, ?, ?)",
+	$this->dbpdo->query("INSERT INTO `association_attributes` (`association_id`, `type`,`value`,`ring`,`creation`,`modification`) VALUES (?, ?, ?, ?, ?, ?)",
 			array(
 			      $association_id,
 			      'body',
@@ -155,7 +164,7 @@ class course extends object
 			      $date
 			      ));
 
-	$this->dbpdo->query("INSERT INTO `association_attributes` (`association_id`, `type`,`value`,`ring`,`creation`,`modification`) VALUES ?, ?, ?, ?, ?, ?)",
+	$this->dbpdo->query("INSERT INTO `association_attributes` (`association_id`, `type`,`value`,`ring`,`creation`,`modification`) VALUES (?, ?, ?, ?, ?, ?)",
 			array(
 			      $association_id,
 			      'author',
@@ -245,18 +254,26 @@ class course extends object
             <?php
             try
               {
-		$users = array();
+		$teachers = array();
 		foreach($this->teachers as $teach)
 		  {
 		    $user = new user($this->dbpdo, $teach);
-		    $teachers[] = "<a href=\"" . PREFIX  . "/user/" . $user->value . "\" class=\"link-class-desc\">" . $user->value . "</a>";
-		  }
-		echo 'taught by ' . implode($teachers, ", ");
+		    if(strlen($user->value) == 0)
+		      throw new ObjectNotFoundException;
+		    $text = "<a href=\"" . PREFIX  . "/user/" . $user->value . "\" class=\"link-class-desc\">" . $user->value . "</a>";
+		    try
+		      {
+			$ru = $user->get_attribute_value('reddit_username');
+			$text .= "<a href=\"http://reddit.com/user/$ru\"><img style=\"border: 0; width: 1em; height: 1em; margin: 0 3px;\" src=\"" . PREFIX . "/images/reddit.png\"></a>";
+		      }
+		    catch (ObjectAttributeNotFoundException $e)
+		      {
 
-		//$ru = $teacher->get_attribute_value('reddit_username');
-		?>
-                    [<a href="http://reddit.com/user/<?=$ru ?>" class="link-class-desc">teacher reddit user page</a>]
-                    <?php
+		      }
+		    $teachers[] = $text;
+		  }
+		    
+		echo 'taught by ' . implode($teachers, ", ") . ' ';
               }
 	    catch (ObjectNotFoundException $e)
 	      {
@@ -283,7 +300,7 @@ class course extends object
 	    if(logged_in())
 	      {
 		?>
-		<span id="report<?=$this->id ?>">[<a href="#" class="link-class-desc" onclick="$.post('<?=PREFIX ?>/report.php',{class: <?=$this->id ?>},function(response){$('#report<?=$this->id ?>').html(response); return false;});">report class]</a></span>
+		<span id="report<?=$this->id ?>">[<a class="link-class-desc" style="text-decoration: underline; cursor: pointer;" onclick="$.post('<?=PREFIX ?>/report.php',{class: <?=$this->id ?>},function(response){$('#report<?=$this->id ?>').html(response); return false;});">report class]</a></span>
 		<?php
 	      }
 	    ?>

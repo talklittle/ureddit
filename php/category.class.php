@@ -20,8 +20,26 @@ class category extends object
       $this->classes = array();
   }
 
-  function display($expand_category = true, $show_statuses = array('1','3'), $expand_classes = false, $class_details = false)
+  function display($expand_category = true, $filter = 'open', $expand_classes = false, $class_details = false)
   {
+    switch($filter)
+      {
+      case 'open':
+	$show_statuses = array('1','3');
+	break;
+      case 'closed':
+	$show_statuses = array('2','4');
+	break;
+      case 'completed':
+	$show_statuses = array('5');
+	break;
+      case 'all':
+	$show_statuses = array('1','2','3','4','5');
+	break;
+      default:
+	$show_statuses = array('1','3');
+	break;
+      }
     ?>
     <div class="category-name">
       <?=$this->value; ?>
@@ -29,7 +47,7 @@ class category extends object
       if($expand_category)
 	{
 	  ?>
-	  <span class="showhide"><a onclick="$.get('<?=PREFIX ?>/category.php',{id: '<?=$this->id ?>', show: 'false' }, function(data) { $('#category<?=$this->id ?>').html(data)});" class="link-showhide">[hide]</a></span></div>
+	  <span class="showhide"><a onclick="$.get('<?=PREFIX ?>/category.php',{id: '<?=$this->id ?>', show: 'false', filter: '<?=$filter ?>'}, function(data) { $('#category<?=$this->id ?>').html(data)});" class="link-showhide">[hide]</a></span></div>
 	  <?php
 	  foreach($this->classes as $class_id)
 	    {
@@ -48,7 +66,7 @@ class category extends object
       else
 	{
 	  ?>
-	  <span class="showhide"><a onclick="$.get('<?=PREFIX ?>/category.php',{id: '<?=$this->id ?>', show: 'true'}, function(data) { $('#category<?=$this->id ?>').html(data)});" class="link-showhide">[show]</a></span></div>
+	  <span class="showhide"><a onclick="$.get('<?=PREFIX ?>/category.php',{id: '<?=$this->id ?>', show: 'true', filter: '<?=$filter ?>'}, function(data) { $('#category<?=$this->id ?>').html(data)});" class="link-showhide">[show]</a></span></div>
 	  <?php
 	}
   }

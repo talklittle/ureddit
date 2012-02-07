@@ -70,11 +70,15 @@ class user extends object
 
   function get_inbox($offset, $limit)
   {
-    $this->inbox = $this->dbpdo->query("SELECT * FROM associations AS a INNER JOIN association_attributes AS aa ON aa.association_id = a.id AND a.child_id = ? AND (a.type = ? OR a.type = ?) ORDER BY a.creation DESC LIMIT $offset, $limit",
+    $this->inbox = $this->dbpdo->query("SELECT a.id, aa.type, aa.value, a.creation, a.parent_id, aa.association_id FROM associations AS a INNER JOIN association_attributes AS aa ON aa.association_id = a.id AND a.child_id = ? AND (a.type = ? OR a.type = ? OR a.type = ? OR a.type = ?) AND (aa.type = ? OR aa.type = ?) ORDER BY a.creation DESC LIMIT $offset, $limit",
 				       array(
 					     $this->id,
 					     'read_message',
 					     'unread_message',
+					     'read_mass_message',
+					     'unread_mass_message',
+					     'subject',
+					     'body'
 					     ));
   }
 
@@ -123,12 +127,12 @@ class user extends object
   {
     $association_id = $this->create_association($this->id, $recepient_id, 'unread_message', 0);
     $date = $this->timestamp();
-    $this->dbpdo->query("INSERT INTO `association_attributes` (`association_id`, `type`,`value`,`ring`,`creation`,`modification`) VALUES (?, ?, ?, ?, ?, ?)",
+    $this->dbpdo->query("INSERT INTO association_attributes (association_id, type,value,ring,creation,modification) VALUES (?, ?, ?, ?, ?, ?)",
 			array(
 			      $association_id,
 			      'subject',
 			      $subject,
-			      0,
+			      '0',
 			      $date,
 			      $date
 			      ));

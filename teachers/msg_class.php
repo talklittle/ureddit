@@ -14,6 +14,7 @@ $class->get_owner();
 if($class->owner != $user->id || !in_array($user->id,$class->teachers))
   send_user_to("/teachers/index.php");
 
+$success = false;
 $error = array();
 if(!empty($_POST))
 {
@@ -28,12 +29,13 @@ if(!empty($_POST))
     date_default_timezone_set('UTC');
     $datetime = date("Y-m-d H:i:s");
     
-    $class->mass_message($subj, $message, $user->id);
+    $class->mass_message($subj, $msg, $user->id);
     foreach($class->roster as $child_id)
       {
 	$student = new user($dbpdo, $child_id);
 	send_email(strtolower($user->value . "@ureddit.com"), $student->value . "@ureddit.com", $subj,process($msg));
       }
+    $success = true;
   }
 }
 ?>
@@ -58,6 +60,8 @@ if(!empty($_POST))
 if(count($error) != 0)
   foreach($error as $err)
     echo "$err<br />\n";
+elseif($success == true)
+  echo "your mass message was delivered<br><br>";
 ?>
 </div><br />
 

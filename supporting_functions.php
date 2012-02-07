@@ -256,19 +256,43 @@ function display_messages($user, $offset = 0, $limit=15)
     ?><div class="category"><?php
     for($i = 0; $i < count($user->inbox)/2; $i++)
 	 {
-	   $sender = new user($user->dbpdo, $user->inbox[2*$i]['parent_id']);
-	   $found = 1;
-	   $user->dbpdo->query("UPDATE `associations` SET `type` = ? WHERE `id` = ? AND type = ?",
-			       array(
-				     'read_message',
-				     $user->inbox[2*$i]['association_id'],
-				     'unread_message'
-				     ));
+	   if($user->get_object_type($user->inbox[2*$i]['parent_id']) == 'class')
+	     {
+	       $sender = new user($user->dbpdo, $user->inbox[2*$i]['parent_id']);
+	       if($sender->type == 'class')
+		 {
+		   $author = $sender->dbpdo->query("SELECT value FROM association_attributes WHERE association_id = ? AND type = ?",
+						 array(
+						       $user->inbox[2*$i]['association_id'],
+						       'author'
+						       ));
+		   $author = new user($sender->dbpdo, $author[0]['value']);
+		 }
+		 
+	       $found = 1;
+	       $user->dbpdo->query("UPDATE `associations` SET `type` = ? WHERE `id` = ? AND type = ?",
+				   array(
+					 'read_mass_message',
+					 $user->inbox[2*$i]['association_id'],
+					 'unread_mass_message'
+					 ));
+	     }
+	   else
+	     {
+	       $sender = new user($user->dbpdo, $user->inbox[2*$i]['parent_id']);
+	       $found = 1;
+	       $user->dbpdo->query("UPDATE `associations` SET `type` = ? WHERE `id` = ? AND type = ?",
+				   array(
+					 'read_message',
+					 $user->inbox[2*$i]['association_id'],
+					 'unread_message'
+					 ));
+	     }
       ?>
       <div class="class">
         <div class="class-name"><?=$user->inbox[2*$i]['value'] ?></div>
 	 <div class="class-desc"><?=$user->process_text($user->inbox[2*$i+1]['value']) ?></div>
-        <div class="class-info-noindent">from <strong><?=$sender->value ?></strong> at <?=$user->inbox[$i]['creation'] ?> [<a href="<?=PREFIX ?>/user/<?=$sender->value ?>" class="link-class-desc">reply</a>]</div>
+	 <div class="class-info-noindent">from <strong><?=($sender->type == 'class' ? $author->value . '</strong> (regarding class <strong><a href="' . PREFIX . "/class/" . $sender->id . '">' . $sender->value . '</a></strong>)' : $sender->value) . '</strong>'?> at <?=$user->inbox[2*$i]['creation'] ?> [<a href="<?=PREFIX ?>/user/<?=($sender->type == 'class' ? $author->value : $sender->value) ?>" class="link-class-desc">reply</a>]</div>
       </div>
       <?php
        }
@@ -684,8 +708,8 @@ function to64 ($v, $n)
 
 function has_new_messages($dbpdo, $user_id)
 {
-  $unread = $dbpdo->query("SELECT COUNT(*) FROM associations WHERE child_id = ? AND type = ?",array($user_id, 'unread_message'));
-  return (bool) $unread[0]['COUNT(*)'];
+  $unread = $dbpdo->query("SELECT COUNT(*) FROM associations WHERE child_id = ? AND (type = ? OR type = ?)",array($user_id, 'unread_message', 'unread_mass_message'));
+  return !($unread[0]['COUNT(*)'] == '0');
 }
 
 function smtp_get_response ($fh)
