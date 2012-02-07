@@ -14,7 +14,6 @@ function translate_class_id($dbpdo,$old_id)
 
 function signup_button($user, $class_id)
 {
-
 /*
 class statuses:
 
