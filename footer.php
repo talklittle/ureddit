@@ -5,7 +5,7 @@ University of Reddit is not in any way affiliated with <a href="http://reddit.co
 <script type="text/javascript">
 
    var _gaq = _gaq || [];
-_gaq.push(['_setAccount', 'UA-18227368-1']);
+_gaq.push(['_setAccount', 'UA-XXXXXXXX-X']);
 _gaq.push(['_trackPageview']);
 
 (function() {

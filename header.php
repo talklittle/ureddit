@@ -15,7 +15,8 @@
        ?><a href="<?=PREFIX ?>/teachers/" class="<?=(PREFIX."/teachers/index.php" == $_SERVER['PHP_SELF'] ? "nav-current" : "nav") ?>">teacher admin panel</a> - <?php
      }
    ?>
-   <a href="http://reddit.com/r/UniversityOfReddit" class="nav">our subreddit</a> - 
+   <a href="http://reddit.com/r/UniversityOfReddit" class="nav">/r/UniversityofReddit</a> - 
+    <a href="http://twitter.com/uofreddit" class="nav">@uofreddit</a> - 
    <?php
   if(logged_in())
 {
@@ -34,7 +35,6 @@
      <?php
      }
 ?>
-    <a href="/blog" class="nav">blog</a> - 
     <a href="<?=PREFIX ?>/help" class="<?=(PREFIX."/help.php" == $_SERVER['PHP_SELF'] ? "nav-current" : "nav") ?>">faq</a>
   </div>
 </div>
