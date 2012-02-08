@@ -36,6 +36,17 @@ if(!empty($_POST))
 	send_email(strtolower($user->value . "@ureddit.com"), $student->value . "@ureddit.com", $subj,process($msg));
       }
     $success = true;
+    
+    $tweet = "(" . date("U") . ") " . $user->value . " PMed the students in " . $class->value;
+    if(strlen($tweet) > 115)
+      $tweet = substr($tweet, 0, 115) . "...";
+    $tweet .= " http://ureddit.com/c" . $class->id;
+    if(strlen($tweet) < 126)
+      $tweet .= " with subject line \"$subj\"";
+    if(strlen($tweet) > 140)
+      $tweet = substr($tweet, 0, 136) . "...\"";
+      //$tweet .= ": \"$subj\"";
+    tweet($user->config, $tweet);
   }
 }
 ?>
