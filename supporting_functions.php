@@ -314,13 +314,13 @@ function display_sent_messages($user, $offset = 0, $limit=15)
     ?><div class="category"><?php
     for($i = 0; $i < count($user->outbox)/2; $i++)
 	 {
-	   $sender = new user($user->dbpdo, $user->outbox[2*$i]['parent_id']);
+	   $receipient = new user($user->dbpdo, $user->outbox[2*$i]['child_id']);
 	   $found = 1;
       ?>
       <div class="class">
         <div class="class-name"><?=$user->outbox[2*$i]['value'] ?></div>
 	 <div class="class-desc"><?=$user->process_text($user->outbox[2*$i+1]['value']) ?></div>
-        <div class="class-info-noindent">from <strong><?=$sender->value ?></strong> at <?=$user->outbox[$i]['creation'] ?> [<a href="<?=PREFIX ?>/user/<?=$sender->value ?>" class="link-class-desc">reply</a>]</div>
+        <div class="class-info-noindent">to <strong><?=$receipient->value ?></strong> at <?=$user->outbox[$i]['creation'] ?> [<a href="<?=PREFIX ?>/user/<?=$recepient->value ?>" class="link-class-desc">reply</a>]</div>
       </div>
       <?php
        }
