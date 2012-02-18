@@ -4,6 +4,13 @@ define('COOKIE_SESSID','ureddit_sessid');
 define('PREFIX','/dev2/ureddit');
 define('USE_MARKDOWN','true');
 
+function latest_commit()
+{
+  //$fdata = new SimpleXMLElement(stripslashes(file_get_contents("https://github.com/ureddit/ureddit/commits/master.atom")), true);
+$fdata = new SimpleXMLElement(file_get_contents("github.txt"), true);
+  return array('title' => $fdata->entry[0]->title, 'url' => $fdata->entry[0]->link[0]['href']);
+}
+
 function translate_class_id($dbpdo,$old_id)
 {
   $translation = $dbpdo->query("SELECT new_id FROM class_id_translation WHERE old_id = ?", array($old_id));
@@ -218,7 +225,8 @@ function latest_tweet($config)
 {
   $t = new Twitter($config::twitterConsumerKey, $config::twitterConsumerSecret, $config::twitterAccessToken, $config::twitterAccessTokenSecret);
   $latest = $t->load(Twitter::ME,1);
-  return Twitter::clickable($latest->status->text);
+  //  var_dump($latest);
+  return array('text' => Twitter::clickable($latest->status->text), 'url' => 'http://twitter.com/uofreddit/status/' . $latest->status->id);
 }
 
 function tweet($config,$status)

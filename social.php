@@ -3,7 +3,10 @@
       <ul>
          <li>
             <div class="socialbar-item">
-      <a href="http://twitter.com/uofreddit"><img src="<?=PREFIX ?>/img/twitter.png" alt="@uofreddit" id="twitter"></a><p class="content"><em>Latest tweet</em>:<br> <?=latest_tweet($config); ?></p>
+      <a href="http://twitter.com/uofreddit"><img src="<?=PREFIX ?>/img/twitter.png" alt="@uofreddit" id="twitter"></a><p class="content"><em>Latest tweet</em>:<br>
+      <?php
+      $data = latest_tweet($config); echo '<a href="' . $data['url'] . '" class="nounderline">' . $data['text'] . '</a>';
+      ?></p>
             </div>
          </li>
          <li>
@@ -16,7 +19,10 @@
          </li>
          <li>
             <div class="socialbar-item">
-               activity feed
+      <a href="http://github.com/ureddit/ureddit"><img src="<?=PREFIX ?>/img/github.png" alt="ureddit on GitHub" id="github"></a><p class="content"><em>Latest GitHub commit</em>:<br>
+      <?php
+      $data = latest_commit(); echo '"<a href="' . $data['url'] . '" class="nounderline">' . $data['title'] . '</a>"';
+      ?></p>
             </div>
          </li>
          <li>
