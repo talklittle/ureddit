@@ -41,7 +41,7 @@ class category extends object
 	break;
       }
     ?>
-    <div id="category<?=$this->id ?>" class="category <?=$_GET['category_id'] == $this->id ? ' active' : '' ?>">
+    <div class="category <?=$_GET['category_id'] == $this->id ? ' active' : '' ?>">
     <div class="content">
       <?php
       if($expand_category)

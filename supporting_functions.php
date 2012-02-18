@@ -12,6 +12,37 @@ function translate_class_id($dbpdo,$old_id)
   return false;
 }
 
+function votebox($class, $user = false)
+{
+  $score = $class->calculate_score();
+  if($user !== false)
+    {
+      if(in_array($this->id, $user->votes['upvoted']))
+	{
+	  echo '<img src="' . PREFIX . '/img/up-filled.png" alt="+1\'d" class="upvoted" onclick="$.post("' . PREFIX . '"/vote.php, {action: remove, id: "' . $this->id . '"}, function (response) {$("#class' . $this->id . ' > content > voting").html(response);})">';
+	}
+      else
+	{
+	  echo '<img src="' . PREFIX . '/img/up.png" alt="+1" class="upvote" onclick="$.post("' . PREFIX . '"/vote.php, {action: "upvote", id: "' . $this->id . '"}, function (response) {$("#class' . $this->id . ' > content > voting").html(response);})">';
+	}
+      
+      if(in_array($this->id, $user->votes['downvoted']))
+	{
+	  echo '<img src="' . PREFIX . '/img/down-filled.png" alt="-1\'d" class="downvoted" onclick="$.post("' . PREFIX . '"/vote.php, {action: "remove", id: "' . $this->id . '"}, function (response) {$("#class' . $this->id . ' > content > voting").html(response);})">';
+	}
+      else
+	{
+	  echo '<img src="' . PREFIX . '/img/down.png" alt="-1" class="downvote" onclick="$.post("' . PREFIX . '"/vote.php, {action: "downvote", id: "' . $this->id . '"}, function (response) {$("#class' . $this->id . ' > content > voting").html(response);})">';
+	}
+    }
+  else
+    {
+      echo '<a href="' . PREFIX . '/login"><img src="' . PREFIX . '/img/up.png" alt="+1" class="upvote"></a>';
+      echo '<a href="' . PREFIX . '/login"><img src="' . PREFIX . '/img/down.png" alt="-1" class="downvote"></a>';
+    }
+  echo $score;
+}
+
 function signup_button($user, $class_id)
 {
 /*

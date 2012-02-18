@@ -176,31 +176,45 @@ class course extends object
       }
   }
 
+  function calculate_score()
+  {
+    $votes = $this->get_parents('user','upvote');
+    $score = isset($this->parents['upvote']) ? count($this->parents['upvote']) : 0;
+    $votes = $this->get_parents('user','downvote');
+    $score -= isset($this->parents['downvote']) ? count($this->parents['downvote']) : 0;
+    return $score;
+  }
+
+  function display_full()
+  {
+
+  }
+
   function display($expanded = false, $full = false)
   {
     if($this->session('user_id') !== false)
-      $user = new user($this->dbpdo, $this->session('user_id'));
+      {
+	$user = new user($this->dbpdo, $this->session('user_id'));
+	$user->get_votes();
+      }
     else
       $user = $this->dbpdo;
 
     ?>
     <div class="class" id="class<?=$this->id ?>">
-    <div class="content">
-      <?php
-      if(!$full)
-        {
-	  ?>
-	  <div style="font-size: 0.8em; font-weight:bold; float:left; padding-right: 8px;">
-	  [<a
-	   style="cursor: pointer;"
+       <div class="content">
+          <div class="voting">
+             <?=votebox($this, $this->session('logged-in') ? $user : false) ?>
+          </div>
+          <div class="showhide">
+	     [<a
 	   onclick="$.get('<?=PREFIX ?>/show_class.php',{id: '<?=$this->id ?>', show: '<?=$expanded == 'true' ? 'false' : 'true' ?>'}, function(data){$('#class<?=$this->id ?>').html(data);});"
-	   ><?=($expanded == true ? "-" : "+") ?></a>]
-	   </div> 
-	   <?php
-	 }
-       signup_button($user,$this->id);
-     ?>
-      <div class="class-name">
+	      ><?=($expanded == true ? "-" : "+") ?></a>]
+          </div> 
+	  <?php
+          signup_button($user,$this->id);
+          ?>
+          <div class="class-name">
         <?php
         echo htmlspecialchars(stripslashes($this->value));
         try

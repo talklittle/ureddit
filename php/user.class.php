@@ -8,10 +8,36 @@ class user extends object
   public $inbox = NULL;
   public $outbox = NULL;
   public $teaching = NULL;
+  public $votes = NULL;
 
   function __construct($dbpdo, $id = NULL, $attribute_type = NULL)
   {
     parent::__construct($dbpdo, $id, $attribute_type);
+  }
+
+  function upvote($object_id)
+  {
+    $this->add_child($object_id, 'upvote', 0);
+  }
+
+  function downvote($object_id)
+  {
+    $this->add_child($object_id, 'upvote', 0);
+  }
+
+  function get_votes()
+  {
+    if($this->votes === NULL)
+      {
+	$this->votes = array();
+	
+	$this->get_children('class','upvote');
+	$this->votes['upvoted'] = $this->children;
+	
+	$this->get_children('class','downvote');
+	$this->votes['downvoted'] = $this->children;
+      }
+	
   }
 
   function is_taking_class($id)
