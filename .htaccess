@@ -325,6 +325,7 @@ FileETag None
 <IfModule mod_rewrite.c>
   Options +FollowSymlinks
   RewriteEngine On
+  RewriteRule ^category/([0-9]+)/?(.*)/?$ index.php?category_id=$1
 </IfModule>
 
 

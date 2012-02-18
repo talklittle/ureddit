@@ -190,8 +190,50 @@ nav a.active
     font-weight: bold;
 }
 
+#main
+{
+}
+
+#catalog-category-list
+{
+    width: 30%;
+    float: left;
+}
+
+#catalog-class-list
+{
+    width: 70%;
+    float: right;
+}
+
+#catalog-category-list .category 
+{
+    padding: 5px;
+}
+
+#catalog-category-list .content a:link, #catalog-category-list .content a:visited, #catalog-category-list .content a:hover, #catalog-category-list .content a:active
+{
+    color: #232323;
+    text-decoration: none;
+}
+
+#catalog-category-list .active
+{
+    background-color: #232323;
+    color: #d4d4d4;
+    font-weight: bold;
+}
+
+#catalog-category-list .active a:link, #catalog-category-list .active a:visited, #catalog-category-list .active a:hover, #catalog-category-list .active a:active
+{
+    background-color: #232323;
+    color: #d4d4d4;
+    text-decoration: none;
+}
+
 footer
 {
+    clear: both;
     padding: 10px 0;
     background-color: #e1e1e1;
     width: 100%;

@@ -1,13 +1,14 @@
+<?php  require_once('init.php'); ?>
    <div id="socialbar">
       <ul>
          <li>
             <div class="socialbar-item">
-      <a href="http://twitter.com/uofreddit" alt="Twitter Feed"><img src="img/twitter.png" alt="@uofreddit" id="twitter"></a><p class="content"><em>Latest tweet</em>:<br> <?=latest_tweet($config); ?></p>
+      <a href="http://twitter.com/uofreddit" alt="Twitter Feed"><img src="<?=PREFIX ?>/img/twitter.png" alt="@uofreddit" id="twitter"></a><p class="content"><em>Latest tweet</em>:<br> <?=latest_tweet($config); ?></p>
             </div>
          </li>
          <li>
             <div class="socialbar-item">
-      <a href="http://reddit.com/r/UniversityofReddit" alt="Reddit"><img src="img/reddit.png" alt="/r/UniversityofReddit" id="reddit"></a><p class="content"><em>Latest Reddit Post</em>:<br>
+      <a href="http://reddit.com/r/UniversityofReddit" alt="Reddit"><img src="<?=PREFIX ?>/img/reddit.png" alt="/r/UniversityofReddit" id="reddit"></a><p class="content"><em>Latest Reddit Post</em>:<br>
       <?php
       $data = latest_reddit_post(); echo '<a href="' . $data['url'] . '" alt="Latest Reddit post" class="nounderline">' . $data['title'] . '</a>';
       ?></p>

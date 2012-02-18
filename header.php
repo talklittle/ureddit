@@ -1,5 +1,5 @@
   <header>
-  <img src="img/logo.png" id="logo" alt="University of Reddit">
+  <img src="<?=PREFIX ?>/img/logo.png" id="logo" alt="University of Reddit">
      <nav>
         <ul>
            <li>

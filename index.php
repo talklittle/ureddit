@@ -14,24 +14,67 @@ require_once('init.php');
   <meta name="description" content="">
 
   <meta name="viewport" content="width=device-width">
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="<?=PREFIX ?>/css/style.css">
 
-  <script src="js/libs/modernizr-2.5.2.min.js"></script>
+  <script src="<?=PREFIX ?>/js/libs/modernizr-2.5.2.min.js"></script>
 </head>
 <body>
   <!--[if lt IE 7]><p class=chromeframe>Your browser is <em>ancient!</em> <a href="http://browsehappy.com/">Upgrade to a different browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to experience this site.</p><![endif]-->
-  <?php require_once('header.php'); ?>
-  <?php require_once('social.php'); ?>
-  <div role="main">
+  <?php
+  require_once('header.php');
+  require_once('social.php');
 
+  if(isset($_GET['category_id']) && count($dbpdo->query("SELECT `id` FROM `objects` WHERE `id` = ? AND `type` = 'category' LIMIT 1", array($_GET['category_id'])) != 0))
+    $active_category_id = $_GET['category_id'];
+  else
+    $active_category_id = -1;
+
+  $catalog = new catalog($dbpdo);
+  ?>
+  <div id="main" role="main">
+    <div id="catalog-category-list">
+      <div class="category<?=$active_category_id === -1 ? ' active' : '' ?>" id="category-all">
+        <div class="content">
+          <a href="<?=PREFIX ?>/">All categories</a>
+        </div>
+      </div>
+      <?php
+      $categories = array();
+      foreach($catalog->categories as $category_id)
+        {
+	  $category = new category($dbpdo, $category_id);
+	  $categories[$category_id] = $category;
+	  $category->display(false);
+	}
+      ?>
+    </div>
+    <div id="catalog-class-list">
+      <?php
+        if($active_category_id == -1)
+	  {
+	    foreach($categories as $category_id => $category)
+	      {
+		$category->display(true);
+	      }
+	  }
+	else
+	  {
+	    foreach($categories[$active_category_id]->classes as $class_id)
+	      {
+		$class = new course($dbpdo, $class_id);
+		$class->display();
+	      }
+	  }
+      ?>
+    </div>
   </div>
   <?php require_once('footer.php'); ?>
 
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-  <script>window.jQuery || document.write('<script src="js/libs/jquery-1.7.1.min.js"><\/script>')</script>
+  <script>window.jQuery || document.write('<script src="<?=PREFIX ?>/js/libs/jquery-1.7.1.min.js"><\/script>')</script>
 
-  <script src="js/plugins.js"></script>
-  <script src="js/script.js"></script>
+  <script src="<?=PREFIX ?>/js/plugins.js"></script>
+  <script src="<?=PREFIX ?>/js/script.js"></script>
 
   <script>
     var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];

@@ -41,11 +41,12 @@ class category extends object
 	break;
       }
     ?>
-    <div class="category-name">
-      <?=$this->value; ?>
+    <div id="category<?=$this->id ?>" class="category <?=$_GET['category_id'] == $this->id ? ' active' : '' ?>">
+    <div class="content">
       <?php
       if($expand_category)
 	{
+	  echo $this->value;
 	  ?>
 	  <span class="showhide"><a onclick="$.get('<?=PREFIX ?>/category.php',{id: '<?=$this->id ?>', show: 'false', filter: '<?=$filter ?>'}, function(data) { $('#category<?=$this->id ?>').html(data)});" class="link-showhide">[hide]</a></span></div>
 	  <?php
@@ -62,12 +63,17 @@ class category extends object
 		//$class->display($expand_classes, $class_details);
 	      }
 	    }
+	  echo '</div>';
 	}
       else
 	{
+	  /*
 	  ?>
 	  <span class="showhide"><a onclick="$.get('<?=PREFIX ?>/category.php',{id: '<?=$this->id ?>', show: 'true', filter: '<?=$filter ?>'}, function(data) { $('#category<?=$this->id ?>').html(data)});" class="link-showhide">[show]</a></span></div>
 	  <?php
+	  */
+	  echo '<a href="' . PREFIX . '/category/' . $this->id . '/' . $this->seo_string($this->value) . '">' . $this->value . '</a>';
+	  echo '</div></div>';
 	}
   }
 }

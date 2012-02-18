@@ -1,7 +1,7 @@
 <?php
 
 define('COOKIE_SESSID','ureddit_sessid');
-define('PREFIX','/dev');
+define('PREFIX','/dev2/ureddit');
 define('USE_MARKDOWN','true');
 
 function translate_class_id($dbpdo,$old_id)
