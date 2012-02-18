@@ -58,7 +58,7 @@ class category extends object
 	      try
 	        {
 		  if(in_array($class->get_attribute_value('status'), $show_statuses))
-		    $class->display($expand_classes, $class_details);
+		    $class->display_with_container($expand_classes, $class_details);
 		}
 	      catch (ObjectAttributeNotFoundException $e)
 	      {

@@ -326,6 +326,31 @@ FileETag None
   Options +FollowSymlinks
   RewriteEngine On
   RewriteRule ^category/([0-9]+)/?(.*)/?$ index.php?category_id=$1
+  RewriteRule ^filter/open/?$ index.php?show=open
+  RewriteRule ^filter/closed/?$ index.php?show=closed
+  RewriteRule ^filter/completed/?$ index.php?show=completed
+  RewriteRule ^filter/all/?$ index.php?show=all
+  RewriteRule ^user/([^/]*)/?$ user.php?id=$1
+  RewriteRule ^class/([0-9]+)/?(.*)/?$ class.php?id=$1
+  RewriteRule ^class/([0-9]+)/files/?$ files/class$1/files
+  RewriteRule ^teach/?$ teach.php
+  RewriteRule ^settings/?$ preferences.php
+  RewriteRule ^confirm/?$ confirm.php
+  RewriteRule ^recover_password/?$ recover_password.php
+  RewriteRule ^messages/?$ messages.php
+  RewriteRule ^messages/sent/?$ sent_messages.php
+  RewriteRule ^login/?$ login.php
+  RewriteRule ^logout/?$ logout.php
+  RewriteRule ^register/?$ register.php
+  RewriteRule ^help/?$ help.php
+  RewriteRule ^class/([0-9]+)/message/?$ teachers/msg_class.php?id=$1
+  RewriteRule ^class/([0-9]+)/edit/?$ teachers/edit_class.php?id=$1
+  RewriteRule ^c([0-9]+)/?$ class.php?id=$1
+  RewriteRule ^/$ index.php
+  RewriteRule ^/teachers/?$ /teachers/index.php
+  #RewriteRule ^blog\.ureddit\.com http://ureddit.com/blog
+  #RewriteRule ^blog\.(u|universityof|uof)reddit\.com/?(.*)$ ureddit.com/blog/$1
+  #RewriteRule ^files\.(u|universityof|uof)reddit\.com/?(.*)$ ureddit.com/files/$1
 </IfModule>
 
 

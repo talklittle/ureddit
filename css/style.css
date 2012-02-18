@@ -144,7 +144,7 @@ nav
 
 #socialbar ul li .socialbar-item .content
 {
-
+    padding-right: 5px;
 }
 
 #socialbar ul li .socialbar-item .content a:link, #socialbar ul li .socialbar-item .content a:visited, socialbar ul li .socialbar-item .content a:hover, socialbar ul li .socialbar-item .content a:active
@@ -199,6 +199,7 @@ nav a.active
     width: 30%;
     height: 100%;
     float: left;
+    padding-left: 1px;
 }
 
 #catalog-category-list .content
@@ -209,7 +210,7 @@ nav a.active
 
 #catalog-category-list .content .category .content
 {
-    padding: 5px;
+    padding: 5px 0 5px 5px;
     border: 0;
 }
 
@@ -241,20 +242,19 @@ nav a.active
 
 #catalog-class-list .content
 {
-    padding: 0 5px;
+    padding: 0 5px 0 0;
     border-left: 3px solid #232323;
     height: 100%;
 }
 
 #catalog-class-list .content .category
 {
-    padding-left: 10px;
     font-weight: bold;
 }
 
 #catalog-class-list .content .category .content
 {
-    padding-left: 10px;
+    padding: 0 0 0 10px;
     border: 0;
 }
 
@@ -295,11 +295,29 @@ img.upvote, img.upvoted, img.downvote, img.downvoted
 #catalog-class-list .content .category .content .class .content .class-name
 {
     margin-right: 5em;
+    font-weight: bold;
 }
+
+#catalog-class-list .content .category .content .class .content .class-desc
+{
+    font-size: 0.9em;
+}
+
+#catalog-class-list .content .category .content .class .content .class-info
+{
+    font-size: 0.85em;
+    font-style: italic;
+}
+
+#catalog-class-list .content .category .content .class .content .class-info a
+{
+    color: black;
+}
+
 
 #catalog-class-list .content .category .content .class .content .showhide
 {
-    font-size: 0.8em;
+    font-size: 0.9em;
     font-weight:bold;
     float:left;
     padding-right: 8px;
@@ -325,14 +343,22 @@ img.upvote, img.upvoted, img.downvote, img.downvoted
     float: left;
 }
 
-.signup-button a:link, a:visited, a:hover, a:active
+.signup-button a
 {
+    color: #000000;
+}
+
+
+.signup-button a:link, .signup-button a:visited, .signup-button a:hover, .signup-button a:active
+{
+    cursor: pointer;
     color: #000000;
     text-decoration: none;
 }
 
 .teacher-button
 {
+    cursor: pointer;
     padding: 0 3px;
     margin: 0.25em 5px 0 0;
     line-height: 1.5em;
@@ -344,7 +370,7 @@ img.upvote, img.upvoted, img.downvote, img.downvoted
     float: left;
 }
 
-.teacher-button a:link, a:visited, a:hover, a:active
+.teacher-button a:link, .teacher-button a:visited, .teacher-button a:hover, .teacher-button a:active
 {
     color: #000000;
     text-decoration: none;
@@ -352,6 +378,7 @@ img.upvote, img.upvoted, img.downvote, img.downvoted
 
 .deregister-button
 {
+    cursor: pointer;
     padding: 0 3px;
     margin: 0.25em 5px 0 0;
     line-height: 1.5em;
@@ -362,7 +389,13 @@ img.upvote, img.upvoted, img.downvote, img.downvoted
     border: 1px solid #cc3333;
     float: left;
 }
-.deregister-button a:link, a:visited, a:hover, a:active
+
+.deregister-button a
+{
+    color: #000000;
+}
+
+.deregister-button a:link, .deregister-button a:visited, .deregister-button a:hover, .deregister-button a:active
 {
     color: #000000;
     text-decoration: none;

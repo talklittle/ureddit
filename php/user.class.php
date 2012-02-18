@@ -22,7 +22,7 @@ class user extends object
 
   function downvote($object_id)
   {
-    $this->add_child($object_id, 'upvote', 0);
+    $this->add_child($object_id, 'downvote', 0);
   }
 
   function get_votes()
@@ -32,12 +32,11 @@ class user extends object
 	$this->votes = array();
 	
 	$this->get_children('class','upvote');
-	$this->votes['upvoted'] = $this->children;
+	$this->votes['upvoted'] = isset($this->children['class']) ? $this->children['class'] : array();
 	
 	$this->get_children('class','downvote');
-	$this->votes['downvoted'] = $this->children;
+	$this->votes['downvoted'] = isset($this->children['class']) ? $this->children['class'] : array();
       }
-	
   }
 
   function is_taking_class($id)

@@ -2,23 +2,25 @@
 
 require_once('init.php');
 
-$course = new course($_POST['id']);
+$course = new course($dbpdo,$_POST['id']);
 
 if(logged_in())
   {
-    $user = new user($course->session('user_id']);
-    $user->remove_association($user->id, $course->id, '%vote');
+    $user = new user($dbpdo, $course->session('user_id'));
+    $user->remove_association($user->id, $course->id, 'upvote');
+    $user->remove_association($user->id, $course->id, 'downvote');
     switch($_POST['action'])
       {
-      case upvote:
+      case 'upvote':
 	$user->upvote($course->id);
 	break;
-      case downvote:
+      case 'downvote':
 	$user->downvote($course->id);
 	break;
       default:
 	break;
       }
+    $user->get_votes();
     votebox($course, $user);
   }
 else

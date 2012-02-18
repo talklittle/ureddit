@@ -179,15 +179,33 @@ class course extends object
   function calculate_score()
   {
     $votes = $this->get_parents('user','upvote');
-    $score = isset($this->parents['upvote']) ? count($this->parents['upvote']) : 0;
+    $score = isset($this->parents['user']) ? count($this->parents['user']) : 0;
     $votes = $this->get_parents('user','downvote');
-    $score -= isset($this->parents['downvote']) ? count($this->parents['downvote']) : 0;
+    $score -= isset($this->parents['user']) ? count($this->parents['user']) : 0;
     return $score;
   }
 
   function display_full()
   {
 
+  }
+
+  function display_with_container($expanded = false, $full = false)
+  {
+    ?>
+    <div class="class" id="class<?=$this->id ?>">
+       <div class="content">
+    <?php
+    $this->display($expanded, $full);
+    ?>
+       </div>
+    </div>
+    <?php
+  }
+
+  function display_without_container($expanded = false, $full = false)
+  {
+    $this->display($expanded, $full);
   }
 
   function display($expanded = false, $full = false)
@@ -201,14 +219,12 @@ class course extends object
       $user = $this->dbpdo;
 
     ?>
-    <div class="class" id="class<?=$this->id ?>">
-       <div class="content">
           <div class="voting">
-             <?=votebox($this, $this->session('logged-in') ? $user : false) ?>
+             <?=votebox($this, $this->session('logged_in') ? $user : false) ?>
           </div>
           <div class="showhide">
 	     [<a
-	   onclick="$.get('<?=PREFIX ?>/show_class.php',{id: '<?=$this->id ?>', show: '<?=$expanded == 'true' ? 'false' : 'true' ?>'}, function(data){$('#class<?=$this->id ?>').html(data);});"
+	   onclick="$.get('<?=PREFIX ?>/show_class.php',{id: '<?=$this->id ?>', show: '<?=$expanded == 'true' ? 'false' : 'true' ?>'}, function(data){$('#class<?=$this->id ?> > .content').html(data);});"
 	      ><?=($expanded == true ? "-" : "+") ?></a>]
           </div> 
 	  <?php
@@ -280,7 +296,7 @@ class course extends object
 		    try
 		      {
 			$ru = $user->get_attribute_value('reddit_username');
-			$text .= "<a href=\"http://reddit.com/user/$ru\"><img style=\"border: 0; width: 1em; height: 1em; margin: 0 3px;\" src=\"" . PREFIX . "/images/reddit.png\"></a>";
+			$text .= "<a href=\"http://reddit.com/user/$ru\"><img style=\"border: 0; width: 1em; height: 1em; margin: 0 3px;\" src=\"" . PREFIX . "/img/reddit-small.png\"></a>";
 		      }
 		    catch (ObjectAttributeNotFoundException $e)
 		      {
@@ -311,7 +327,7 @@ class course extends object
               echo "[<a href=\"/class/" . $this->id . "/files\" class=\"link-class-desc\">class files</a>] ";
 
             ?>
-            [<a href="<?=PREFIX ?>/class/<?=$this->id ?>" class="link-class-desc">class page</a>]
+            [<a href="<?=PREFIX ?>/class/<?=$this->id ?>/<?=$this->seo_string($this->value) ?>" class="link-class-desc">class page</a>]
             <?php
 	    if(logged_in())
 	      {
@@ -445,8 +461,6 @@ class course extends object
 	    <?php
 	    }
 	    ?>
-	</div>
-	</div>
     <?php
   }
 
