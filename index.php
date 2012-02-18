@@ -57,7 +57,7 @@ require_once('init.php');
 	    foreach($categories as $category_id => $category)
 	      $category->display(true);
 	  else
-	    $categories[$active_category_id]->display();
+	    $categories[$active_category_id]->display(true, 'open', true);
         ?>
       </div>
       <div id="separate-main-footer">
