@@ -47,9 +47,11 @@ class category extends object
       if($expand_category)
 	{
 	  echo $this->value;
+	  /*
 	  ?>
 	  <span class="showhide"><a onclick="$.get('<?=PREFIX ?>/category.php',{id: '<?=$this->id ?>', show: 'false', filter: '<?=$filter ?>'}, function(data) { $('#category<?=$this->id ?>').html(data)});" class="link-showhide">[hide]</a></span></div>
 	  <?php
+	  */
 	  foreach($this->classes as $class_id)
 	    {
 	      $class = new course($this->dbpdo, $class_id);
@@ -63,7 +65,7 @@ class category extends object
 		//$class->display($expand_classes, $class_details);
 	      }
 	    }
-	  echo '</div>';
+	  echo '</div></div>';
 	}
       else
 	{

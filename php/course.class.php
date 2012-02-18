@@ -184,27 +184,28 @@ class course extends object
       $user = $this->dbpdo;
 
     ?>
-    <div id="class<?=$this->id ?>">
-      <div class="class">
-        <?php
-        if(!$full)
-          {
-	    ?>
-            <div style="font-size: 0.8em; font-weight:bold; float:left; padding-right: 8px;">
-              [<a
-                style="cursor: pointer;"
-                onclick="$.get('<?=PREFIX ?>/show_class.php',{id: '<?=$this->id ?>', show: '<?=$expanded == 'true' ? 'false' : 'true' ?>'}, function(data){$('#class<?=$this->id ?>').html(data);});"
-              ><?=($expanded == true ? "-" : "+") ?></a>]
-            </div> 
-            <?php
-	  }
-            signup_button($user,$this->id);
-        ?>
+    <div class="class" id="class<?=$this->id ?>">
+    <div class="content">
+      <?php
+      if(!$full)
+        {
+	  ?>
+	  <div style="font-size: 0.8em; font-weight:bold; float:left; padding-right: 8px;">
+	  [<a
+	   style="cursor: pointer;"
+	   onclick="$.get('<?=PREFIX ?>/show_class.php',{id: '<?=$this->id ?>', show: '<?=$expanded == 'true' ? 'false' : 'true' ?>'}, function(data){$('#class<?=$this->id ?>').html(data);});"
+	   ><?=($expanded == true ? "-" : "+") ?></a>]
+	   </div> 
+	   <?php
+	 }
+       signup_button($user,$this->id);
+     ?>
       <div class="class-name">
         <?php
         echo htmlspecialchars(stripslashes($this->value));
         try
 	  {
+	    /*
 	    if($this->get_attribute_value('live') == 'true')
 	      {
 		?>
@@ -214,6 +215,7 @@ class course extends object
                 </span>
 		<?php
 	      }
+	    */
 	    if($this->teachers === NULL)
 	      $this->get_teachers();
 	    if(in_array($this->session('user_id'), $this->teachers))
@@ -429,7 +431,7 @@ class course extends object
 	    <?php
 	    }
 	    ?>
-	  </div>
+	</div>
 	</div>
     <?php
   }

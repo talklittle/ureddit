@@ -33,54 +33,37 @@ require_once('init.php');
   ?>
   <div id="main" role="main">
     <div id="catalog-category-list">
-      <div class="category<?=$active_category_id === -1 ? ' active' : '' ?>" id="category-all">
-        <div class="content">
-          <a href="<?=PREFIX ?>/">All categories</a>
+      <div class="content">
+        <div class="category<?=$active_category_id === -1 ? ' active' : '' ?>" id="category-all">
+          <div class="content">
+            <a href="<?=PREFIX ?>/">All categories</a>
+          </div>
         </div>
+        <?php
+        $categories = array();
+        foreach($catalog->categories as $category_id)
+	  {
+	    $category = new category($dbpdo, $category_id);
+	    $categories[$category_id] = $category;
+	    $category->display(false);
+	  }
+        ?>
       </div>
-      <?php
-      $categories = array();
-      foreach($catalog->categories as $category_id)
-        {
-	  $category = new category($dbpdo, $category_id);
-	  $categories[$category_id] = $category;
-	  $category->display(false);
-	}
-      ?>
     </div>
     <div id="catalog-class-list">
-      <?php
-        if($active_category_id == -1)
-	  {
+      <div class="content">
+        <?php
+          if($active_category_id == -1)
 	    foreach($categories as $category_id => $category)
-	      {
-		$category->display(true);
-	      }
-	  }
-	else
-	  {
-	    foreach($categories[$active_category_id]->classes as $class_id)
-	      {
-		$class = new course($dbpdo, $class_id);
-		$class->display();
-	      }
-	  }
-      ?>
+	      $category->display(true);
+	  else
+	    $categories[$active_category_id]->display();
+        ?>
+      </div>
+      <div id="separate-main-footer">
+      </div>
     </div>
   </div>
   <?php require_once('footer.php'); ?>
-
-  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-  <script>window.jQuery || document.write('<script src="<?=PREFIX ?>/js/libs/jquery-1.7.1.min.js"><\/script>')</script>
-
-  <script src="<?=PREFIX ?>/js/plugins.js"></script>
-  <script src="<?=PREFIX ?>/js/script.js"></script>
-
-  <script>
-    var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];
-    (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
-    g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
-    s.parentNode.insertBefore(g,s)}(document,'script'));
-  </script>
 </body>
 </html>
