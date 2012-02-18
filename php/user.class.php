@@ -71,6 +71,13 @@ class user extends object
       $this->teaching = array();
   }
 
+  function is_teacher()
+  {
+    if($this->teaching === NULL)
+      $this->get_taught_classes();
+    return !(count($this->teaching) == 0);
+  }
+
   function verify_credentials($username, $password)
   {
     $hash = $this->hash_password($password);
