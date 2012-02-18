@@ -1,36 +1,43 @@
 <?php
-require('init.php');
+require_once('init.php');
 ?>
-<!DOCTYPE html>
-<html>
+
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
 <head>
-<?php include('favicon.html'); ?>
-<meta charset=UTF-8>
-<title>University of Reddit</title>
-<link href="<?=PREFIX ?>/style.css" rel="stylesheet" type="text/css" />
-<script type="text/javascript" src="<?=PREFIX ?>/jquery-1.4.2.min.js"></script>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>University of Reddit</title>
+  <meta name="description" content="">
+
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" href="css/style.css">
+
+  <script src="js/libs/modernizr-2.5.2.min.js"></script>
 </head>
-
 <body>
-<? require('header.php'); ?>
-<div id="main">
+  <!--[if lt IE 7]><p class=chromeframe>Your browser is <em>ancient!</em> <a href="http://browsehappy.com/">Upgrade to a different browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to experience this site.</p><![endif]-->
+  <?php require_once('header.php'); ?>
+  <?php require_once('social.php'); ?>
+  <div role="main">
 
-  <div style="width:780px; margin: 10px 10px 10px 10px; padding: 10px; background-color: #FDED93; border: 1px solid #FFAE00">
-  Follow <a href="http://twitter.com/uofreddit">@uofreddit on Twitter</a> for new class announcements, existing class' updates, site changes, and more!
   </div>
-  <div class="pagetitle">
-    Classes 
-  <span class="class" style="font-size: 0.5em; font-weight: normal; padding: 5px;">filter by status: <a href="<?=PREFIX ?>/filter/open" <?=$_GET['show']=='open' ? 'style="font-weight:bold; text-decoration: none;"' : '' ?>">open</a> | <a href="<?=PREFIX ?>/filter/completed" <?=$_GET['show']=='completed' ? 'style="font-weight:bold; text-decoration: none;"' : '' ?>">completed</a> | <a href="<?=PREFIX ?>/filter/all" <?=$_GET['show']=='all' ? 'style="font-weight:bold; text-decoration: none;"' : '' ?>">all</a></span>
-  </div>
-  <?php
+  <?php require_once('footer.php'); ?>
 
-  $catalog = new catalog($dbpdo);
-  $catalog->display(true, $_GET['show']);
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+  <script>window.jQuery || document.write('<script src="js/libs/jquery-1.7.1.min.js"><\/script>')</script>
 
-  ?>
-</div>
+  <script src="js/plugins.js"></script>
+  <script src="js/script.js"></script>
 
-<?php require('footer.php'); ?>
-
+  <script>
+    var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];
+    (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+    g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
+    s.parentNode.insertBefore(g,s)}(document,'script'));
+  </script>
 </body>
 </html>

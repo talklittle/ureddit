@@ -177,6 +177,19 @@ function object_type_value_to_id($dbpdo, $type, $value)
 				 ));
 }
 
+function latest_reddit_post()
+{
+  $json = json_decode(stripslashes(file_get_contents('reddit.json')), true);
+  return array('url' => $json['data']['children'][0]['data']['url'], 'title' => $json['data']['children'][0]['data']['title']);
+}
+
+function latest_tweet($config)
+{
+  $t = new Twitter($config::twitterConsumerKey, $config::twitterConsumerSecret, $config::twitterAccessToken, $config::twitterAccessTokenSecret);
+  $latest = $t->load(Twitter::ME,1);
+  return Twitter::clickable($latest->status->text);
+}
+
 function tweet($config,$status)
 {
   $t = new Twitter($config::twitterConsumerKey, $config::twitterConsumerSecret, $config::twitterAccessToken, $config::twitterAccessTokenSecret);
