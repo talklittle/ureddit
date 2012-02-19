@@ -73,6 +73,11 @@ html, body
     margin: 0;
 }
 
+body
+{
+    background-color: #efefef;
+}
+
 header
 {
     height: 101px;
@@ -103,7 +108,7 @@ img#messages
 
 #socialbar
 {
-    height: 105px;
+    height: 100px;
     background: url('../img/socialbarbg.png');
     width: 100%;
     text-align: center;
@@ -151,6 +156,8 @@ img#messages
 #socialbar ul li .socialbar-item .content
 {
     padding-right: 5px;
+    margin: 5px 0;
+    vertical-align: middle;
 }
 
 #socialbar ul li .socialbar-item .content a:link, #socialbar ul li .socialbar-item .content a:visited, socialbar ul li .socialbar-item .content a:hover, socialbar ul li .socialbar-item .content a:active
@@ -167,11 +174,10 @@ img#messages
 
 #twitter
 {
-    border: 0;
     width: 37px;
     height: 28px;
+    margin: 30px 10px;
     float: left;
-    margin: 15px 10px 10px 10px;
     vertical-align: top;
 }
 
@@ -219,13 +225,14 @@ nav a.active
     width: 30%;
     height: 100%;
     float: left;
-    padding-left: 1px;
 }
 
 #catalog-category-list .content
 {
-    padding: 0;
-    height: 100%
+    padding: 10px 0 0 0;
+    height: 100%;
+    width: 100%;
+    position: relative;
 }
 
 #catalog-category-list .content .category .content
@@ -245,6 +252,8 @@ nav a.active
     background-color: #232323;
     color: #d4d4d4;
     font-weight: bold;
+    margin: 0;
+    padding: 0;
 }
 
 #catalog-category-list .active a:link, #catalog-category-list .active a:visited, #catalog-category-list .active a:hover, #catalog-category-list .active a:active
@@ -257,12 +266,15 @@ nav a.active
 #catalog-class-list
 {
     width: 70%;
+    margin: 0;
+    padding: 0;
     float: right;
+    background-color: white;
 }
 
 #catalog-class-list .content
 {
-    padding: 0 5px 0 0;
+    padding: 10px 5px 0 0;
     border-left: 3px solid #232323;
     height: 100%;
 }
@@ -281,12 +293,19 @@ nav a.active
 #catalog-class-list .content .category .content .class
 {
     font-weight: normal;
-    padding: 5px 0 5px 0;
-    background-color: #f5f5f5;
-    border: 1px solid #c3c3c3;
+    padding: 5px 0 15px 0;
+    /*background-color: #f5f5f5;*/
+    background-color: #ffffff;
+    /*border: 1px solid #c3c3c3;*/
+    border-bottom: 1px dashed #c3c3c3;
     border-radius: 5px;
     font-size: 0.8em;
     margin: 10px 0 10px 10px;
+}
+
+#catalog-class-list .content .category .content .class:last-child
+{
+    border: 0;
 }
 
 #catalog-class-list .content .category .content .class .content
@@ -430,11 +449,12 @@ footer
 {
     clear: both;
     padding: 10px 0;
-    background-color: #e1e1e1;
+    background-color: #dedede;
     width: 100%;
     text-align: center;
     font-size: 0.6em;
     color: #464646;
+    border-top: 1px solid #232323;
 }
 
 footer a:link, a:visited, a:hover, a:active

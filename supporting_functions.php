@@ -6,8 +6,8 @@ define('USE_MARKDOWN','true');
 
 function latest_commit()
 {
-  //$fdata = new SimpleXMLElement(stripslashes(file_get_contents("https://github.com/ureddit/ureddit/commits/master.atom")), true);
-$fdata = new SimpleXMLElement(file_get_contents("github.txt"), true);
+  $fdata = new SimpleXMLElement(stripslashes(file_get_contents("https://github.com/ureddit/ureddit/commits/master.atom")), true);
+  //$fdata = new SimpleXMLElement(file_get_contents("github.txt"), true);
   return array('title' => $fdata->entry[0]->title, 'url' => $fdata->entry[0]->link[0]['href']);
 }
 

@@ -28,11 +28,11 @@
            ?>
 
           <?php
-	    if(logged_in() && !$user->is_teacher())
+	    if(logged_in() && $user->is_teacher())
 	      {
 		?>
            <li>
-              <a href="<?=PREFIX ?>/teach" <?=$page == 'teach.php' ? 'class="active"' : '' ?>>teach a class</a>
+		<a href="<?=PREFIX ?>/teachers" <?=$page == '.php' && strpos($_SERVER['PHP_SELF'],'teachers') !== false ? 'class="active"' : '' ?>>manage classes</a>
            </li>
 		<?php
 	      }
@@ -40,7 +40,7 @@
 	      {
 		?>
            <li>
-		<a href="<?=PREFIX ?>/teachers" <?=$page == '.php' && strpos($_SERVER['PHP_SELF'],'teachers') !== false ? 'class="active"' : '' ?>>manage classes</a>
+              <a href="<?=PREFIX ?>/teach" <?=$page == 'teach.php' ? 'class="active"' : '' ?>>teach a class</a>
            </li>
 		<?php
 	      }
