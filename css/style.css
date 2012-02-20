@@ -259,7 +259,7 @@ nav a.active
     font-size: 0.8em;
 }
 
-#class-page
+#class-page, #login
 {
     background-color: white;
     width: 70%;
@@ -268,13 +268,19 @@ nav a.active
     font-size: 0.8em;
 }
 
-#class-page .content
+#class-page .content, #login .content
 {
     padding: 10px;
     height: 100%;
 }
 
-#class-page-roster
+#login .content p a, #login .content p a:link, #login .content p a:visited, #login .content p a:hover, #login .content p a:active
+{
+    color: #464646;
+    text-decoration: underline;
+}
+
+#class-page-roster, #why-register
 {
     width: 30%;
     height: 100%;
@@ -282,7 +288,7 @@ nav a.active
     font-size: 0.8em;
 }
 
-#class-page-roster .content
+#class-page-roster .content, #why-register .content
 {
     border-left: 3px solid #232323;
     padding: 10px;
