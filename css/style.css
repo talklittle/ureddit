@@ -79,6 +79,30 @@ header
     background: url('../img/headerbg.png');
 }
 
+#help
+{
+    width: 100%;
+    background-color: white;
+    font-size: 0.8em;
+}
+
+#help .content
+{
+    padding: 0 10px 10px 10px;
+}
+
+#help .content p a, #help .content p a:link, #help .content p a:visited, #help .content p a:hover, #help .content p a:active, #help .content ul li a, #help .content ul li a:link, #help .content ul li a:visited, #help .content ul li a:hover, #help .content ul li a:active
+{
+    color: #464646;
+    text-decoration: underline;
+}
+
+#help .content p a, #help .content p a:link, #help .content p a:visited, #help .content p a:hover, #help .content p a:active
+{
+    color: #464646;
+    text-decoration: underline;
+}
+
 .infobox
 {
     background-color: #FDED93;

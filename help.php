@@ -1,46 +1,72 @@
 <?php
-require_once('init.php');
-?>
-<!DOCTYPE html>
-<html>
-<head>
-<?php include('favicon.html'); ?>
-<meta charset=UTF-8>
-<title>University of Reddit</title>
-<link href="<?=PREFIX ?>/style.css" rel="stylesheet" type="text/css" />
-<script type="text/javascript" src="jquery-1.4.2.min.js"></script>
-<style type="text/css">
-<!--
-p {
-  margin: 0 0 5px 50px;
-}
-h1 {
-  margin-top: 20px;
-  margin-bottom: 10px;
-}
-h2 {
-  margin-left: 25px;
-  margin-bottom: 3px;
-}
 
-ul {
-  margin: 10px 0 10px 100px;
-}
+require_once('init.php');
+
+?>
+
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>University of Reddit</title>
+  <meta name="description" content="">
+
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" href="<?=PREFIX ?>/css/style.css">
+
+  <script src="<?=PREFIX ?>/js/libs/modernizr-2.5.2.min.js"></script>
+  <style type="text/css">
+  p {
+    margin: 0 0 5px 50px;
+  }
+
+  h1 {
+    margin-top: 20px;
+    margin-bottom: 10px;
+  }
+
+  h2 {
+    margin-left: 25px;
+    margin-bottom: 3px;
+  }
+
+  h3 {
+    margin-left: 30px;
+    margin-bottom: 3px;
+  }
+
+  ul {
+    margin: 10px 0 10px 100px;
+  }
 -->
 </style>
 </head>
-
 <body>
-<? require('header.php'); ?>
-<div id="main">
-  <div class="pagetitle" style="font-size: 35px;">
-    Frequently Asked Questions
-  </div>
+  <!--[if lt IE 7]><p class=chromeframe>Your browser is <em>ancient!</em> <a href="http://browsehappy.com/">Upgrade to a different browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to experience this site.</p><![endif]-->
+  <?php
+  require_once('header.php');
+  require_once('social.php');
 
+  if(isset($_GET['category_id']) && count($dbpdo->query("SELECT `id` FROM `objects` WHERE `id` = ? AND `type` = 'category' LIMIT 1", array($_GET['category_id'])) != 0))
+    $active_category_id = $_GET['category_id'];
+  else
+    $active_category_id = -1;
+
+  $catalog = new catalog($dbpdo);
+  ?>
+  <div id="main" role="main">
+    <div id="help">
+      <div class="content">
 <?php
 
 $str = <<<EOD
-# Basics
+#Help and FAQs
+
+## Basics
 
 **What is University of Reddit?**  
 The University of Reddit is the product of free intellectualism and is a haven for the sharing of knowledge. Teachers and students are free to explore any subject that interests them.
@@ -67,9 +93,9 @@ While we are trying to reduce our anglocentrism, our website is completely in En
 **Who's in charge here?**  
 While we strive to make University of Reddit as self-sustaining as possible, the moderators (eawesome3, amberamberamber, justrasputin and aveman101) are here to iron out any bugs on the website. Should you find anything wrong or have questions, don't hesitate to get in touch - we're more than happy to help.
 
-# How do I get involved?
+## How do I get involved?
 
-## Students
+### Students
 
 **Take classes!**  
 Taking classes is a great way to fulfill University of Reddit's mission. We do ask that students put a bit of thought before committing to a class. In doing so, students that are actually keen on taking a certain class will have the opportunity to engage and interact with students of a similar mindset. Additionally, depending on the course's structure, failure to contribute may negatively affect the overall outcome of the class.
@@ -85,7 +111,7 @@ Absolutely! There are no limitations as to when you can leave, nor are there any
 **I want to take a class that isn't offered. What should I do?**  
 Find a relevant subreddit and ask its userbase! In doing so, it's highly  probable that someone will offer to teach the class and they'll be an  expert on that topic. Alternatively, you can ask within our [subreddit](http://www.reddit.com/r/UniversityofReddit/).
 
-## Teachers
+### Teachers
 
 **Sign up to teach a class!**  
 Your class can be about anything academic or nonacademic. Once you have registered an account with us, you can create a class by clicking "become a teacher" in the top right (or by clicking [here](http://universityofreddit.com/teach)).
@@ -95,7 +121,7 @@ Your class can be about anything academic or nonacademic. Once you have register
 Once you have created a class, you should announce it by submitting it to [our reddit](http://reddit.com/r/UniversityofReddit) - make sure you start the title with "[Class]."
 
 
-# Resources
+## Resources
 
 **What tools does UReddit provide?**
 
@@ -122,7 +148,7 @@ We are also currently developing our own open-source classroom software - keep a
 **Where can I interact with the University of Reddit community?**  
 Make sure you visit #universityofreddit on the freenode IRC network. If you are a beginner with IRC, here is a [basic tutorial](http://irchelp.org/irchelp/irctutorial.html) to get you started. We also have a class on IRC for those interested. 
 
-# Website FAQ
+## Website FAQ
 
 **I've lost my password! What's the next logical step?**  
 First, think very hard. Where did you last put it? If you still can't remember, you can go to the [password recovery page](http://universityofreddit.com/recover_password).
@@ -144,10 +170,9 @@ EOD;
 
 echo process($str);
 ?>
-
-</div>
-
-<?php require('footer.php'); ?>
-
+      </div>
+    </div>
+  </div>
+  <?php require_once('footer.php'); ?>
 </body>
 </html>
