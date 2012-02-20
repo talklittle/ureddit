@@ -3,7 +3,7 @@
       <ul>
          <li>
             <div class="socialbar-item">
-      <a href="http://twitter.com/uofreddit"><img src="<?=PREFIX ?>/img/twitter.png" alt="@uofreddit" id="twitter"></a><p class="content"><!--em>Latest tweet</em>:<br-->
+      <a href="http://twitter.com/uofreddit"><img src="<?=PREFIX ?>/img/twitter.png" alt="@uofreddit" id="twitter"></a><p class="content"><em>Latest tweet</em>:<br>
       <?php
       $data = latest_tweet($config); echo '<a href="' . $data['url'] . '" class="nounderline">' . $data['text'] . '</a>';
       ?></p>
@@ -11,7 +11,7 @@
          </li>
          <li>
             <div class="socialbar-item">
-      <a href="http://reddit.com/r/UniversityofReddit"><img src="<?=PREFIX ?>/img/reddit.png" alt="/r/UniversityofReddit" id="reddit"></a><p class="content"><!--em>Latest Reddit Post</em>:<br-->
+      <a href="http://reddit.com/r/UniversityofReddit"><img src="<?=PREFIX ?>/img/reddit.png" alt="/r/UniversityofReddit" id="reddit"></a><p class="content"><em>Latest Reddit Post</em>:<br>
       <?php
       $data = latest_reddit_post(); echo '<a href="' . $data['url'] . '" class="nounderline">' . $data['title'] . '</a>';
       ?></p>
@@ -19,15 +19,18 @@
          </li>
          <li>
             <div class="socialbar-item">
-      <a href="http://github.com/ureddit/ureddit"><img src="<?=PREFIX ?>/img/github.png" alt="ureddit on GitHub" id="github"></a><p class="content"><!--em>Latest GitHub commit</em>:<br-->
+      <a href="<?=PREFIX ?>/blog"><img src="<?=PREFIX ?>/img/wordpress.png" alt="UReddit Blog" id="wordpress"></a><p class="content"><em>Latest WordPress Post</em>:<br>
       <?php
-      $data = latest_commit(); echo '"<a href="' . $data['url'] . '" class="nounderline">' . $data['title'] . '</a>"';
+	 $data = latest_blog_post($dbpdo); echo '<a href="' . PREFIX . $data['url'] . '" class="nounderline">' . $data['title'] . '</a>';
       ?></p>
             </div>
          </li>
          <li>
             <div class="socialbar-item">
-               featured item
+      <a href="http://github.com/ureddit/ureddit"><img src="<?=PREFIX ?>/img/github.png" alt="ureddit on GitHub" id="github"></a><p class="content"><em>Latest GitHub commit</em>:<br>
+      <?php
+      $data = latest_commit(); echo '"<a href="' . $data['url'] . '" class="nounderline">' . $data['title'] . '</a>"';
+      ?></p>
             </div>
          </li>
       </ul>

@@ -64,13 +64,8 @@ td { vertical-align: top; }
 
 .chromeframe { margin: 0.2em 0; background: #ccc; color: black; padding: 0.2em 0; }
 
-
-html, body
+html
 {
-    width: 100%;
-    min-width: 768px;
-    padding: 0;
-    margin: 0;
 }
 
 body
@@ -80,8 +75,16 @@ body
 
 header
 {
-    height: 101px;
+    height: 100px;
     background: url('../img/headerbg.png');
+}
+
+.infobox
+{
+    background-color: #FDED93;
+    border: 1px solid #FFAE00;
+    padding: 10px;
+    font-size: 0.7em;
 }
 
 img#logo
@@ -150,14 +153,14 @@ img#messages
     border-width: 1px;
     border-color: #444;
     text-align: left;
-    overflow: hidden;
 }
 
 #socialbar ul li .socialbar-item .content
 {
-    padding-right: 5px;
-    margin: 5px 0;
-    vertical-align: middle;
+    margin: 10px;
+    height: 68px;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 #socialbar ul li .socialbar-item .content a:link, #socialbar ul li .socialbar-item .content a:visited, socialbar ul li .socialbar-item .content a:hover, socialbar ul li .socialbar-item .content a:active
@@ -177,6 +180,15 @@ img#messages
     width: 37px;
     height: 28px;
     margin: 30px 10px;
+    float: left;
+    vertical-align: top;
+}
+
+#wordpress
+{
+    width: 53px;
+    height: 53px;
+    margin: 12px 10px;
     float: left;
     vertical-align: top;
 }
@@ -217,7 +229,65 @@ nav a.active
 
 #main
 {
+    min-width: 768px;
+    float: none;
     width: 100%;
+}
+
+#user
+{
+    width: 50%;
+    float: left;
+}
+
+#user .content
+{
+    padding: 5px;
+}
+
+#user-schedule
+{
+    width: 50%;
+    float: right;
+}
+
+#user-schedule .content
+{
+    padding: 5px;
+    border-left: 3px solid #232323;
+    background-color: white;
+    font-size: 0.8em;
+}
+
+#class-page
+{
+    background-color: white;
+    width: 70%;
+    height: 100%;
+    float: left;
+    font-size: 0.8em;
+}
+
+#class-page .content
+{
+    padding: 10px;
+    height: 100%;
+}
+
+#class-page-roster
+{
+    width: 30%;
+    height: 100%;
+    float: right;
+    font-size: 0.8em;
+}
+
+#class-page-roster .content
+{
+    border-left: 3px solid #232323;
+    padding: 10px;
+    height: 100%;
+
 }
 
 #catalog-category-list
@@ -308,12 +378,13 @@ nav a.active
     border: 0;
 }
 
-#catalog-class-list .content .category .content .class .content
+#catalog-class-list .content .category .content .class .content, #class-page .content .class .content
 {
     position: relative;
+    padding: 0;
 }
 
-#catalog-class-list .content .category .content .class .content .voting
+#catalog-class-list .content .category .content .class .content .voting, #class-page .content .class .content .voting
 {
     position: absolute;
     top: 0;
@@ -331,7 +402,7 @@ img.upvote, img.upvoted, img.downvote, img.downvoted
     cursor: pointer;
 }
 
-#catalog-class-list .content .category .content .class .content .class-name
+#catalog-class-list .content .category .content .class .content .class-name, #class-page .content .class .content .class-name, #class-page-roster .content .class-name
 {
     margin-right: 5em;
     font-weight: bold;
@@ -342,27 +413,62 @@ img.upvote, img.upvoted, img.downvote, img.downvoted
     font-size: 0.9em;
 }
 
-#catalog-class-list .content .category .content .class .content .class-info
+#class-page .content .class .content .class-name
 {
+    margin-top: 10px;
+}
+
+#class-page .content .class .content .class-desc
+{
+    border: 0;
+    padding-bottom: 10px;
+}
+
+#class-page .content .class .content .class-desc
+{
+    font-size: 0.9em;
+    border-bottom: 1px dashed #c3c3c3;
+}
+
+#class-page .content .class .content .class-desc-nounderline
+{
+    font-size: 0.9em;
+    margin-bottom: 40px;
+}
+
+#catalog-class-list .content .category .content .class .content .class-info, #class-page .content .class .content .class-info
+{
+    width: 100%;
+    text-align: right;
     font-size: 0.85em;
     font-style: italic;
 }
 
-#catalog-class-list .content .category .content .class .content .class-info a
+#catalog-class-list .content .category .content .class .content .class-info a, #class-page .content .class .content .class-info a
 {
     color: black;
 }
 
 
-#catalog-class-list .content .category .content .class .content .showhide
+#class-page .content .class .content .showhide
 {
+    margin: 0;
     font-size: 0.9em;
-    font-weight:bold;
+    font-weight: normal;
     float:left;
     padding-right: 8px;
 }
 
-#catalog-class-list .content .category .content .class .content .showhide a
+#catalog-class-list .content .category .content .class .content .showhide
+{
+
+    font-size: 0.9em;
+    font-weight: normal;
+    float:left;
+    padding-right: 8px;
+}
+
+#catalog-class-list .content .category .content .class .content .showhide a, #class-page .content .class .content .showhide a
 {
     color: black;
     text-decoration: none;
@@ -424,7 +530,7 @@ img.upvote, img.upvoted, img.downvote, img.downvoted
     height: 1.5em;
     font-size: 0.75em;
     min-width: 1px;
-    background-color: #ff6666;
+    background-color: #ff9c9c;
     border: 1px solid #cc3333;
     float: left;
 }
@@ -448,7 +554,7 @@ img.upvote, img.upvoted, img.downvote, img.downvoted
 footer
 {
     clear: both;
-    padding: 10px 0;
+    padding: 1em 0;
     background-color: #dedede;
     width: 100%;
     text-align: center;

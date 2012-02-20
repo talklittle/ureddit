@@ -134,6 +134,7 @@ class user extends object
     $this->add_parent($id, 'enrolled_student', 0);
     if($this->config->memcache())
       $this->memcache_delete('v3_roster_' . $id . '_with_attribute_' . 'reddit_username');
+    $this->upvote($id);
   }
 
   function drop_class($id)

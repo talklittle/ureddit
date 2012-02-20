@@ -4,6 +4,15 @@ define('COOKIE_SESSID','ureddit_sessid');
 define('PREFIX','/dev2/ureddit');
 define('USE_MARKDOWN','true');
 
+function latest_blog_post($dbpdo)
+{
+  $res = $dbpdo->query("SELECT `post_title`, `post_name`, `post_date` FROM `wp_posts` WHERE `post_status`='publish' AND `post_type`='post' ORDER BY `ID` DESC LIMIT 1", array());
+  $year = date("Y", strtotime($res[0]['post_date']));
+  $month = date("m", strtotime($res[0]['post_date']));
+  $day = date("d", strtotime($res[0]['post_date']));
+  return array('title' => $res[0]['post_title'], 'url' => '/blog/' . $year . '/' . $month . '/' . $day . '/' . $res[0]['post_name']);
+}
+
 function latest_commit()
 {
   $fdata = new SimpleXMLElement(stripslashes(file_get_contents("https://github.com/ureddit/ureddit/commits/master.atom")), true);
@@ -135,6 +144,23 @@ class statuses:
   echo "</div>\n";
 }
 
+function display_feed($user)
+{
+  $items = array();
+  if($user->created != '0000-00-00 00:00:00')
+    $items[date("U",strtotime($user->created))] = $user->value . ' registered on ' . $user->created;
+  
+  $user->get_taught_classes();
+  foreach($user->teaching as $class_id)
+    {
+      $classes[$class_id] = new course($user->dbpdo, $class_id);
+      if($classes[$class_id]->created != '0000-00-00 00:00:00')
+	$items[date("U",strtotime($classes[$class_id]->created))] = $user->value . " created a class on " . $classes[$class_id]->created;
+    }
+  arsort($items);
+  echo implode("<br>",$items);
+}
+
 function display_schedule($user)
 {
   $user->get_schedule();
@@ -148,7 +174,6 @@ function display_schedule($user)
       foreach($class->categories as $category_id)
 	$categories[$category_id][] = $class;
     }
-
   foreach($categories as $category_id => &$classes)
     {
       $category = new category($user->dbpdo, $category_id);
@@ -161,16 +186,14 @@ function display_schedule($user)
   foreach($sorted_categories as $category_id => $category_value)
     {
       ?>
-      <div id="category<?=$cat->id ?>">
-      <div class="category">
-	<div class="category-name">
-	<?=$category_value ?>
-	</div>
-       <?php
-	 foreach($categories[$category_id] as $class)
-   	  $class->display();
-      ?>
-      </div>
+      <div class="category <?=$_GET['category_id'] == $this->id ? ' active' : '' ?>">
+	<div class="content">
+	<?php
+	  echo $category_value;
+          foreach($categories[$category_id] as $class)
+	    $class->display_with_container();
+	?>
+        </div>
       </div>
       <?php
     }
@@ -218,7 +241,7 @@ function object_type_value_to_id($dbpdo, $type, $value)
 function latest_reddit_post()
 {
   $json = json_decode(stripslashes(file_get_contents('reddit.json')), true);
-  return array('url' => $json['data']['children'][0]['data']['url'], 'title' => $json['data']['children'][0]['data']['title']);
+  return array('url' => 'http://reddit.com' . $json['data']['children'][0]['data']['permalink'], 'title' => $json['data']['children'][0]['data']['title']);
 }
 
 function latest_tweet($config)

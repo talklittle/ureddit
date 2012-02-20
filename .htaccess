@@ -325,6 +325,7 @@ FileETag None
 <IfModule mod_rewrite.c>
   Options +FollowSymlinks
   RewriteEngine On
+
   RewriteRule ^category/([0-9]+)/?(.*)/?$ index.php?category_id=$1
   RewriteRule ^filter/open/?$ index.php?show=open
   RewriteRule ^filter/closed/?$ index.php?show=closed
@@ -351,6 +352,13 @@ FileETag None
   #RewriteRule ^blog\.ureddit\.com http://ureddit.com/blog
   #RewriteRule ^blog\.(u|universityof|uof)reddit\.com/?(.*)$ ureddit.com/blog/$1
   #RewriteRule ^files\.(u|universityof|uof)reddit\.com/?(.*)$ ureddit.com/files/$1
+
+  RewriteBase /dev2/ureddit/blog/
+  RewriteRule ^index\.php$ - [L]
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule . /dev2/ureddit/blog/index.php [L]
+
 </IfModule>
 
 

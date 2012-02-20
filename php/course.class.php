@@ -190,6 +190,33 @@ class course extends object
 
   }
 
+  function display_roster()
+  {
+    ?>
+	      <div class="class-name">
+	        Roster
+	      </div>
+	      <div class="class-desc">
+	      <?php 
+
+	      $data = $this->get_roster_with_attribute('reddit_username');
+	      $count = 0;
+	      foreach($data as $user)
+		{
+		  echo ++$count . '. <a href="' . PREFIX . '/user/' . $user[0] . '" style="color: black;">' . $user[0] . '</a>';
+		  if(isset($user[1]))
+		    {
+		      echo ' <a href="http://www.reddit.com/message/compose/?to=' . $user[1] . '"><img src="' . PREFIX . '/img/reddit-small.png" style="border: 0; height: 1em;" /></a>';
+		    }
+		  echo '<br />';
+		}
+	      if($count == 0)
+		{
+		  echo "<em>no students found</em>";
+		}
+	      ?></div><?php
+  }
+
   function display_with_container($expanded = false, $full = false)
   {
     ?>
@@ -270,7 +297,7 @@ class course extends object
         if($expanded == true)
 	  {
             ?>
-            <div class="class-desc">
+            <div class="class-desc-nounderline">
               <?php
 	      try
 	        {
@@ -305,7 +332,7 @@ class course extends object
 		    $teachers[] = $text;
 		  }
 		    
-		echo 'taught by ' . implode($teachers, ", ") . ' ';
+		echo ' - ' . implode($teachers, ", ") . ' ';
               }
 	    catch (ObjectNotFoundException $e)
 	      {
@@ -344,7 +371,6 @@ class course extends object
 	if($full)
 	  {
 	    ?>
-	      <br /><br />
               <div class="class-name">
                 Prerequisites
 	      </div>
@@ -361,7 +387,6 @@ class course extends object
 
 	      ?>
 	      </div>
-	      <br /><br />
 
 	      <div class="class-name">
 	        Syllabus
@@ -378,7 +403,6 @@ class course extends object
 		}
 	      ?>
 	      </div>
-	      <br /><br />
 
 	      <div class="class-name">
 	        Additional information
@@ -395,12 +419,11 @@ class course extends object
 		}
 	      ?>
 	      </div>
-	      <br /><br />
 
 	      <div class="class-name">
 		Teacher qualifications
 	      </div>
-	      <div class="class-desc">
+	      <div class="class-desc-nounderline">
 	      <?php
 	      try
 		{
@@ -412,52 +435,7 @@ class course extends object
 		}
 	      ?>
 	      </div>
-	      <br /><br />
 
-	      <div class="class-name">
-	        Roster
-	      </div>
-	      <div class="class-desc">
-	      <?php 
-	      //$data = $this->get_children_with_attribute('user','enrolled_student','reddit_username');
-	      $data = $this->get_roster_with_attribute('reddit_username');
-	      /*
-	      $count = 0;
-	      foreach($this->roster as $user_id)
-		{
-		  $user = new user($this->dbpdo, $user_id, 'reddit_username');
-		  echo ++$count . '. <a href="' . PREFIX . '/user/' . $user->value . '" style="color: black;">' . $user->value . '</a>';
-		  try
-		    {
-		      echo ' <a href="http://www.reddit.com/message/compose/?to=' . $user->get_attribute_value('reddit_username',false) . '"><img src="' . PREFIX . '/images/reddit.png" style="border: 0; height: 1em;" /></a>';
-		    }
-		  catch(ObjectAttributeNotFoundException $e)
-		    {
-
-		    }
-		  echo '<br />';
-		}
-	      if($count == 0)
-		{
-		  echo "<em>no students found</em>";
-		}
-	      */
-	      $count = 0;
-	      foreach($data as $user)
-		{
-		  echo ++$count . '. <a href="' . PREFIX . '/user/' . $user[0] . '" style="color: black;">' . $user[0] . '</a>';
-		  if(isset($user[1]))
-		    {
-		      echo ' <a href="http://www.reddit.com/message/compose/?to=' . $user[1] . '"><img src="' . PREFIX . '/images/reddit.png" style="border: 0; height: 1em;" /></a>';
-		    }
-		  echo '<br />';
-		}
-	      if($count == 0)
-		{
-		  echo "<em>no students found</em>";
-		}
-	      ?>
-	    </div>
 	    <?php
 	    }
 	    ?>

@@ -1,6 +1,5 @@
 <?php
-
-require('init.php');
+require_once('init.php');
 
 $id = object_type_value_to_id($dbpdo, 'user',$_GET['id']);
 if(count($id) == 0)
@@ -34,94 +33,81 @@ if(!preg_match($validation,$username))
   send_user_to("/");
 
 ?>
-<!DOCTYPE html>
-<html>
+
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
 <head>
-<?php include('favicon.html'); ?>
-<meta charset=UTF-8>
-<title>University of Reddit</title>
-<link href="<?=PREFIX ?>/style.css" rel="stylesheet" type="text/css" />
-<script type="text/javascript" src="<?=PREFIX ?>/jquery-1.4.2.min.js"></script>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>University of Reddit</title>
+  <meta name="description" content="">
+
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" href="<?=PREFIX ?>/css/style.css">
+
+  <script src="<?=PREFIX ?>/js/libs/modernizr-2.5.2.min.js"></script>
 </head>
-
 <body>
-<? require('header.php'); ?>
-<div id="main">
+  <!--[if lt IE 7]><p class=chromeframe>Your browser is <em>ancient!</em> <a href="http://browsehappy.com/">Upgrade to a different browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to experience this site.</p><![endif]-->
   <?php
-  if(logged_in()&& $_GET['id'] == $dbpdo->session('username'))
-	echo "<div style=\"width: 790px; background-color: #FDED93; border: 1px solid #FFAE00; padding: 10px;\">Did you know that you are automatically given an @ureddit.com email address? Access using <a href=\"http://ureddit.com/webmail\">webmail</a> <em>or</em> any email client set for incoming port 993 for IMAP+SSL or port 110 for POP3, with outgoing port 465 for STMP-SSL. You can also set up a forwarding address <a href=\"" . PREFIX . "/settings\">here</a>.</div><br />";
+  require_once('header.php');
+  require_once('social.php');
+
   ?>
-  <div class="pagetitle">
-  User: <?=$username ?>
-  </div>
+  <div id="main" role="main">
+    <div id="user">
+      <div class="content">
+      <?php
+        display_feed($user);
+      ?>
+      </div>
+    </div>
+    <div id="user-schedule">
+      <div class="content">
+        <?php
+        if(logged_in()&& $_GET['id'] == $dbpdo->session('username'))
+	  echo "<div class=\"infobox\">Did you know that you are automatically given an @ureddit.com email address? Access using <a href=\"http://ureddit.com/webmail\">webmail</a> <em>or</em> any email client set for incoming port 993 for IMAP+SSL or port 110 for POP3, with outgoing port 465 for STMP-SSL. You can also set up a forwarding address <a href=\"" . PREFIX . "/settings\">here</a>.</div><br />";
 
-  <div class="desc" style="margin-bottom: 30px;">
-    <?php
-  if(logged_in() && $_GET['id'] == $dbpdo->session('username'))
-      {
-	try
+        if(logged_in() && $_GET['id'] == $dbpdo->session('username'))
 	  {
-	    $ru = $user->get_attribute_value('reddit_username');
-	    echo "You have already linked your UofR account to <a href=\"http://www.reddit.com/user/" . $ru . "\">your Reddit acount.</a><br />";
+	    try
+	      {
+		$ru = $user->get_attribute_value('reddit_username');
+		echo "You have already linked your UofR account to <a href=\"http://www.reddit.com/user/" . $ru . "\">your Reddit acount.</a><br />";
+	      }
+	    catch (ObjectAttributeNotFoundException $e)
+	      {
+		echo "You have not yet linked your UofR account to a Reddit account. <a href=\"" . PREFIX . "/confirm\">Link me to Reddit!</a><br />";
+	      }
 	  }
-	catch (ObjectAttributeNotFoundException $e)
+	else
 	  {
-	    echo "You have not yet linked your UofR account to a Reddit account. <a href=\"" . PREFIX . "/confirm\">Link me to Reddit!</a><br />";
+	    try
+	      {
+		$viewed = new user($dbpdo, $id);
+		$vru = $viewed->get_attribute_value('reddit_username');
+		echo "<a href=\"http://www.reddit.com/message/compose/?to=" . $vru . "\">You can PM this user on Reddit.</a>";
+	      }
+	    catch (ObjectAttributeNotFoundException $e)
+	      {
+		echo "This user's account has not been linked to his or her Reddit account, if any.";
+	      }
 	  }
-      }
-    else
-      {
-	try
-	  {
-	    $viewed = new user($dbpdo, $id);
-	    $vru = $viewed->get_attribute_value('reddit_username');
-	    echo "<a href=\"http://www.reddit.com/message/compose/?to=" . $vru . "\">You can PM this user on Reddit.</a>";
-	  }
-	catch (ObjectAttributeNotFoundException $e)
-	  {
-	    echo "This user's account has not been linked to his or her Reddit account, if any.";
-	  }
-      }
-    ?>
+        ?>
+	  <div class="pagetitle">
+	  Class schedule:
+	  </div>
+	  <?php
+	  //display_schedule(new user($dbpdo, $id));
+          ?>
+      </div>
+      <div id="separate-main-footer">
+      </div>
+    </div>
   </div>
-
-  <?php
-  if(logged_in())
-  {
-  ?>
-  <div class="pagetitle">
-  Message this user:
-  </div>
-  <div class="class" style="margin-bottom: 30px; padding-bottom: 0px;">
-    <form method="post" action="<?=PREFIX ?>/user/<?=$username ?>">
-    <?php
-    if(isset($error) && count($error) > 0)
-      { ?>
-      <span style="color: red;"><?=$error[0] ?></span><br /><br />
-      <?php }
-    elseif(isset($success) && $success == true)
-      { ?>
-      your message has been sent!<br /><br />
-      <?php } ?>
-    <strong>Subject:</strong><br />
-    <input type="text" name="subj" style="font-family: verdana; font-size: 1em; width: 600px;" value="<?=!empty($_POST) && isset($error) && count($error) > 0 ? htmlspecialchars(stripslashes($_POST['subj'])) : "" ?>"/><br /><br />
-
-    <strong>Message:</strong><br />
-    <textarea name="msg" style="font-family: verdana; font-size: 1em; width: 600px; height: 100px; padding: 3px;"><?=!empty($_POST) && isset($error) && count($error) > 0 ? htmlspecialchars(stripslashes($_POST['msg'])) : "" ?></textarea><br /><br />
-    <input type="submit" value="Send PM" style="padding: 2px;" />
-    </form><br />
-  </div>
-  <?php } ?>
-
-  <div class="pagetitle">
-  Class schedule:
-  </div>
-  <?php
-  display_schedule(new user($dbpdo, $id));
-  ?>
-</div>
-
-<?php include('footer.php'); ?>
-
+  <?php require_once('footer.php'); ?>
 </body>
 </html>
