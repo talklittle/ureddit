@@ -174,6 +174,8 @@ function display_schedule($user)
   foreach($user->schedule as $class_id)
     {
       $class = new course($user->dbpdo, $class_id);
+      if($course->get_attribute_value('status') == '0')
+	continue;
       $class->get_categories();
       foreach($class->categories as $category_id)
 	$categories[$category_id][] = $class;
@@ -195,8 +197,7 @@ function display_schedule($user)
 	<?php
 	  echo $category_value;
           foreach($categories[$category_id] as $class)
-	    if($class->get_attribute_value('status') != '0')
-	      $class->display_with_container();
+	    $class->display_with_container();
 	?>
         </div>
       </div>
