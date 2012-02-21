@@ -151,7 +151,7 @@ function get_feed($user)
   foreach($actions as $action)
     {
       if(is_null($action['child_id']))
-	$items[] = '<strong>' . $user->value . '</strong> ' . $action['action'];
+	$items[] = '<li><strong>' . $user->value . '</strong> ' . $action['action'] . '<br><small><em>' . $action['datetime'] . '</em></small></li>';
       else
 	{
 	  $object = new object($user->dbpdo, $action['child_id']);
