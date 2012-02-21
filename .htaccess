@@ -332,6 +332,8 @@ FileETag None
   RewriteRule ^filter/completed/?$ index.php?show=completed
   RewriteRule ^filter/all/?$ index.php?show=all
   RewriteRule ^user/([^/]*)/?$ user.php?id=$1
+  RewriteRule ^class/([0-9]+)/message/?$ teachers/msg_class.php?id=$1
+  RewriteRule ^class/([0-9]+)/edit/?$ teachers/edit_class.php?id=$1
   RewriteRule ^class/([0-9]+)/?(.*)/?$ class.php?id=$1
   RewriteRule ^class/([0-9]+)/files/?$ files/class$1/files
   RewriteRule ^teach/?$ teach.php
@@ -344,8 +346,6 @@ FileETag None
   RewriteRule ^logout/?$ logout.php
   RewriteRule ^register/?$ register.php
   RewriteRule ^help/?$ help.php
-  RewriteRule ^class/([0-9]+)/message/?$ teachers/msg_class.php?id=$1
-  RewriteRule ^class/([0-9]+)/edit/?$ teachers/edit_class.php?id=$1
   RewriteRule ^c([0-9]+)/?$ class.php?id=$1
   RewriteRule ^/$ index.php
   RewriteRule ^/teachers/?$ /teachers/index.php

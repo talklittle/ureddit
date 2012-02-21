@@ -99,22 +99,34 @@ if(!empty($_POST))
 }
 
 ?>
-<!DOCTYPE html>
-<html>
+
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
 <head>
-<?php include('../favicon.html'); ?>
-<meta charset=UTF-8>
-<title>University of Reddit</title>
-<link href="<?=PREFIX ?>/style.css" rel="stylesheet" type="text/css" />
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>University of Reddit</title>
+  <meta name="description" content="">
+
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" href="<?=PREFIX ?>/css/style.css">
+
+  <script src="<?=PREFIX ?>/js/libs/modernizr-2.5.2.min.js"></script>
 </head>
-
 <body>
-<? require('../header.php'); ?>
-<div id="main">
-  <div class="pagetitle">
-    Edit class: <?=htmlspecialchars($class->value) ?>
-  </div>
+  <!--[if lt IE 7]><p class=chromeframe>Your browser is <em>ancient!</em> <a href="http://browsehappy.com/">Upgrade to a different browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to experience this site.</p><![endif]-->
+  <?php
+  require_once('../header.php');
+  require_once('../social.php');
 
+  ?>
+  <div id="main" role="main">
+    <div id="teach">
+      <div class="content">
+        <h1>Edit class</h1>
 <div style="color: red;">
 <?php
 if(count($error) != 0)
@@ -175,8 +187,39 @@ What is the status of your class?<br />
 
 <input type="submit" style="padding: 3px;" />
 </form>
+      </div>
+    </div>
+    <div id="teach-side">
+      <div class="content">
+        <h2>READ ME!</h2>
 
-</div>
+        Thank you for considering offering a class, but, please, consider the following first:
 
+        <ul>
+          <li>
+            You are making a commitment to everyone that signs up for your class. Are you <strong>sure</strong> that you will be able to follow through and complete this class? Are you <strong>sure</strong> that you will consistently have the free time?
+          </li>
+          <li>
+            Consider preparing a sizable portion of the material for your class beforehand in order to be prepared for any unforseen circumstances.
+          </li>
+          <li>
+    Are you aware of all the resources available to you? You should have read the <a href="<?=PREFIX ?>">help</a> page for a list of resources including, but not limited to, the UReddit voice chat servers, @ureddit.com email addresses, third-party hosting platforms, third-party video streaming services, &c.
+          </li>
+          <li>
+    If someone were to challende your credentials and/or qualifications for teaching the material you plan to teach, will you be able to demonstrate your competence?
+          </li>
+          <li>
+            How do you plan to keep students engaged?
+          </li>
+          <li>
+            Have you already gauged interest in this class by making an [Offer] post in <a href="http://reddit.com/r/UniversityofReddit">our subreddit</a>?
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div id="separate-main-footer">
+    </div>
+  </div>
+  <?php require_once('../footer.php'); ?>
 </body>
 </html>

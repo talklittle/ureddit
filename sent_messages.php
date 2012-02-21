@@ -1,54 +1,49 @@
 <?php
-
 require_once('init.php');
 
 if(!logged_in())
-    send_user_to("/login");
- 
-$pagesize = 25;
- 
-?>
-<!DOCTYPE html>
-<html>
-<head>
-<?php include('favicon.html'); ?>
-<meta charset=UTF-8>
-<title>University of Reddit</title>
-<link href="<?=PREFIX ?>/style.css" rel="stylesheet" type="text/css" />
-<script type="text/javascript" src="jquery-1.4.2.min.js"></script>
-</head>
- 
-<body>
-<? require('header.php'); ?>
-<div id="main">
-  <div class="pagetitle">
-  <a href="<?=PREFIX ?>/messages">Inbox</a> | Outbox
-  </div>
- 
-  <div class="desc" style="margin-bottom: 30px;">
-    <?php
-    $offset = isset($_GET['offset']) ? $_GET['offset'] : 0;
-$user = new user($dbpdo,$_SESSION['user_id']);
-    display_sent_messages($user, $offset, $pagesize);
-    ?>
-  </div>
- 
-  <div style="font-size: 0.75em; margin-left: 15px;">
-  <?php
-    if($offset >= $pagesize)
-    {
-      ?>  <a href="?offset=<?=$offset - $pagesize ?>" class="link-class-desc" style="font-size: 1.5em;">previous</a><?php
-    }
- 
-    if(num_sent_messages($user) > $offset + $pagesize)
-    {
-      ?>  <a href="?offset=<?=$offset + $pagesize ?>" class="link-class-desc" style="font-size: 1.5em;">next</a><?php
-    }
-   ?>
-   </div>
-</div>
+    send_user_to("/");
 
-<?php include('footer.php'); ?>
- 
+$pagesize = 25;
+
+?>
+
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>University of Reddit</title>
+  <meta name="description" content="">
+
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" href="<?=PREFIX ?>/css/style.css">
+
+  <script src="<?=PREFIX ?>/js/libs/modernizr-2.5.2.min.js"></script>
+</head>
+<body>
+  <!--[if lt IE 7]><p class=chromeframe>Your browser is <em>ancient!</em> <a href="http://browsehappy.com/">Upgrade to a different browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to experience this site.</p><![endif]-->
+  <?php
+  require_once('header.php');
+  require_once('social.php');
+
+  $user = new user($dbpdo, $dbpdo->session('user_id'));
+  ?>
+  <div id="main" role="main">
+    <div id="outbox">
+      <div class="content">
+        [<a href="<?=PREFIX ?>/messages">inbox</a>]<h1>Outbox</h1> 
+        <?php
+        display_sent_messages($user);
+        ?>
+      </div>
+    </div>
+    <div id="separate-main-footer">
+    </div>
+  </div>
+  <?php require_once('footer.php'); ?>
 </body>
 </html>

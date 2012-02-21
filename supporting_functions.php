@@ -217,14 +217,12 @@ function list_teacher_classes($user)
     {
       $category = new category($user->dbpdo, $category_id);
   ?>
-      <div id="category<?=$cat->id ?>">
-      <div class="category">
-	<div class="category-name">
+      <div id="category<?=$category->id ?>" class="category">
+	<div class="content">
 	<?=$category->value ?>
-	</div>
        <?php
 	 foreach($classes as $class)
-	 $class->display(true);
+	 $class->display_with_container(true);
       ?>
       </div>
       </div>
@@ -330,7 +328,7 @@ function display_messages($user, $offset = 0, $limit=15)
     $found = 0;
     $unread = array();
     $user->get_inbox($offset, $limit*2);
-    ?><div class="category"><?php
+
     for($i = 0; $i < count($user->inbox)/2; $i++)
 	 {
 	   if($user->get_object_type($user->inbox[2*$i]['parent_id']) == 'class')
@@ -366,19 +364,21 @@ function display_messages($user, $offset = 0, $limit=15)
 					 ));
 	     }
       ?>
-      <div class="class">
-        <div class="class-name"><?=$user->inbox[2*$i]['value'] ?></div>
-	 <div class="class-desc"><?=$user->process_text($user->inbox[2*$i+1]['value']) ?></div>
-	 <div class="class-info-noindent">from <strong><?=($sender->type == 'class' ? $author->value . '</strong> (regarding class <strong><a href="' . PREFIX . "/class/" . $sender->id . '">' . $sender->value . '</a></strong>)' : $sender->value) . '</strong>'?> at <?=$user->inbox[2*$i]['creation'] ?> [<a href="<?=PREFIX ?>/user/<?=($sender->type == 'class' ? $author->value : $sender->value) ?>" class="link-class-desc">reply</a>]</div>
+      <div class="message">
+      <div class="content">
+        <div class="subject"><?=$user->inbox[2*$i]['value'] ?></div>
+	 <div class="body"><?=$user->process_text($user->inbox[2*$i+1]['value']) ?></div>
+	 <div class="signature">from <strong><?=($sender->type == 'class' ? $author->value . '</strong> (regarding class <strong><a href="' . PREFIX . "/class/" . $sender->id . '">' . $sender->value . '</a></strong>)' : $sender->value) . '</strong>'?> at <?=$user->inbox[2*$i]['creation'] ?> [<a href="<?=PREFIX ?>/user/<?=($sender->type == 'class' ? $author->value : $sender->value) ?>" class="link-class-desc">reply</a>]</div>
       </div>
+	 </div>
       <?php
        }
 
     if($found == 0)
     {
       ?>
-      <div class="class-white">
-        <div class="class-desc"><em>you have no new messages</em></div>
+      <div class="message">
+        <p><em>you have no new messages</em></p>
       </div>
       <?php
     }
@@ -389,16 +389,17 @@ function display_sent_messages($user, $offset = 0, $limit=15)
     $found = 0;
     $unread = array();
     $user->get_outbox($offset, $limit*2);
-    ?><div class="category"><?php
     for($i = 0; $i < count($user->outbox)/2; $i++)
 	 {
 	   $receipient = new user($user->dbpdo, $user->outbox[2*$i]['child_id']);
 	   $found = 1;
       ?>
-      <div class="class">
-        <div class="class-name"><?=$user->outbox[2*$i]['value'] ?></div>
-	 <div class="class-desc"><?=$user->process_text($user->outbox[2*$i+1]['value']) ?></div>
-        <div class="class-info-noindent">to <strong><?=$receipient->value ?></strong> at <?=$user->outbox[$i]['creation'] ?> [<a href="<?=PREFIX ?>/user/<?=$recepient->value ?>" class="link-class-desc">reply</a>]</div>
+      <div class="message">
+      <div class="content">
+        <div class="subject"><?=$user->outbox[2*$i]['value'] ?></div>
+	 <div class="body"><?=$user->process_text($user->outbox[2*$i+1]['value']) ?></div>
+        <div class="signature">to <strong><?=$receipient->value ?></strong> at <?=$user->outbox[$i]['creation'] ?> [<a href="<?=PREFIX ?>/user/<?=$recepient->value ?>" class="link-class-desc">reply</a>]</div>
+      </div>
       </div>
       <?php
        }
@@ -406,8 +407,8 @@ function display_sent_messages($user, $offset = 0, $limit=15)
     if($found == 0)
     {
       ?>
-      <div class="class-white">
-        <div class="class-desc"><em>you have no new messages</em></div>
+      <div class="message">
+        <p><em>you have no new messages</em></p>
       </div>
       <?php
     }

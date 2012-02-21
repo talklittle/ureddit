@@ -83,7 +83,6 @@ header
 #help
 {
     width: 100%;
-    font-size: 0.8em;
 }
 
 #help .content
@@ -93,7 +92,6 @@ header
 
 #teach
 {
-    font-size: 0.8em;
     width: 70%;
     float: left;
 }
@@ -116,7 +114,6 @@ header
 
 #teach-side
 {
-    font-size: 0.8em;
     width: 30%;
     float: right;
 }
@@ -132,7 +129,6 @@ header
 #settings, #reddit-link
 {
     width: 100%;
-    font-size: 0.8em;
 }
 
 #settings .content
@@ -285,6 +281,7 @@ nav a.active
     min-width: 768px;
     float: none;
     width: 100%;
+    font-size: 0.8em;
 }
 
 #user-header
@@ -298,7 +295,6 @@ nav a.active
 #user-header .content
 {
     padding: 10px;
-    font-size: 0.8em;
 }
 
 #user-header .content .username
@@ -307,18 +303,39 @@ nav a.active
     font-size: 2.0em;
 }
 
-#user
+#user, #my-statistics
 {
     width: 30%;
     float: right;
-    font-size: 0.8em;
     background-color: #ededed;
+}
+
+#my-statistics
+{
+    border-bottom: 3px solid #232323;
 }
 
 #user .content
 {
     border-left: 3px solid #232323;
     padding: 0 10px 5px 10px;
+    font-size: 0.9em;
+}
+
+#my-statistics .content
+{
+    padding: 5px;
+    border-left: 3px solid #232323;
+}
+
+#outbox .content
+{
+    padding: 5px;
+}
+
+#outbox .content .message .content
+{
+    border-left: 0;
 }
 
 #user .content ul
@@ -339,19 +356,67 @@ nav a.active
     border: 0;
 }
 
-#user-schedule
+#user-schedule, #my-classes
 {
     width: 70%;
     float: left;
 }
 
-#user-schedule .content
+#inbox
 {
-    padding: 5px;
-    font-size: 0.8em;
+
 }
 
-#user-schedule .content h2, #user .content h2
+.message
+{
+    width: 100%;
+}
+
+.message .content
+{
+    padding: 10px 10px 10px 0;
+    margin: 10px 10px;
+    border-bottom: 1px dashed #c3c3c3;
+}
+
+.message .content:last-child
+{
+    border-bottom: 0;
+}
+
+.message .content .subject
+{
+    font-weight: bold;
+}
+
+.message .content .body
+{
+    padding: 0 10px;
+    border: 1px solid #c3c3c3;
+    border-radius: 10px;
+}
+
+.message .content .signature
+{
+    width: 100%;
+    text-align: right;
+}
+
+#my-classes
+{
+}
+
+#user-schedule .content, #my-classes .content
+{
+    padding: 5px;
+}
+
+#inbox .content
+{
+    padding: 5px;
+}
+
+#user-schedule .content h2, #user .content h2, #my-classes .content h2, #my-statistics .content h2
 {
     margin-top: 0;
     padding-top: 15px;
@@ -359,18 +424,18 @@ nav a.active
 
 #user-schedule .content .category
 {
+    font-weight: bold;
 }
 
 #user-schedule .content .category .content
 {
-    font-size: 1.3em;
-    font-weight: bold;
+    font-size: 1.2em;
     border: 0;
 }
 
 #user-schedule .content .category .content .class .content
 {
-    font-size: 0.7em;
+    font-size: 0.833em;
     font-weight: normal;
     border: 0;
 }
@@ -380,7 +445,6 @@ nav a.active
     width: 70%;
     height: 100%;
     float: left;
-    font-size: 0.8em;
 }
 
 #class-page .content, #login .content, #register .content
@@ -399,7 +463,6 @@ h1
     width: 30%;
     height: 100%;
     float: right;
-    font-size: 0.8em;
     background-color: #ededed;
 }
 
@@ -413,6 +476,7 @@ h1
 
 #catalog-category-list
 {
+    font-size: 1.2em;
     width: 30%;
     height: 100%;
     float: left;
@@ -430,6 +494,12 @@ h1
 {
     padding: 5px 0 5px 5px;
     border: 0;
+}
+
+a.link-class-desc, a:link.link-class-desc, a:visited.link-class-desc, a:hover.link-class-desc, a:active.link-class-desc
+{
+    color: black;
+    text-decoration: underline;
 }
 
 #catalog-category-list .content a:link, #catalog-category-list .content a:visited, #catalog-category-list .content a:hover, #catalog-category-list .content a:active
@@ -472,6 +542,7 @@ h1
 
 #catalog-class-list .content .category
 {
+    font-size: 1.2em;
     font-weight: bold;
 }
 
@@ -483,12 +554,12 @@ h1
 
 #catalog-class-list .content .category .content .class
 {
+    font-size: 0.833em;
     font-weight: normal;
     padding: 5px 0 15px 0;
     background-color: #ffffff;
     border-bottom: 1px dashed #c3c3c3;
     border-radius: 5px;
-    font-size: 0.8em;
     margin: 10px 0 10px 10px;
 }
 
@@ -511,13 +582,13 @@ h1
     border: 0;
 }
 
-#catalog-class-list .content .category .content .class .content, #class-page .content .class .content, #user-schedule .content .category .content .class .content
+#catalog-class-list .content .category .content .class .content, #class-page .content .class .content, #user-schedule .content .category .content .class .content, #my-classes .content .category .content .class .content
 {
     position: relative;
     padding: 0;
 }
 
-#catalog-class-list .content .category .content .class .content .voting, #class-page .content .class .content .voting, #user-schedule .content .category .content .class .content .voting
+#catalog-class-list .content .category .content .class .content .voting, #class-page .content .class .content .voting, #user-schedule .content .category .content .class .content .voting, #my-classes .content .category .content .class .content .voting
 {
     position: absolute;
     top: 0;
@@ -535,13 +606,13 @@ img.upvote, img.upvoted, img.downvote, img.downvoted
     cursor: pointer;
 }
 
-#catalog-class-list .content .category .content .class .content .class-name, #class-page .content .class .content .class-name, #class-page-roster .content .class-name
+#catalog-class-list .content .category .content .class .content .class-name, #class-page .content .class .content .class-name, #class-page-roster .content .class-name, #my-classes .content .category .content .class .content .class-name, #user-schedule .content .category .content .class .content .class-name
 {
     margin-right: 5em;
     font-weight: bold;
 }
 
-#catalog-class-list .content .category .content .class .content .class-desc
+#catalog-class-list .content .category .content .class .content .class-desc, #my-classes .content .category .content .class .content .class-desc
 {
     font-size: 0.9em;
 }
@@ -569,12 +640,32 @@ img.upvote, img.upvoted, img.downvote, img.downvoted
     margin-bottom: 40px;
 }
 
-#catalog-class-list .content .category .content .class .content .class-info, #class-page .content .class .content .class-info, #user-schedule .content .category .content .class .content .class-info
+#my-classes .content .category
+{
+    font-weight: bold;
+    font-size: 1.2em;
+}
+
+#my-classes .content .category .content .class
+{
+    font-weight: normal;
+    font-size: 0.833em;
+    padding: 5px 0 15px 15px;
+    border-bottom: 1px dashed #c3c3c3;
+    margin-bottom: 10px;
+}
+
+#my-classes .content .category .content .class:last-child
+{
+    border-bottom: 0;
+}
+
+#catalog-class-list .content .category .content .class .content .class-info, #class-page .content .class .content .class-info, #user-schedule .content .category .content .class .content .class-info, #my-classes .content .category .content .class .content .class-info
 {
     width: 100%;
     text-align: right;
-    font-size: 0.85em;
     font-style: italic;
+    font-size: 0.85em;
 }
 
 #catalog-class-list .content .category .content .class .content .class-info a, #class-page .content .class .content .class-info a, #user-schedule .content .category .content .class .content .class-info a
@@ -592,7 +683,7 @@ img.upvote, img.upvoted, img.downvote, img.downvoted
     padding-right: 8px;
 }
 
-#catalog-class-list .content .category .content .class .content .showhide
+#catalog-class-list .content .category .content .class .content .showhide, #my-classes .content .category .content .class .content .showhide
 {
 
     font-size: 0.9em;
