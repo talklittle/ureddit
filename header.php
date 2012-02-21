@@ -2,10 +2,13 @@
     <a href="<?=PREFIX ?>/">
       <img src="<?=PREFIX ?>/img/logo.png" id="logo" alt="University of Reddit">
     </a>
-     <nav <?=!logged_in() ? '' : 'style="font-size: 0.8em;"' ?>>
+     <nav>
         <ul>
            <li>
-						     <a href="<?=PREFIX ?>/" <?=$page == 'index.php' && strpos($_SERVER['REQUEST_URI'],"teachers") === false ? 'class="active"' : '' ?>>course catalog</a>
+						     <a href="<?=PREFIX ?>/" <?=$page == 'index.php' && strpos($_SERVER['REQUEST_URI'],"teachers") === false ? 'class="active"' : '' ?>>current classes</a>
+           </li>
+           <li>
+						     <a href="<?=PREFIX ?>/archive" <?=$page == 'archive.php' && strpos($_SERVER['REQUEST_URI'],"teachers") === false ? 'class="active"' : '' ?>>archived classes</a>
            </li>
           <?php
             if(!logged_in())
@@ -21,10 +24,7 @@
 		$user = new user($dbpdo, $dbpdo->session('user_id'));
 		?>
            <li>
-		<a href="<?=PREFIX ?>/user/<?=$dbpdo->session('username') ?>" <?=$page == 'user.php' && $_GET['id'] == $dbpdo->session('username') ? 'class="active"' : '' ?>><?=$dbpdo->session('username') ?></a> <a href="<?=PREFIX ?>/messages"><img id="messages" <?=has_new_messages($dbpdo, $dbpdo->session('user_id')) ? 'src="' . PREFIX . '/img/new_messages.png" alt="new message(s)!"' : 'src="' . PREFIX . '/img/messages.png" alt="messages"' ?></img></a>
-           </li>
-           <li>
-                <a href="<?=PREFIX ?>/settings" <?=$page == 'preferences.php' ? 'class="active"' : '' ?>>settings</a> - <a href="<?=PREFIX ?>/logout">log out<a>
+		<a href="<?=PREFIX ?>/user/<?=$dbpdo->session('username') ?>" <?=$page == 'user.php' && $_GET['id'] == $dbpdo->session('username') ? 'class="active"' : '' ?>><?=$dbpdo->session('username') ?></a> <a href="<?=PREFIX ?>/messages"><img id="messages" <?=has_new_messages($dbpdo, $dbpdo->session('user_id')) ? 'src="' . PREFIX . '/img/new_messages.png" alt="new message(s)!"' : 'src="' . PREFIX . '/img/messages.png" alt="messages"' ?></img></a> - <a href="<?=PREFIX ?>/logout">log out<a>
            </li>
 		<?php
 	      }
@@ -35,7 +35,7 @@
 	      {
 		?>
            <li>
-		<a href="<?=PREFIX ?>/teachers" <?=$page == 'index.php' && strpos($_SERVER['REQUEST_URI'],'teachers') !== false ? 'class="active"' : '' ?>>manage classes</a>
+		<a href="<?=PREFIX ?>/teachers" <?=$page == 'index.php' && strpos($_SERVER['REQUEST_URI'],'teachers') !== false ? 'class="active"' : '' ?>>teacher admin</a> - <a href="<?=PREFIX ?>/settings" <?=$page == 'preferences.php' ? 'class="active"' : '' ?>>settings</a>
            </li>
 		<?php
 	      }
@@ -44,6 +44,13 @@
 		?>
            <li>
               <a href="<?=PREFIX ?>/teach" <?=$page == 'teach.php' ? 'class="active"' : '' ?>>teach a class</a>
+		  <?php
+
+		  if(logged_in())
+		    {
+		      ?> - <a href="<?=PREFIX ?>/settings" <?=$page == 'preferences.php' ? 'class="active"' : '' ?>>settings</a><?php
+		    }
+		  ?>
            </li>
 		<?php
 	      }

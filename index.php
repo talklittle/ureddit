@@ -55,13 +55,13 @@ require_once('init.php');
         <?php
           if($active_category_id == -1)
 	    foreach($categories as $category_id => $category)
-	      $category->display(true);
+	      $category->display(true, 'open');
 	  else
 	    $categories[$active_category_id]->display(true, 'open', true);
         ?>
       </div>
-      <div id="separate-main-footer">
-      </div>
+    </div>
+    <div id="separate-main-footer">
     </div>
   </div>
   <?php require_once('footer.php'); ?>

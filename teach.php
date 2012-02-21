@@ -165,7 +165,7 @@ Will you be giving live lectures?<br />
     Are you aware of all the resources available to you? You should have read the <a href="<?=PREFIX ?>">help</a> page for a list of resources including, but not limited to, the UReddit voice chat servers, @ureddit.com email addresses, third-party hosting platforms, third-party video streaming services, &c.
           </li>
           <li>
-    If someone were to challende your credentials and/or qualifications for teaching the material you plan to teach, will you be able to demonstrate your competence?
+    If someone were to challenge your credentials and/or qualifications for teaching the material you plan to teach, will you be able to demonstrate your competence?
           </li>
           <li>
             How do you plan to keep students engaged?

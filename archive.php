@@ -1,21 +1,5 @@
 <?php
 require_once('init.php');
-
-if((int)$_GET['id'] < 2000)
-  {
-    if($id = translate_class_id($dbpdo, $_GET['id']))
-      send_user_to("/class/" . $id,"ureddit.com","301 Moved Permanently");
-  }
-
-try
-  {
-    $class = new course($dbpdo, $_GET['id']);
-  }
-catch (CourseNotFoundException $e)
-  {
-    send_user_to("/");
-  }
-
 ?>
 
 <!doctype html>
@@ -26,7 +10,7 @@ catch (CourseNotFoundException $e)
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <title>University of Reddit : <?=$class->value ?></title>
+  <title>University of Reddit</title>
   <meta name="description" content="">
 
   <meta name="viewport" content="width=device-width">
@@ -48,17 +32,32 @@ catch (CourseNotFoundException $e)
   $catalog = new catalog($dbpdo);
   ?>
   <div id="main" role="main">
-    <div id="class-page">
+    <div id="catalog-category-list">
       <div class="content">
+        <div class="category<?=$active_category_id === -1 ? ' active' : '' ?>" id="category-all">
+          <div class="content">
+            <a href="<?=PREFIX ?>/<?=strpos($_SERVER['PHP_SELF'], 'archive') !== false ? 'archive' : '' ?>/">All categories</a>
+          </div>
+        </div>
         <?php
-          $class->display_with_container(true, true);
+        $categories = array();
+        foreach($catalog->categories as $category_id)
+	  {
+	    $category = new category($dbpdo, $category_id);
+	    $categories[$category_id] = $category;
+	    $category->display(false,'completed');
+	  }
         ?>
       </div>
     </div>
-    <div id="class-page-roster">
+    <div id="catalog-class-list">
       <div class="content">
         <?php
-          $class->display_roster();
+          if($active_category_id == -1)
+	    foreach($categories as $category_id => $category)
+	      $category->display(true, 'completed');
+	  else
+	    $categories[$active_category_id]->display(true, 'completed', true);
         ?>
       </div>
     </div>

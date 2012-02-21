@@ -11,7 +11,7 @@
          </li>
          <li>
             <div class="socialbar-item">
-      <a href="http://reddit.com/r/UniversityofReddit"><img src="<?=PREFIX ?>/img/reddit.png" alt="/r/UniversityofReddit" id="reddit"></a><p class="content"><em>Latest Reddit Post</em>:<br>
+      <a href="http://reddit.com/r/UniversityofReddit"><img src="<?=PREFIX ?>/img/reddit.png" alt="/r/UniversityofReddit" id="reddit"></a><p class="content"><em>Top Reddit Post</em>:<br>
       <?php
       $data = latest_reddit_post(); echo '<a href="' . $data['url'] . '" class="nounderline">' . $data['title'] . '</a>';
       ?></p>

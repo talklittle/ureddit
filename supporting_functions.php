@@ -1,7 +1,7 @@
 <?php
 
 define('COOKIE_SESSID','ureddit_sessid');
-define('PREFIX','/dev2/ureddit');
+define('PREFIX','');
 define('USE_MARKDOWN','true');
 
 function latest_blog_post($dbpdo)
@@ -31,17 +31,9 @@ function translate_class_id($dbpdo,$old_id)
 function votebox($class, $user = false)
 {
   $score = $class->calculate_score();
+
   if($user !== false)
     {
-      if(isset($user->votes['upvoted']) && in_array($class->id, $user->votes['upvoted']))
-	{
-	  echo '<img src="' . PREFIX . '/img/up-filled.png" alt="+1\'d" class="upvoted" onclick="$.post(\'' . PREFIX . '/vote.php\', {action: \'remove\', id: \'' . $class->id . '\'}, function(response) {$(\'#class' . $class->id . ' > .content > .voting\').html(response);})">';
-	}
-      else
-	{
-	  echo '<img src="' . PREFIX . '/img/up.png" alt="+1" class="upvote" onclick="$.post(\'' . PREFIX . '/vote.php\', {action: \'upvote\', id: \'' . $class->id . '\'}, function(response) {$(\'#class' . $class->id . ' > .content > .voting\').html(response);})">';
-	}
-      
       if(isset($user->votes['downvoted']) && in_array($class->id, $user->votes['downvoted']))
 	{
 	  echo '<img src="' . PREFIX . '/img/down-filled.png" alt="-1\'d" class="downvoted" onclick="$.post(\'' . PREFIX . '/vote.php\', {action: \'remove\', id: \'' . $class->id . '\'}, function(response) {$(\'#class' . $class->id . ' > .content > .voting\').html(response);})">';
@@ -50,13 +42,22 @@ function votebox($class, $user = false)
 	{
 	  echo '<img src="' . PREFIX . '/img/down.png" alt="-1" class="downvote" onclick="$.post(\'' . PREFIX . '/vote.php\', {action: \'downvote\', id: \'' . $class->id . '\'}, function(response) {$(\'#class' . $class->id . ' > .content > .voting\').html(response);})">';
 	}
+      if(isset($user->votes['upvoted']) && in_array($class->id, $user->votes['upvoted']))
+	{
+	  echo '<img src="' . PREFIX . '/img/up-filled.png" alt="+1\'d" class="upvoted" onclick="$.post(\'' . PREFIX . '/vote.php\', {action: \'remove\', id: \'' . $class->id . '\'}, function(response) {$(\'#class' . $class->id . ' > .content > .voting\').html(response);})">';
+	}
+      else
+	{
+	  echo '<img src="' . PREFIX . '/img/up.png" alt="+1" class="upvote" onclick="$.post(\'' . PREFIX . '/vote.php\', {action: \'upvote\', id: \'' . $class->id . '\'}, function(response) {$(\'#class' . $class->id . ' > .content > .voting\').html(response);})">';
+	}
     }
   else
     {
-      echo '<a href="' . PREFIX . '/login"><img src="' . PREFIX . '/img/up.png" alt="+1" class="upvote"></a>';
       echo '<a href="' . PREFIX . '/login"><img src="' . PREFIX . '/img/down.png" alt="-1" class="downvote"></a>';
+      echo '<a href="' . PREFIX . '/login"><img src="' . PREFIX . '/img/up.png" alt="+1" class="upvote"></a>';
+
     }
-  echo $score;
+  echo $score . '&nbsp;';
 }
 
 function signup_button($user, $class_id)
@@ -194,7 +195,8 @@ function display_schedule($user)
 	<?php
 	  echo $category_value;
           foreach($categories[$category_id] as $class)
-	    $class->display_with_container();
+	    if($class->get_attribute_value('status') != '0')
+	      $class->display_with_container();
 	?>
         </div>
       </div>
@@ -241,16 +243,23 @@ function object_type_value_to_id($dbpdo, $type, $value)
 
 function latest_reddit_post()
 {
-  $json = json_decode(stripslashes(file_get_contents('reddit.json')), true);
+  $json = json_decode(stripslashes(file_get_contents('/srv/http/ureddit.com/public_html/reddit.json')), true);
   return array('url' => 'http://reddit.com' . $json['data']['children'][0]['data']['permalink'], 'title' => $json['data']['children'][0]['data']['title']);
 }
 
 function latest_tweet($config)
 {
-  $t = new Twitter($config::twitterConsumerKey, $config::twitterConsumerSecret, $config::twitterAccessToken, $config::twitterAccessTokenSecret);
-  $latest = $t->load(Twitter::ME,1);
+  try
+    {
+      $t = new Twitter($config::twitterConsumerKey, $config::twitterConsumerSecret, $config::twitterAccessToken, $config::twitterAccessTokenSecret);
+      $latest = $t->load(Twitter::ME,1);
   //  var_dump($latest);
-  return array('text' => Twitter::clickable($latest->status->text), 'url' => 'http://twitter.com/uofreddit/status/' . $latest->status->id);
+      return array('text' => Twitter::clickable($latest->status->text), 'url' => 'http://twitter.com/uofreddit/status/' . $latest->status->id);
+    }
+  catch (TwitterException $e)
+    {
+      return array('text' => 'Error fetching tweets. Click to go to the @uofreddit Twitter feed.', 'url' => 'http://twitter.com/uofreddit');
+    }
 }
 
 function tweet($config,$status)

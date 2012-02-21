@@ -32,6 +32,8 @@ $validation = '/^([A-Z0-9_.-]){3,32}$/i';
 if(!preg_match($validation,$username))
   send_user_to("/");
 
+$viewed = new user($dbpdo, $id);
+
 ?>
 
 <!doctype html>
@@ -42,7 +44,7 @@ if(!preg_match($validation,$username))
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <title>University of Reddit</title>
+  <title>University of Reddit : <?=$viewed->value ?></title>
   <meta name="description" content="">
 
   <meta name="viewport" content="width=device-width">
@@ -55,8 +57,6 @@ if(!preg_match($validation,$username))
   <?php
   require_once('header.php');
   require_once('social.php');
-
-  $viewed = new user($dbpdo, $id);
   ?>
   <div id="main" role="main">
     <div id="user-header">
@@ -138,8 +138,8 @@ if(!preg_match($validation,$username))
           ?>
         </ul>
       </div>
-      <div id="separate-main-footer">
-      </div>
+    </div>
+    <div id="separate-main-footer">
     </div>
   </div>
   <?php require_once('footer.php'); ?>

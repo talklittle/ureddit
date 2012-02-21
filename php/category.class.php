@@ -20,7 +20,7 @@ class category extends object
       $this->classes = array();
   }
 
-  function display($expand_category = true, $filter = 'open', $expand_classes = false, $class_details = false)
+  function display($expand_category = true, $filter = 'all', $expand_classes = false, $class_details = false)
   {
     switch($filter)
       {
@@ -52,18 +52,26 @@ class category extends object
 	  <span class="showhide"><a onclick="$.get('<?=PREFIX ?>/category.php',{id: '<?=$this->id ?>', show: 'false', filter: '<?=$filter ?>'}, function(data) { $('#category<?=$this->id ?>').html(data)});" class="link-showhide">[hide]</a></span></div>
 	  <?php
 	  */
+	  $found = false;
 	  foreach($this->classes as $class_id)
 	    {
 	      $class = new course($this->dbpdo, $class_id);
 	      try
 	        {
 		  if(in_array($class->get_attribute_value('status'), $show_statuses))
-		    $class->display_with_container($expand_classes, $class_details);
+		    {
+		      $class->display_with_container($expand_classes, $class_details);
+		      $found = true;
+		    }
 		}
 	      catch (ObjectAttributeNotFoundException $e)
 	      {
 		//$class->display($expand_classes, $class_details);
 	      }
+	    }
+	  if(!$found)
+	    {
+	      echo '<p style="font-weight: normal; font-style: italic; font-size: 0.8em; padding-left: 1em;">No classes found. <a href="' . PREFIX . '/teach">Why not start one?</a></p>';
 	    }
 	  echo '</div></div>';
 	}
@@ -74,7 +82,7 @@ class category extends object
 	  <span class="showhide"><a onclick="$.get('<?=PREFIX ?>/category.php',{id: '<?=$this->id ?>', show: 'true', filter: '<?=$filter ?>'}, function(data) { $('#category<?=$this->id ?>').html(data)});" class="link-showhide">[show]</a></span></div>
 	  <?php
 	  */
-	  echo '<a href="' . PREFIX . '/category/' . $this->id . '/' . $this->seo_string($this->value) . '">' . $this->value . '</a>';
+	  echo '<a href="' . PREFIX . ($filter == 'completed' ? '/archive' : '') . '/category/' . $this->id . '/' . $this->seo_string($this->value) . '">' . $this->value . '</a>';
 	  echo '</div></div>';
 	}
   }
