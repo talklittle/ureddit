@@ -17,12 +17,16 @@ class user extends object
 
   function upvote($object_id)
   {
+    $this->remove_association($this->id, $object_id, 'upvote');
+    $this->remove_association($this->id, $object_id, 'downvote');
     $this->add_child($object_id, 'upvote', 0);
     $this->log_to_feed('upvoted class', $object_id);
   }
 
   function downvote($object_id)
   {
+    $this->remove_association($this->id, $object_id, 'upvote');
+    $this->remove_association($this->id, $object_id, 'downvote');
     $this->add_child($object_id, 'downvote', 0);
     $this->log_to_feed('downvoted class', $object_id);
   }
@@ -148,6 +152,9 @@ class user extends object
     if($this->config->memcache())
       $this->memcache_delete('v3_roster_' . $id . '_with_attribute_' . 'reddit_username');
     $this->log_to_feed('dropped class', $id);
+    $class = new course($this->dbpdo, $id);
+    if($class->get_attribute_value('status') != '5')
+      $this->downvote($class->id);
   }
 
   function get_schedule()
