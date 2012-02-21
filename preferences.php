@@ -1,4 +1,5 @@
 <?php
+
 require('init.php');
 
 if(!logged_in())
@@ -51,115 +52,132 @@ if(!empty($_POST))
 	    $user->define_attribute('password', $newpass, 0);
 
 	    $newemailpass = pacrypt(escape_string($_POST['newpass']));
-	    /*
+
 	    $dbpdo->query("UPDATE pf_mailbox SET password = ? WHERE username = ?",
 			  array(
 				$newemailpass,
 				$user->value . '@ureddit.com'
 				));
-	    */
+
 	  }
 	if(strlen($email) != 0)
 	  {
 	    $exp = explode("@",$email);
-	    /*
-	    $dbpdo->query("UPDATE pf_alias SET goto = ?, domain = ?, WHERE address = ?",
+
+	    $dbpdo->query("UPDATE pf_alias SET goto = ?, domain = ? WHERE address = ?",
 			  array(
 				$email,
 				$exp[1],
 				$user->value . '@ureddit.com'
 				));
-	    */
+
 	  }
       }
   }
 
-/*
 $mailboxes = $dbpdo->query("SELECT goto FROM pf_alias WHERE address = ?", array($_SESSION['username'] . '@ureddit.com'));
 $forwarded_email = $mailboxes[0]['goto'];
-*/
 
-$forwarded_email = $user->value . '@ureddit.com';
 
 ?>
-<!DOCTYPE html>
-<html>
-<head> 
-<?php include('favicon.html'); ?>
-<meta charset=UTF-8>
-<title>University of Reddit</title>
-<link href="<?=PREFIX ?>/style.css" rel="stylesheet" type="text/css" />
-<script type="text/javascript" src="jquery-1.4.2.min.js"></script>
+
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>University of Reddit</title>
+  <meta name="description" content="">
+
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" href="<?=PREFIX ?>/css/style.css">
+
+  <script src="<?=PREFIX ?>/js/libs/modernizr-2.5.2.min.js"></script>
 </head>
-
 <body>
-<? require('header.php'); ?>
-<div id="main">
-  <div class="pagetitle">
-    Account Settings
-  </div>
-  <div class="class">
+  <!--[if lt IE 7]><p class=chromeframe>Your browser is <em>ancient!</em> <a href="http://browsehappy.com/">Upgrade to a different browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to experience this site.</p><![endif]-->
   <?php
-  if(!empty($_POST) && count($error) > 0)
-    {
-      echo '<span style="color: red;">';
-      foreach($error as $err)
-	echo $err . "<br />\n";
-      echo '</span><br /><br />';
-    }
+  require_once('header.php');
+  require_once('social.php');
+
+  if(isset($_GET['category_id']) && count($dbpdo->query("SELECT `id` FROM `objects` WHERE `id` = ? AND `type` = 'category' LIMIT 1", array($_GET['category_id'])) != 0))
+    $active_category_id = $_GET['category_id'];
+  else
+    $active_category_id = -1;
+
+  $catalog = new catalog($dbpdo);
   ?>
-  <form method="post" action="<?=PREFIX ?>/settings">
-  New password (leave blank if you do not want to reset your password):<br />
-  <input type="password" name="newpass" /><br /><br />
-
-  Confirm new password:<br />
-  <input type="password" name="newpass2" /><br /><br />
-
-  Address to which to forward your @ureddit.com email (leave blank to disable forwarding):<br />
-  <input type="text" name="forward_addr" value="<?=$forwarded_email ?>" /><br /><br />
-
-  Current password (required to make any changes):<br />
-  <input type="password" name="password" ?><br /><br />
-
-  <input type="submit" value="Save changes" /><br /><br />
-
-  <br /><br />
-
-
-  Your UReddit signature:<br />
-<?php
-if(isset($_SERVER['HTTPS']) && strlen($_SERVER['HTTPS']) > 0)
-  {
-    echo $user_signature;
-  }
-else
-  {
-    ?><em>You must be <a href="https://ureddit.com/settings">using HTTPS</a> to view this information.</em><?php
-  }
-?><br /><br />
-
-  <?php
-  try
-    {
-      $ru = $user->get_attribute_value('reddit_username');
-      ?>
-      <span style="font-size: 0.75em;"><a href="unlink.php">Click here to unlink your Reddit account</a></span><br /><br />
+  <div id="main" role="main">
+    <div id="settings">
+      <div class="content">
+      <h1>Settings</h1>
       <?php
-    }
-  catch(ObjectAttributeNotFoundException $e)
-    {
-    }
+      if(!empty($_POST) && count($error) > 0)
+	{
+	  echo '<span style="color: red;">';
+	  foreach($error as $err)
+	    echo $err . "<br />\n";
+	  echo '</span><br /><br />';
+	}
+      ?>
 
-  if(!empty($_POST) && count($error) == 0)
-    {
-      echo '<strong>Your changes have been saved and have gone into effect.</strong>';
-    }
-  ?>
-  </form>
-  </class>
-</div>
+      <p>
+      <form method="post" action="<?=PREFIX ?>/settings">
+      New password (leave blank if you do not want to reset your password):<br />
+      <input type="password" name="newpass" /><br /><br />
 
-<?php require('footer.php'); ?>
+      Confirm new password:<br />
+      <input type="password" name="newpass2" /><br /><br />
 
+      Address to which to forward your @ureddit.com email (leave blank to disable forwarding):<br />
+      <input type="text" name="forward_addr" value="<?=$forwarded_email ?>" /><br /><br />
+
+      Current password (required to make any changes):<br />
+      <input type="password" name="password" ?><br /><br />
+
+      <input type="submit" value="Save changes" /><br /><br />
+      </form>
+      </p>
+
+      <p>
+      Your UReddit signature:<br />
+      <?php
+        if(isset($_SERVER['HTTPS']) && strlen($_SERVER['HTTPS']) > 0)
+	  {
+	    echo $user_signature;
+	  }
+	else
+	  {
+	    ?><em>You must be <a href="https://ureddit.com/settings">using HTTPS</a> to view this information.</em><?php
+	  }
+      ?></p>
+
+      <?php
+      try
+      {
+	$ru = $user->get_attribute_value('reddit_username');
+	?>
+	<span style="font-size: 0.75em;"><a href="unlink.php">Click here to unlink your Reddit account</a></span><br /><br />
+	<?php
+      }
+    catch(ObjectAttributeNotFoundException $e)
+      {
+      }
+
+    if(!empty($_POST) && count($error) == 0)
+      {
+	echo '<strong>Your changes have been saved and have gone into effect.</strong>';
+      }
+    ?>
+    </p>
+    </div>
+    </div>
+    <div id="separate-main-footer">
+    </div>
+  </div>
+  <?php require_once('footer.php'); ?>
 </body>
 </html>

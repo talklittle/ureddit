@@ -91,6 +91,17 @@ header
     padding: 0 10px 10px 10px;
 }
 
+#settings
+{
+    width: 100%;
+    font-size: 0.8em;
+}
+
+#settings .content
+{
+    padding: 10px;
+}
+
 .infobox
 {
     background-color: #FDED93;
@@ -172,6 +183,11 @@ img#messages
     height: 68px;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+#socialbar ul li .socialbar-item .content a, #socialbar ul li .socialbar-item .content a:link, #socialbar ul li .socialbar-item .content a:visited, #socialbar ul li .socialbar-item .content a:hover, #socialbar ul li .socialbar-item .content a:active
+{
+    color: #D4D4D4;
 }
 
 #socialbar ul li .socialbar-item .content a:link.nounderline, #socialbar ul li .socialbar-item .content a:visited.nounderline, #socialbar ul li .socialbar-item .content a:hover.nounderline, #socialbar ul li .socialbar-item .content a:active.nounderline
@@ -305,18 +321,18 @@ nav a.active
 
 #user-schedule .content .category
 {
-
 }
 
 #user-schedule .content .category .content
 {
-    font-size: 1em;
+    font-size: 1.3em;
     font-weight: bold;
     border: 0;
 }
 
 #user-schedule .content .category .content .class .content
 {
+    font-size: 0.7em;
     font-weight: normal;
     border: 0;
 }
