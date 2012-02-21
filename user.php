@@ -88,11 +88,33 @@ if(!preg_match($validation,$username))
 	    try
 	      {
 		$vru = $viewed->get_attribute_value('reddit_username');
-		echo "<a href=\"http://www.reddit.com/message/compose/?to=" . $vru . "\">You can PM this user on Reddit.</a>";
+		echo "<p><a href=\"http://www.reddit.com/message/compose/?to=" . $vru . "\">You can PM this user on Reddit</a> - or via UReddit:</p>";
 	      }
 	    catch (ObjectAttributeNotFoundException $e)
 	      {
-		echo "This user's account has not been linked to his or her Reddit account, if any.";
+		echo "<p>This user's account has not been linked to his or her Reddit account, if any. You can send this user a UReddit PM here:</p>";
+	      }
+	    if(logged_in())
+	      {
+		?>
+    <form method="post" action="<?=PREFIX ?>/user/<?=$username ?>">
+    <?php
+    if(isset($error) && count($error) > 0)
+      { ?>
+      <span style="color: red;"><?=$error[0] ?></span><br /><br />
+      <?php }
+    elseif(isset($success) && $success == true)
+      { ?>
+      your message has been sent!<br /><br />
+      <?php } ?>
+    <strong>Subject:</strong><br />
+    <input type="text" name="subj" style="font-family: verdana; font-size: 1em; width: 600px;" value="<?=!empty($_POST) && isset($error) && count($error) > 0 ? htmlspecialchars(stripslashes($_POST['subj'])) : "" ?>"/><br /><br />
+
+    <strong>Message:</strong><br />
+    <textarea name="msg" style="font-family: verdana; font-size: 1em; width: 600px; height: 100px; padding: 3px;"><?=!empty($_POST) && isset($error) && count($error) > 0 ? htmlspecialchars(stripslashes($_POST['msg'])) : "" ?></textarea><br /><br />
+    <input type="submit" value="Send PM" style="padding: 2px;" />
+    </form><br />
+		<?php
 	      }
 	  }
         ?>
