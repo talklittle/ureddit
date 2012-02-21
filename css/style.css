@@ -129,7 +129,7 @@ header
     background-color: #ededed;
 }
 
-#settings
+#settings, #reddit-link
 {
     width: 100%;
     font-size: 0.8em;
