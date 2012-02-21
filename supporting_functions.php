@@ -1,7 +1,7 @@
 <?php
 
 define('COOKIE_SESSID','ureddit_sessid');
-define('PREFIX','');
+define('PREFIX','/dev2/ureddit');
 define('USE_MARKDOWN','true');
 
 function latest_blog_post($dbpdo)
@@ -174,7 +174,7 @@ function display_schedule($user)
   foreach($user->schedule as $class_id)
     {
       $class = new course($user->dbpdo, $class_id);
-      if($course->get_attribute_value('status') == '0')
+      if($class->get_attribute_value('status') == '0')
 	continue;
       $class->get_categories();
       foreach($class->categories as $category_id)
