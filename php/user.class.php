@@ -18,11 +18,13 @@ class user extends object
   function upvote($object_id)
   {
     $this->add_child($object_id, 'upvote', 0);
+    $this->log_to_feed('upvoted class', $object_id);
   }
 
   function downvote($object_id)
   {
     $this->add_child($object_id, 'downvote', 0);
+    $this->log_to_feed('downvoted class', $object_id);
   }
 
   function get_votes()
@@ -127,6 +129,8 @@ class user extends object
   function report_class($id)
   {
     $this->add_child($id, 'report', 0);
+    $this->log_to_feed('reported class', $id);
+
   }
 
   function add_class($id)
@@ -134,6 +138,7 @@ class user extends object
     $this->add_parent($id, 'enrolled_student', 0);
     if($this->config->memcache())
       $this->memcache_delete('v3_roster_' . $id . '_with_attribute_' . 'reddit_username');
+    $this->log_to_feed('added class', $id);
     $this->upvote($id);
   }
 
@@ -142,6 +147,7 @@ class user extends object
     $this->remove_parent($id, 'enrolled_student');
     if($this->config->memcache())
       $this->memcache_delete('v3_roster_' . $id . '_with_attribute_' . 'reddit_username');
+    $this->log_to_feed('dropped class', $id);
   }
 
   function get_schedule()
@@ -182,6 +188,7 @@ class user extends object
 
     $recepient = new user($this->dbpdo, $recepient_id);
     @send_email($this->value . '@ureddit.com', $recepient->value . '@ureddit.com', $subject, $this->process_text($message));
+    $this->log_to_feed('PMed', $recepient_id);
   }
 }
 

@@ -144,26 +144,29 @@ class statuses:
   echo "</div>\n";
 }
 
-function display_feed($user)
+function get_feed($user)
 {
   $items = array();
-  if($user->created != '0000-00-00 00:00:00')
-    $items[date("U",strtotime($user->created))] = $user->value . ' registered on ' . $user->created;
-  
-  $user->get_taught_classes();
-  foreach($user->teaching as $class_id)
+  $actions = $user->dbpdo->query("SELECT * FROM `activity` WHERE `parent_id` = ? ORDER BY `datetime` DESC LIMIT 10", array($user->id));
+  foreach($actions as $action)
     {
-      $classes[$class_id] = new course($user->dbpdo, $class_id);
-      if($classes[$class_id]->created != '0000-00-00 00:00:00')
-	$items[date("U",strtotime($classes[$class_id]->created))] = $user->value . " created a class on " . $classes[$class_id]->created;
+      if(is_null($action['child_id']))
+	$items[] = '<strong>' . $user->value . '</strong> ' . $action['action'];
+      else
+	{
+	  $object = new object($user->dbpdo, $action['child_id']);
+	  $items[] = '<li><strong>' . $user->value . '</strong> ' . $action['action'] . ' <strong>' . $object->value . '</strong><br><small><em>' . $action['datetime'] . '</em></small></li>';
+	}
     }
-  arsort($items);
-  echo implode("<br>",$items);
+  if(empty($items))
+    $items[] = "<em>no user activity found</em>";
+  return $items;
 }
 
 function display_schedule($user)
 {
   $user->get_schedule();
+
   $categories = array();
   $sorted_categories = array();
 
@@ -186,7 +189,7 @@ function display_schedule($user)
   foreach($sorted_categories as $category_id => $category_value)
     {
       ?>
-      <div class="category <?=$_GET['category_id'] == $this->id ? ' active' : '' ?>">
+      <div class="category">
 	<div class="content">
 	<?php
 	  echo $category_value;

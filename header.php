@@ -12,7 +12,7 @@
 	      {
 		?>
            <li>
-              <a href="<?=PREFIX ?>/login" <?=$page == '.php' ? 'class="active"' : '' ?>>login</a> or <a href="<?=PREFIX ?>/register" <?=$page == 'register.php' ? 'class="active"' : '' ?>>register</a>
+              <a href="<?=PREFIX ?>/login" <?=$page == 'login.php' ? 'class="active"' : '' ?>>login</a> <small><em>or</em></small> <a href="<?=PREFIX ?>/register" <?=$page == 'register.php' ? 'class="active"' : '' ?>>register</a>
            </li>
 		<?php
 	      }

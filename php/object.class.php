@@ -157,15 +157,13 @@ class object extends base
       }
   }
 
-  function define_attribute($type, $value, $ring = NULL)
+  function define_attribute($type, $value, $ring)
   {
     if($this->attributes === NULL)
       $this->get_attributes($type);
 
     if(!isset($this->attributes[$type]))
       {
-	if($ring === NULL)
-	  $this->error('Error: defined a new attribute without giving it a ring.');
 	$this->attributes[$type] = array(
 					 'id' => NULL,
 					 'value' => $value,
@@ -182,8 +180,7 @@ class object extends base
 	  }
 	$this->attributes[$type]['value'] = $value;
 	$this->attributes[$type]['modified'] = true;
-	if($ring !== NULL)
-	  $this->attributes[$type]['ring'] = $ring;
+	$this->attributes[$type]['ring'] = $ring;
       }
 
     $this->unsaved = true;

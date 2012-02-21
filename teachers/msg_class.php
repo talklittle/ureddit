@@ -36,7 +36,7 @@ if(!empty($_POST))
 	send_email(strtolower($user->value . "@ureddit.com"), $student->value . "@ureddit.com", $subj,process($msg));
       }
     $success = true;
-    
+
     $tweet = "(" . date("U") . ") " . $user->value . " PMed the students in " . $class->value;
     if(strlen($tweet) > 115)
       $tweet = substr($tweet, 0, 115) . "...";

@@ -56,38 +56,37 @@ if(!preg_match($validation,$username))
   require_once('header.php');
   require_once('social.php');
 
+  $viewed = new user($dbpdo, $id);
   ?>
   <div id="main" role="main">
-    <div id="user">
+    <div id="user-header">
       <div class="content">
-      <?php
-        display_feed($user);
-      ?>
-      </div>
-    </div>
-    <div id="user-schedule">
-      <div class="content">
+        <div class="username">
+          Viewing user <?=$viewed->value ?>
+        </div>
         <?php
         if(logged_in()&& $_GET['id'] == $dbpdo->session('username'))
 	  echo "<div class=\"infobox\">Did you know that you are automatically given an @ureddit.com email address? Access using <a href=\"http://ureddit.com/webmail\">webmail</a> <em>or</em> any email client set for incoming port 993 for IMAP+SSL or port 110 for POP3, with outgoing port 465 for STMP-SSL. You can also set up a forwarding address <a href=\"" . PREFIX . "/settings\">here</a>.</div><br />";
+        ?>
 
+
+        <?php
         if(logged_in() && $_GET['id'] == $dbpdo->session('username'))
 	  {
 	    try
 	      {
 		$ru = $user->get_attribute_value('reddit_username');
-		echo "You have already linked your UofR account to <a href=\"http://www.reddit.com/user/" . $ru . "\">your Reddit acount.</a><br />";
+		echo "You have already linked your UofR account to <a href=\"http://www.reddit.com/user/" . $ru . "\">your Reddit acount.</a> (<a href=\"" . PREFIX . "/settings\">Unlink</a>?)";
 	      }
 	    catch (ObjectAttributeNotFoundException $e)
 	      {
-		echo "You have not yet linked your UofR account to a Reddit account. <a href=\"" . PREFIX . "/confirm\">Link me to Reddit!</a><br />";
+		echo "You have not yet linked your UofR account to a Reddit account. <a href=\"" . PREFIX . "/confirm\">Link me to Reddit!</a>";
 	      }
 	  }
 	else
 	  {
 	    try
 	      {
-		$viewed = new user($dbpdo, $id);
 		$vru = $viewed->get_attribute_value('reddit_username');
 		echo "<a href=\"http://www.reddit.com/message/compose/?to=" . $vru . "\">You can PM this user on Reddit.</a>";
 	      }
@@ -97,12 +96,25 @@ if(!preg_match($validation,$username))
 	      }
 	  }
         ?>
-	  <div class="pagetitle">
-	  Class schedule:
-	  </div>
+      </div>
+    </div>
+    <div id="user-schedule">
+      <div class="content">
+          <h2>Class schedule</h2>
 	  <?php
-	  //display_schedule(new user($dbpdo, $id));
+	  display_schedule($viewed);
           ?>
+      </div>
+    </div>
+    <div id="user">
+      <div class="content">
+        <h2>Activity Feed</h2>
+        <ul>
+          <?php
+            $feed = get_feed($viewed);
+            echo implode("<br>", $feed);
+          ?>
+        </ul>
       </div>
       <div id="separate-main-footer">
       </div>

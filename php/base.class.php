@@ -20,6 +20,32 @@ class base {
       }
   }
 
+  function log_to_feed($action, $object_id = NULL, $indirect_id = NULL)
+  {
+    if($object_id == NULL)
+      {
+	if($indirect_id == NULL)
+	  {
+	    $this->dbpdo->query("INSERT INTO `activity` (`parent_id`, `action`,`child_id`, `indirect_id`) VALUES (?, ?, NULL, NULL)", array($this->id, $action));
+	  }
+	else
+	  {
+	    $this->dbpdo->query("INSERT INTO `activity` (`parent_id`, `action`,`child_id`, `indirect_id`) VALUES (?, ?, NULL, ?)", array($this->id, $action, $indirect_id));
+	  }
+      }
+    else
+      {
+	if($indirect_id == NULL)
+	  {
+	    $this->dbpdo->query("INSERT INTO `activity` (`parent_id`, `action`,`child_id`, `indirect_id`) VALUES (?, ?, ?, NULL)", array($this->id, $action, $object_id));
+	  }
+	else
+	  {
+	    $this->dbpdo->query("INSERT INTO `activity` (`parent_id`, `action`,`child_id`, `indirect_id`) VALUES (?, ?, ?, ?)", array($this->id, $action, $object_id, $indirect_id));
+	  }
+      }
+  }
+
   function seo_string($str)
   {
     $str = strtolower($str);

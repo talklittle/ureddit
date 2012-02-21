@@ -71,12 +71,15 @@ if(!empty($_POST))
 
      $class->save();
 
+     $user->log_to_feed('updated class', $class->id);
+
      if($status == 0 && $old_status != 0)
        {
 	 $tweet = "(" . date("U") . ") Unfortunately, " . $user->value . " has cancelled \"$name\".";
 	 if(strlen($tweet) > 140)
 	   $tweet = substr($tweet,0,135) . "...\".";
 	 tweet($tweet);
+	 $user->log_to_feed('canceled class', $class->id);
 	 }
        else
 	 {

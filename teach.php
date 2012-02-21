@@ -43,6 +43,7 @@ if(!empty($_POST))
      $class = new course($dbpdo);
      $class->define('class',$name,0);
      $class->save();
+     $teacher->log_to_feed('created class', $class->id);
      
      $class->assign_owner($teacher->id);
      $class->add_teacher($teacher->id);

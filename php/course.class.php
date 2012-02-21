@@ -174,6 +174,8 @@ class course extends object
 			      $date
 			      ));
       }
+
+    $author->log_to_feed('mass messaged the students in', $this->id);
   }
 
   function calculate_score()
@@ -249,12 +251,18 @@ class course extends object
           <div class="voting">
              <?=votebox($this, $this->session('logged_in') ? $user : false) ?>
           </div>
-          <div class="showhide">
-	     [<a
-	   onclick="$.get('<?=PREFIX ?>/show_class.php',{id: '<?=$this->id ?>', show: '<?=$expanded == 'true' ? 'false' : 'true' ?>'}, function(data){$('#class<?=$this->id ?> > .content').html(data);});"
-	      ><?=($expanded == true ? "-" : "+") ?></a>]
-          </div> 
 	  <?php
+	     if(!$full)
+	       {
+		 ?>
+                   <div class="showhide">
+	           [<a
+		   onclick="$.get('<?=PREFIX ?>/show_class.php',{id: '<?=$this->id ?>', show: '<?=$expanded == 'true' ? 'false' : 'true' ?>'}, function(data){$('#class<?=$this->id ?> > .content').html(data);});"
+		   ><?=($expanded == true ? "-" : "+") ?></a>]
+		   </div> 
+		 <?php
+	       }
+
           signup_button($user,$this->id);
           ?>
           <div class="class-name">

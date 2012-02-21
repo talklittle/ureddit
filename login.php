@@ -70,6 +70,7 @@ if(logged_in())
   <div id="main" role="main">
     <div id="login">
       <div class="content">
+        <h1>Log In</h1>
         <form method="post" action="<?=PREFIX ?>/login">
         <p>
         Username:<br />
@@ -86,7 +87,7 @@ if(logged_in())
         </p>
       </div>
     </div>
-    <div id="why-register">
+    <div id="whyregister">
       <div class="content">
         <p>
     <strong>Don't have an account?</strong> <a href="<?=PREFIX ?>/register"><br>Register</a>!

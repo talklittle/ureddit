@@ -70,7 +70,8 @@ html
 
 body
 {
-    background-color: #efefef;
+    /*background-color: #efefef;*/
+    background-color: white;
 }
 
 header
@@ -82,7 +83,6 @@ header
 #help
 {
     width: 100%;
-    background-color: white;
     font-size: 0.8em;
 }
 
@@ -91,24 +91,11 @@ header
     padding: 0 10px 10px 10px;
 }
 
-#help .content p a, #help .content p a:link, #help .content p a:visited, #help .content p a:hover, #help .content p a:active, #help .content ul li a, #help .content ul li a:link, #help .content ul li a:visited, #help .content ul li a:hover, #help .content ul li a:active
-{
-    color: #464646;
-    text-decoration: underline;
-}
-
-#help .content p a, #help .content p a:link, #help .content p a:visited, #help .content p a:hover, #help .content p a:active
-{
-    color: #464646;
-    text-decoration: underline;
-}
-
 .infobox
 {
     background-color: #FDED93;
     border: 1px solid #FFAE00;
     padding: 10px;
-    font-size: 0.7em;
 }
 
 img#logo
@@ -187,15 +174,8 @@ img#messages
     text-overflow: ellipsis;
 }
 
-#socialbar ul li .socialbar-item .content a:link, #socialbar ul li .socialbar-item .content a:visited, socialbar ul li .socialbar-item .content a:hover, socialbar ul li .socialbar-item .content a:active
-{
-    color: #d4d4d4;
-    text-decoration: underline;
-}
-
 #socialbar ul li .socialbar-item .content a:link.nounderline, #socialbar ul li .socialbar-item .content a:visited.nounderline, #socialbar ul li .socialbar-item .content a:hover.nounderline, #socialbar ul li .socialbar-item .content a:active.nounderline
 {
-    color: #d4d4d4;
     text-decoration: none;
 }
 
@@ -253,61 +233,123 @@ nav a.active
     width: 100%;
 }
 
+#user-header
+{
+    width: 100%;
+    clear: both;
+    border-bottom: 1px solid #242424;
+    background-color: #ededed;
+}
+
+#user-header .content
+{
+    padding: 10px;
+    font-size: 0.8em;
+}
+
+#user-header .content .username
+{
+    font-weight: bold;
+    font-size: 2.0em;
+}
+
 #user
 {
-    width: 50%;
-    float: left;
+    width: 30%;
+    float: right;
+    font-size: 0.8em;
+    background-color: #ededed;
 }
 
 #user .content
 {
+    border-left: 3px solid #232323;
+    padding: 0 10px 5px 10px;
+}
+
+#user .content ul
+{
+    list-style-type: none;
     padding: 5px;
+}
+
+#user .content ul li
+{
+    padding: 0 0 1.3em 0;
+    border-bottom: 1px dashed #c3c3c3;
+    margin: 0;
+}
+
+#user .content ul li:last-child
+{
+    border: 0;
 }
 
 #user-schedule
 {
-    width: 50%;
-    float: right;
+    width: 70%;
+    float: left;
 }
 
 #user-schedule .content
 {
     padding: 5px;
-    border-left: 3px solid #232323;
-    background-color: white;
     font-size: 0.8em;
 }
 
-#class-page, #login
+#user-schedule .content h2, #user .content h2
 {
-    background-color: white;
+    margin-top: 0;
+    padding-top: 15px;
+}
+
+#user-schedule .content .category
+{
+
+}
+
+#user-schedule .content .category .content
+{
+    font-size: 1em;
+    font-weight: bold;
+    border: 0;
+}
+
+#user-schedule .content .category .content .class .content
+{
+    font-weight: normal;
+    border: 0;
+}
+
+#class-page, #login, #register
+{
     width: 70%;
     height: 100%;
     float: left;
     font-size: 0.8em;
 }
 
-#class-page .content, #login .content
+#class-page .content, #login .content, #register .content
 {
     padding: 10px;
     height: 100%;
 }
 
-#login .content p a, #login .content p a:link, #login .content p a:visited, #login .content p a:hover, #login .content p a:active
+h1
 {
-    color: #464646;
-    text-decoration: underline;
+    margin: 0 0 0.5em 0;
 }
 
-#class-page-roster, #why-register
+#class-page-roster, #whyregister
 {
     width: 30%;
     height: 100%;
     float: right;
     font-size: 0.8em;
+    background-color: #ededed;
 }
 
-#class-page-roster .content, #why-register .content
+#class-page-roster .content, #whyregister .content
 {
     border-left: 3px solid #232323;
     padding: 10px;
@@ -389,13 +431,25 @@ nav a.active
 {
     font-weight: normal;
     padding: 5px 0 15px 0;
-    /*background-color: #f5f5f5;*/
     background-color: #ffffff;
-    /*border: 1px solid #c3c3c3;*/
     border-bottom: 1px dashed #c3c3c3;
     border-radius: 5px;
     font-size: 0.8em;
     margin: 10px 0 10px 10px;
+}
+
+#user-schedule .content .category .content .class
+{
+    font-weight: normal;
+    padding: 5px 0 15px 0;
+    border-bottom: 1px dashed #c3c3c3;
+    border-radius: 5px;
+    margin: 10px 0 10px 10px;
+}
+
+#user-schedule .content .category .content .class:last-child
+{
+    border: 0;
 }
 
 #catalog-class-list .content .category .content .class:last-child
@@ -403,13 +457,13 @@ nav a.active
     border: 0;
 }
 
-#catalog-class-list .content .category .content .class .content, #class-page .content .class .content
+#catalog-class-list .content .category .content .class .content, #class-page .content .class .content, #user-schedule .content .category .content .class .content
 {
     position: relative;
     padding: 0;
 }
 
-#catalog-class-list .content .category .content .class .content .voting, #class-page .content .class .content .voting
+#catalog-class-list .content .category .content .class .content .voting, #class-page .content .class .content .voting, #user-schedule .content .category .content .class .content .voting
 {
     position: absolute;
     top: 0;
@@ -461,7 +515,7 @@ img.upvote, img.upvoted, img.downvote, img.downvoted
     margin-bottom: 40px;
 }
 
-#catalog-class-list .content .category .content .class .content .class-info, #class-page .content .class .content .class-info
+#catalog-class-list .content .category .content .class .content .class-info, #class-page .content .class .content .class-info, #user-schedule .content .category .content .class .content .class-info
 {
     width: 100%;
     text-align: right;
@@ -469,13 +523,13 @@ img.upvote, img.upvoted, img.downvote, img.downvoted
     font-style: italic;
 }
 
-#catalog-class-list .content .category .content .class .content .class-info a, #class-page .content .class .content .class-info a
+#catalog-class-list .content .category .content .class .content .class-info a, #class-page .content .class .content .class-info a, #user-schedule .content .category .content .class .content .class-info a
 {
     color: black;
 }
 
 
-#class-page .content .class .content .showhide
+#class-page .content .class .content .showhide, #user-schedule .content .category .content .class .content .showhide
 {
     margin: 0;
     font-size: 0.9em;
@@ -493,7 +547,7 @@ img.upvote, img.upvoted, img.downvote, img.downvoted
     padding-right: 8px;
 }
 
-#catalog-class-list .content .category .content .class .content .showhide a, #class-page .content .class .content .showhide a
+#catalog-class-list .content .category .content .class .content .showhide a, #class-page .content .class .content .showhide a, #user-schedule .content .category .content .class .content .showhide a
 {
     color: black;
     text-decoration: none;
@@ -588,7 +642,7 @@ footer
     border-top: 1px solid #232323;
 }
 
-footer a:link, a:visited, a:hover, a:active
+a:link, a:visited, a:hover, a:active
 {
     color: #464646;
     text-decoration: underline;
