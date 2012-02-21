@@ -91,6 +91,44 @@ header
     padding: 0 10px 10px 10px;
 }
 
+#teach
+{
+    font-size: 0.8em;
+    width: 70%;
+    float: left;
+}
+
+#teach .content
+{
+    padding: 10px;
+}
+
+#teach .content textarea
+{
+    width: 400px;
+    height: 8em;
+}
+
+#teach .content input
+{
+    width: 400px;
+}
+
+#teach-side
+{
+    font-size: 0.8em;
+    width: 30%;
+    float: right;
+}
+
+#teach-side .content
+{
+    border-left: 3px solid #242424;
+    border-bottom: 3px solid #242424;
+    padding: 10px;
+    background-color: #ededed;
+}
+
 #settings
 {
     width: 100%;
