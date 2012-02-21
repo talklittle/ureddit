@@ -151,7 +151,7 @@ $forwarded_email = $mailboxes[0]['goto'];
 	  }
 	else
 	  {
-	    ?><em>You must be <a href="https://ureddit.com/settings">using HTTPS</a> to view this information.</em><?php
+	    ?><em>You must be <a href="https://ureddit.com<?=PREFIX ?>/settings">using HTTPS</a> to view this information.</em><?php
 	  }
       ?></p>
 

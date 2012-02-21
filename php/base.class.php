@@ -22,26 +22,27 @@ class base {
 
   function log_to_feed($action, $object_id = NULL, $indirect_id = NULL)
   {
+    $date = $this->timestamp();
     if($object_id == NULL)
       {
 	if($indirect_id == NULL)
 	  {
-	    $this->dbpdo->query("INSERT INTO `activity` (`parent_id`, `action`,`child_id`, `indirect_id`) VALUES (?, ?, NULL, NULL)", array($this->id, $action));
+	    $this->dbpdo->query("INSERT INTO `activity` (`parent_id`, `action`,`child_id`, `indirect_id`,`datetime`) VALUES (?, ?, NULL, NULL, ?)", array($this->id, $action, $date));
 	  }
 	else
 	  {
-	    $this->dbpdo->query("INSERT INTO `activity` (`parent_id`, `action`,`child_id`, `indirect_id`) VALUES (?, ?, NULL, ?)", array($this->id, $action, $indirect_id));
+	    $this->dbpdo->query("INSERT INTO `activity` (`parent_id`, `action`,`child_id`, `indirect_id`, `datetime`) VALUES (?, ?, NULL, ?, ?)", array($this->id, $action, $indirect_id, $date));
 	  }
       }
     else
       {
 	if($indirect_id == NULL)
 	  {
-	    $this->dbpdo->query("INSERT INTO `activity` (`parent_id`, `action`,`child_id`, `indirect_id`) VALUES (?, ?, ?, NULL)", array($this->id, $action, $object_id));
+	    $this->dbpdo->query("INSERT INTO `activity` (`parent_id`, `action`,`child_id`, `indirect_id`,`datetime`) VALUES (?, ?, ?, NULL, ?)", array($this->id, $action, $object_id, $date));
 	  }
 	else
 	  {
-	    $this->dbpdo->query("INSERT INTO `activity` (`parent_id`, `action`,`child_id`, `indirect_id`) VALUES (?, ?, ?, ?)", array($this->id, $action, $object_id, $indirect_id));
+	    $this->dbpdo->query("INSERT INTO `activity` (`parent_id`, `action`,`child_id`, `indirect_id`,`datetime`) VALUES (?, ?, ?, ?, ?)", array($this->id, $action, $object_id, $indirect_id, $date));
 	  }
       }
   }

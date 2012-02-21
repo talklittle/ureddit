@@ -147,7 +147,7 @@ class statuses:
 function get_feed($user)
 {
   $items = array();
-  $actions = $user->dbpdo->query("SELECT * FROM `activity` WHERE `parent_id` = ? ORDER BY `datetime` DESC LIMIT 10", array($user->id));
+  $actions = $user->dbpdo->query("SELECT * FROM `activity` WHERE `parent_id` = ? ORDER BY `datetime` DESC LIMIT 25", array($user->id));
   foreach($actions as $action)
     {
       if(is_null($action['child_id']))
