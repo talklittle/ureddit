@@ -76,7 +76,7 @@ $viewed = new user($dbpdo, $id);
 	    try
 	      {
 		$ru = $user->get_attribute_value('reddit_username');
-		echo "You have already linked your UofR account to <a href=\"http://www.reddit.com/user/" . $ru . "\">your Reddit acount.</a> (<a href=\"" . PREFIX . "/settings\">Unlink</a>?)";
+		echo "You have already linked your UofR account to <a href=\"http://www.reddit.com/user/" . $ru . "\">your Reddit account.</a> (<a href=\"" . PREFIX . "/settings\">Unlink</a>?)";
 	      }
 	    catch (ObjectAttributeNotFoundException $e)
 	      {

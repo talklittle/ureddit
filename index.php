@@ -1,5 +1,19 @@
 <?php
 require_once('init.php');
+
+if(isset($_GET['category_id']) && count($dbpdo->query("SELECT `id` FROM `objects` WHERE `id` = ? AND `type` = 'category' LIMIT 1", array($_GET['category_id'])) != 0))
+  $active_category_id = $_GET['category_id'];
+else
+  $active_category_id = -1;
+
+$catalog = new catalog($dbpdo);
+
+$categories = array();
+foreach($catalog->categories as $category_id)
+  {
+    $category = new category($dbpdo, $category_id);
+    $categories[$category_id] = $category;
+  }
 ?>
 
 <!doctype html>
@@ -10,7 +24,7 @@ require_once('init.php');
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <title>University of Reddit</title>
+  <title>University of Reddit<?=$active_category_id == -1 ? '' : ' : ' . $categories[$active_category_id]->value?></title>
   <meta name="description" content="">
 
   <meta name="viewport" content="width=device-width">
@@ -23,13 +37,6 @@ require_once('init.php');
   <?php
   require_once('header.php');
   require_once('social.php');
-
-  if(isset($_GET['category_id']) && count($dbpdo->query("SELECT `id` FROM `objects` WHERE `id` = ? AND `type` = 'category' LIMIT 1", array($_GET['category_id'])) != 0))
-    $active_category_id = $_GET['category_id'];
-  else
-    $active_category_id = -1;
-
-  $catalog = new catalog($dbpdo);
   ?>
   <div id="main" role="main">
     <div id="catalog-category-list">
@@ -40,11 +47,8 @@ require_once('init.php');
           </div>
         </div>
         <?php
-        $categories = array();
-        foreach($catalog->categories as $category_id)
+        foreach($categories as $category_id => $category)
 	  {
-	    $category = new category($dbpdo, $category_id);
-	    $categories[$category_id] = $category;
 	    $category->display(false);
 	  }
         ?>

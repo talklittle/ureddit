@@ -50,7 +50,7 @@ class base {
   function seo_string($str)
   {
     $str = strtolower($str);
-    $str = preg_replace('/[[:punct:]]/','',$str);
+    $str = preg_replace('/[[:punct:]]/','-',$str);
     $str = preg_replace('/\s+/','-',$str);
     return $str;
   }
