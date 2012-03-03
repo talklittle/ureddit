@@ -355,23 +355,11 @@ function display_messages($user, $offset = 0, $limit=15)
 		 }
 		 
 	       $found = 1;
-	       $user->dbpdo->query("UPDATE `associations` SET `type` = ? WHERE `id` = ? AND type = ?",
-				   array(
-					 'read_mass_message',
-					 $user->inbox[2*$i]['association_id'],
-					 'unread_mass_message'
-					 ));
 	     }
 	   else
 	     {
 	       $sender = new user($user->dbpdo, $user->inbox[2*$i]['parent_id']);
 	       $found = 1;
-	       $user->dbpdo->query("UPDATE `associations` SET `type` = ? WHERE `id` = ? AND type = ?",
-				   array(
-					 'read_message',
-					 $user->inbox[2*$i]['association_id'],
-					 'unread_message'
-					 ));
 	     }
       ?>
       <div class="message">
@@ -392,6 +380,20 @@ function display_messages($user, $offset = 0, $limit=15)
       </div>
       <?php
     }
+    $user->dbpdo->query("UPDATE `associations` SET `type` = ? WHERE type = ? AND child_id = ?",
+			array(
+			      'read_mass_message',
+			      'unread_mass_message',
+			      $user->id
+			      ));
+    
+    $user->dbpdo->query("UPDATE `associations` SET `type` = ? WHERE  type = ? AND child_id = ?",
+			array(
+			      'read_message',
+			      'unread_message',
+			      $user->id
+			      ));
+    
 }
 
 function display_sent_messages($user, $offset = 0, $limit=15)
