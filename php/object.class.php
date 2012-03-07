@@ -1,6 +1,6 @@
 <?php
 
-require_once("base.class.php");
+//require_once("base.class.php");
 
 class ObjectAttributeNotFoundException extends Exception {}
 class ObjectNotFoundException extends Exception {}
@@ -41,6 +41,23 @@ class object extends base
 	    $this->lookup($id);
 	  }
       }
+  }
+
+  function log_user_view($comments = '')
+  {
+    $viewer_id = $this->session('logged_in') == 'true' ? $this->session('user_id') : '-1';
+    $this->dbpdo->query("INSERT INTO `views` (`displayed_object_id`,`viewer_object_id`,`page`,`remote_addr`,`remote_host`,`http_referer`,`comments`,`date`,`time`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", 
+			array(
+			      $this->id,
+			      $viewer_id,
+			      $_SERVER['PHP_SELF'],
+			      $_SERVER['REMOTE_ADDR'],
+			      gethostbyaddr($_SERVER['REMOTE_ADDR']),
+			      $_SERVER['HTTP_REFERER'],
+			      $comments,
+			      date("Y-m-d"),
+			      date("H:i:s")
+			      ));
   }
 
   function use_connection($mh)

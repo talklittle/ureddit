@@ -51,7 +51,7 @@ if(!logged_in())
       ?>
       In order to link your UniversityOfReddit.com account to your Reddit account, you must do the following:<br /><br />
       <ol style="list-style-type: decimal; padding-left: 30px;">
-        <li>Go to <a href="http://redd.it/jwfzl">this post</a> in the /r/UniversityofReddit subreddit and log in as the account you wish to link to your UofR account.</li>
+        <li>Go to <a href="http://redd.it/q3d3l">this post</a> in the /r/UniversityofReddit subreddit and log in as the account you wish to link to your UofR account.</li>
         <li>Post a top-level comment there containing your universityofreddit.com username <strong>and nothing else</strong>.</li>
         <li>Click on the "permalink" link underneath the comment you just posted; copy the URL into the textbox below:<br /><br />
           <input type="text" id="permalink" style="width: 400px;" /><br /><br />

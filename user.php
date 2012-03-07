@@ -33,6 +33,7 @@ if(!preg_match($validation,$username))
   send_user_to("/");
 
 $viewed = new user($dbpdo, $id);
+$viewed->log_user_view();
 
 ?>
 

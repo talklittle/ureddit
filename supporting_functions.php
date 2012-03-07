@@ -1,7 +1,7 @@
 <?php
 
 define('COOKIE_SESSID','ureddit_sessid');
-define('PREFIX','/dev2/ureddit');
+define('PREFIX','/dev/ureddit');
 define('USE_MARKDOWN','true');
 
 function latest_blog_post($dbpdo)
@@ -13,11 +13,26 @@ function latest_blog_post($dbpdo)
   return array('title' => $res[0]['post_title'], 'url' => '/blog/' . $year . '/' . $month . '/' . $day . '/' . $res[0]['post_name']);
 }
 
-function latest_commit()
+function latest_commit($dbpdo)
 {
-  $fdata = new SimpleXMLElement(stripslashes(file_get_contents("https://github.com/ureddit/ureddit/commits/master.atom")), true);
-  //$fdata = new SimpleXMLElement(file_get_contents("github.txt"), true);
-  return array('title' => $fdata->entry[0]->title, 'url' => $fdata->entry[0]->link[0]['href']);
+  if($dbpdo->config->memcache())
+    {
+      if(!($val = $dbpdo->memcache->get('latest_commit')))
+	{
+	  $fdata = new SimpleXMLElement(stripslashes(file_get_contents("https://github.com/ureddit/ureddit/commits/master.atom")), true);
+	  //$fdata = new SimpleXMLElement(file_get_contents("github.txt"), true);
+	  $val = array('title' => '' . $fdata->entry[0]->title, 'url' => '' . $fdata->entry[0]->link[0]['href']);
+	  $dbpdo->memcache_set('latest_commit',$val);
+	}
+    }
+  else
+    {
+      $fdata = new SimpleXMLElement(stripslashes(file_get_contents("https://github.com/ureddit/ureddit/commits/master.atom")), true);
+      //$fdata = new SimpleXMLElement(file_get_contents("github.txt"), true);
+      $val = array('title' => $fdata->entry[0]->title, 'url' => $fdata->entry[0]->link[0]['href']); 
+    }
+
+  return $val;
 }
 
 function translate_class_id($dbpdo,$old_id)
@@ -242,25 +257,61 @@ function object_type_value_to_id($dbpdo, $type, $value)
 				 ));
 }
 
-function latest_reddit_post()
+function latest_reddit_post($dbpdo)
 {
-  $json = json_decode(stripslashes(file_get_contents('/srv/http/ureddit.com/public_html/reddit.json')), true);
-  return array('url' => 'http://reddit.com' . $json['data']['children'][0]['data']['permalink'], 'title' => $json['data']['children'][0]['data']['title']);
+  if($dbpdo->config->memcache())
+    {
+      if(!($val = $dbpdo->memcache_get('latest_reddit_post')))
+	{
+	  $json = json_decode(stripslashes(file_get_contents('/srv/http/ureddit.com/public_html/reddit.json')), true);
+	  $val = array('url' => 'http://reddit.com' . $json['data']['children'][0]['data']['permalink'], 'title' => $json['data']['children'][0]['data']['title']);
+	  $dbpdo->memcache_set('latest_reddit_post', $val);
+	}
+    }
+  else
+    {
+      $json = json_decode(stripslashes(file_get_contents('/srv/http/ureddit.com/public_html/reddit.json')), true);
+      $val = array('url' => 'http://reddit.com' . $json['data']['children'][0]['data']['permalink'], 'title' => $json['data']['children'][0]['data']['title']);
+    }
+
+  return $val;
 }
 
-function latest_tweet($config)
+function latest_tweet($dbpdo)
 {
-  try
+  $config = $dbpdo->config;
+  if($config->memcache())
     {
-      $t = new Twitter($config::twitterConsumerKey, $config::twitterConsumerSecret, $config::twitterAccessToken, $config::twitterAccessTokenSecret);
-      $latest = $t->load(Twitter::ME,1);
-  //  var_dump($latest);
-      return array('text' => Twitter::clickable($latest->status->text), 'url' => 'http://twitter.com/uofreddit/status/' . $latest->status->id);
+      if(!($val = $dbpdo->memcache_get('latest_tweet')))
+	{
+	  try
+	    {
+	      $t = new Twitter($config::twitterConsumerKey, $config::twitterConsumerSecret, $config::twitterAccessToken, $config::twitterAccessTokenSecret);
+	      $latest = $t->load(Twitter::ME,1);
+	      $val = array('text' => Twitter::clickable($latest->status->text), 'url' => 'http://twitter.com/uofreddit/status/' . $latest->status->id);
+	      $dbpdo->memcache_set('latest_tweet',$val,60);
+	    }
+	  catch (TwitterException $e)
+	    {
+	      return array('text' => 'Error fetching tweets. Click to go to the @uofreddit Twitter feed.', 'url' => 'http://twitter.com/uofreddit');
+	    }
+	}
     }
-  catch (TwitterException $e)
+  else
     {
-      return array('text' => 'Error fetching tweets. Click to go to the @uofreddit Twitter feed.', 'url' => 'http://twitter.com/uofreddit');
+      try
+	{
+	  $t = new Twitter($config::twitterConsumerKey, $config::twitterConsumerSecret, $config::twitterAccessToken, $config::twitterAccessTokenSecret);
+	  $latest = $t->load(Twitter::ME,1);
+	  $val = array('text' => Twitter::clickable($latest->status->text), 'url' => 'http://twitter.com/uofreddit/status/' . $latest->status->id);
+	  memcache_set('latest_tweet',$val,300);
+	}
+      catch (TwitterException $e)
+	{
+	  return array('text' => 'Error fetching tweets. Click to go to the @uofreddit Twitter feed.', 'url' => 'http://twitter.com/uofreddit');
+	}
     }
+  return $val;
 }
 
 function tweet($config,$status)

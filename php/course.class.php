@@ -239,6 +239,13 @@ class course extends object
 
   function display($expanded = false, $full = false)
   {
+    $comments = array();
+    if($expanded)
+      $comments[] = 'expanded';
+    if($full)
+      $comments[] = 'full';
+    $this->log_user_view(implode(';',$comments));
+
     if($this->session('user_id') !== false)
       {
 	$user = new user($this->dbpdo, $this->session('user_id'));

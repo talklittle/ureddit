@@ -67,9 +67,9 @@ class base {
     return $this->memcache->get($key);
   }
 
-  function memcache_set($key, $value)
+  function memcache_set($key, $value, $timeout = 3600)
   {
-    $this->memcache->set($key, $value, FALSE, 3600);
+    $this->memcache->set($key, $value, FALSE, $timeout);
   }
 
   function memcache_delete($key)

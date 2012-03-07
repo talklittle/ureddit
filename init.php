@@ -1,16 +1,16 @@
 <?php
 
-require_once('markdown.php');
-require_once('twitter.class.php');
-require_once('php/base.class.php');
-require_once('php/object.class.php');
-require_once('php/catalog.class.php');
-require_once('php/category.class.php');
-require_once('php/course.class.php');
-require_once('php/user.class.php');
+require('markdown.php');
+require('twitter.class.php');
+require('php/base.class.php');
+require('php/object.class.php');
+require('php/catalog.class.php');
+require('php/category.class.php');
+require('php/course.class.php');
+require('php/user.class.php');
 
-require_once('dbconnect.php');
-require_once('supporting_functions.php');
-require_once('check_login.php');
+require('dbconnect.php');
+require('supporting_functions.php');
+require('check_login.php');
 
 ?>

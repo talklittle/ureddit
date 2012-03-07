@@ -88,7 +88,7 @@ Additionally, a class does not have to be taught by one teacher. Co-teachers are
 No. UoR is not an accredited university so we cannot distribute diplomas or grant credit for completed classes. There is an awards system in the works but, in the meantime, make sure to leave a nice karma tip for good teaching.
 
 **Is University of Reddit available in other languages?**  
-While we are trying to reduce our anglocentrism, our website is completely in English. If you are interested in translating to make the site more accessible, [drop us a line]( mailto:help@universityofreddit.com) or [PM the moderators](http://www.reddit.com/message/compose?to=%23UniversityofReddit) on Reddit.
+While we are trying to reduce our anglocentrism, our website is completely in English. If you are interested in translating to make the site more accessible, [drop us a line]( mailto:anastas@ureddit.com) or [PM the moderators](http://www.reddit.com/message/compose?to=%23UniversityofReddit) on Reddit.
 
 **Who's in charge here?**  
 While we strive to make University of Reddit as self-sustaining as possible, the moderators (eawesome3, amberamberamber, justrasputin and aveman101) are here to iron out any bugs on the website. Should you find anything wrong or have questions, don't hesitate to get in touch - we're more than happy to help.
@@ -127,11 +127,9 @@ Once you have created a class, you should announce it by submitting it to [our r
 
 After you've created a class, you will find a "teacher admin panel" link in the top right. From there, you can manage your class and you can send a mass PM to everyone that has added your class. If you don't already know, every user is automatically given an email address (their username @ureddit.com) and have the choice to set up a forwarding address; PMs get sent not only to users' PM inboxes but also as an email to their email inboxes. This is a good way to stay in touch with your students on UReddit itself. (Of course, if they reply to an email, their response will bypas your PM inbox and go directly to your @ureddit mailbox, so you should use UReddit's email service as well.)
 
-We also provide a file hosting service. Check [this blog post](http://ureddit.com/blog/2011/04/07/ureddit-has-started-a-private-filehosting-service-for-classes/) for details.
+We also provide a file hosting service. Check [this blog post](http://ureddit.com/blog/2012/02/23/ureddit-filehosting-for-teachers/) for details.
 
 We also provide both Ventrillo and Murmur voice chat servers with several channels each. Each service may be accessed using the appropriate client by connecting to ureddit.com with otherwise standard settings (no password necessary).
-
-Lastly (for now), we also offer a Wordpress installation for you to use if you like right [here](http://ureddit.com/wordpress).
 
 **What third-party tools are available to me?**
 
@@ -156,7 +154,7 @@ First, think very hard. Where did you last put it? If you still can't remember, 
 *Note:* You must have registered with an email address, otherwise we won't know to whom to send the new account password. If you didn't input your email address, you are out of luck - make another account.
 
 **Something's wrong with the site! Who should I tell?**  
-Tell [us](mailto:help@universityofreddit.com). Make sure to go into as much detail as possible and thanks in advance!
+Tell [us](mailto:anastas@ureddit.com). Make sure to go into as much detail as possible and thanks in advance!
 
 **Will you do anything malicious with my information?**  
 No, why would we do that? We want users to register accounts so that we can eliminate spam on the website. Additionally, because we're not officially affiliated with reddit, you are more than welcome (in fact, encouraged) to use a different password than that of your proprietary reddit account.
@@ -164,7 +162,7 @@ No, why would we do that? We want users to register accounts so that we can elim
 We ask for your email so that, if anything goes wrong with your account, we can reset your password. We're much too lazy to send out daily newsletters. Also, we have nothing to sell.
 
 **Miscellaneous**  
-If you have suggestions or resources that might contribute to making   University of Reddit better, email [us](mailto:contact@universityofreddit.com) or  [PM the mods](http://www.reddit.com/message/compose?to=%23UniversityofReddit)!
+If you have suggestions or resources that might contribute to making   University of Reddit better, email [us](mailto:anastas@ureddit.com) or  [PM the mods](http://www.reddit.com/message/compose?to=%23UniversityofReddit)!
 
 EOD;
 
