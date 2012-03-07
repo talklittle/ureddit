@@ -53,7 +53,7 @@ class object extends base
 			      $_SERVER['PHP_SELF'],
 			      $_SERVER['REMOTE_ADDR'],
 			      gethostbyaddr($_SERVER['REMOTE_ADDR']),
-			      $_SERVER['HTTP_REFERER'],
+			      isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '',
 			      $comments,
 			      date("Y-m-d"),
 			      date("H:i:s")

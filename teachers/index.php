@@ -29,14 +29,16 @@ require_once('../init.php');
       <div class="content">
           <h2>My classes</h2>
 	  <?php
-    list_teacher_classes(new user($dbpdo, $dbpdo->session('user_id')));
+            list_teacher_classes(new user($dbpdo, $dbpdo->session('user_id')));
           ?>
       </div>
     </div>
     <div id="my-statistics">
       <div class="content">
         <h2>Create Class</h2>
-        <a href="<?=PREFIX ?>/teach">I'd like to teach one more!</a>
+        <p>
+          <a href="<?=PREFIX ?>/teach">I'd like to teach one more!</a>
+        </p>
       </div>
     </div>
     <div id="separate-main-footer">

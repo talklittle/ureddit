@@ -296,6 +296,7 @@ class course extends object
 		<span style="font-weight: normal; font-size: 0.8em;">
 		  [ <a href="<?=PREFIX ?>/class/<?=$this->id ?>/edit">edit</a> ]
 		  [ <a href="<?=PREFIX ?>/class/<?=$this->id ?>/message">mass message</a> ]
+		  [ <a href="<?=PREFIX ?>/class/<?=$this->id ?>/stats">statistics</a> ]
 		</span>
 		<?php
 	      }
