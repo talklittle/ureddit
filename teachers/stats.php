@@ -58,7 +58,7 @@ $upvotes = $class->dbpdo->query("SELECT COUNT(*) FROM `activity` WHERE `child_id
 $downvotes = $class->dbpdo->query("SELECT COUNT(*) FROM `activity` WHERE `child_id` = ? AND `action` = ?", array($class->id, 'downvoted'));
         ?>
       <strong>Impressions:</strong> <?=$impressions[0]['COUNT(*)'] ?><br />
-      <strong>Dynamic loads:</strong> <?=$expanded[0]['COUNT(*)'] ?><br />
+      <strong>Expanded views:</strong> <?=$expanded[0]['COUNT(*)'] ?><br />
       <strong>Class Page views:</strong> <?=$full[0]['COUNT(*)'] ?><br /><br />
 
       <strong>Adds:</strong> <?=$adds[0]['COUNT(*)'] ?><br />
@@ -70,7 +70,7 @@ $downvotes = $class->dbpdo->query("SELECT COUNT(*) FROM `activity` WHERE `child_
       -->
 
       <strong>Distinct mass PMs:</strong> <?=$mass_messages[0]['COUNT(*)'] ?><br />
-      <strong>Percent of all mass PMs that have been read:</strong> <?=100*round($num_read[0]['COUNT(*)']/($num_read[0]['COUNT(*)'] + $num_unread[0]['COUNT(*)']),4) ?>%<br />
+      <strong>Percent of all mass PMs that have been read:</strong> <?=$num_read[0]['COUNT(*)'] + $num_read[0]['COUNT(*)'] == 0 ? 'unavailable' : 100*round($num_read[0]['COUNT(*)']/($num_read[0]['COUNT(*)'] + $num_unread[0]['COUNT(*)']),4) . '%' ?><br />
 
   <br /><br />
       </div>
