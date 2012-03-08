@@ -1,7 +1,7 @@
 <?php
 
 define('COOKIE_SESSID','ureddit_sessid');
-define('PREFIX','/dev/ureddit');
+define('PREFIX','');
 define('USE_MARKDOWN','true');
 
 function latest_blog_post($dbpdo)
@@ -532,7 +532,7 @@ function login($user)
   $_SESSION['username'] = $user->value;
 }
 
-function send_email($from, $to, $subject, $message)
+function send_email($from, $to, $subject, $message, $internalid = false)
 {
 
   $fHeaders = "To: " . $to . "\n";
@@ -540,6 +540,8 @@ function send_email($from, $to, $subject, $message)
   
   $fHeaders .= "Subject: " . encode_header ($subject) . "\n";
   $fHeaders .= "MIME-Version: 1.0\n";
+  if($internalid !== false)
+    $fHeaders .= "Association: $internalid\r\n";
   //$fHeaders .= "Content-Type: text/plain; charset=utf-8\n";
   //$fHeaders .= "Content-Transfer-Encoding: 8bit\n";
   $fHeaders .= "Content-Type: text/html; charset=utf-8\r\n";
