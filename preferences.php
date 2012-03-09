@@ -49,7 +49,7 @@ if(!empty($_POST))
 	if(strlen($_POST['newpass']) != 0)
 	  {
 	    $newpass = $user->hash_password($_POST['newpass']);
-	    $user->define_attribute('password', $newpass, 0);
+	    $user->define_attribute('password_hash', $newpass, 0);
 
 	    $newemailpass = pacrypt(escape_string($_POST['newpass']));
 

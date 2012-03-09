@@ -22,9 +22,8 @@ if(!empty($_POST))
 	if(count($users) > 0)
 	  {
 	    $user = new user($dbpdo, $users[0]['id']);
-	    $newpass = generate_random_password();
-	    $hash =  md5(md5($newpass) . "uofr!1336");
-	    $user->define_attribute($email);
+	    $hash = $user->hash_password(generate_random_password());
+	    $user->define_attribute('password', $hash, 0);
 	    $user->save();
 
 	    $username = $user['username'];
