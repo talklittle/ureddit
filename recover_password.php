@@ -22,8 +22,9 @@ if(!empty($_POST))
 	if(count($users) > 0)
 	  {
 	    $user = new user($dbpdo, $users[0]['id']);
-	    $hash = $user->hash_password(generate_random_password());
-	    $user->define_attribute('password', $hash, 0);
+	    $newpass = generate_random_password();
+	    $hash = $user->hash_password($newpass);
+	    $user->define_attribute('password_hash', $hash, 0);
 	    $user->save();
 
 	    $headers = 'From: no-reply@universityofreddit.com';
