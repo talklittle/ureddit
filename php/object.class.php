@@ -46,13 +46,13 @@ class object extends base
   function log_user_view($comments = '')
   {
     $viewer_id = $this->session('logged_in') == 'true' ? $this->session('user_id') : '-1';
-    $this->dbpdo->query("INSERT INTO `views` (`displayed_object_id`,`viewer_object_id`,`page`,`remote_addr`,`remote_host`,`http_referer`,`comments`,`date`,`time`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", 
+    //$this->dbpdo->query("INSERT INTO `views` (`displayed_object_id`,`viewer_object_id`,`page`,`remote_addr`,`remote_host`,`http_referer`,`comments`,`date`,`time`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", 
+    $this->dbpdo->query("INSERT INTO `views` (`displayed_object_id`,`viewer_object_id`,`page`,`remote_addr`,`http_referer`,`comments`,`date`,`time`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", 
 			array(
 			      $this->id,
 			      $viewer_id,
 			      $_SERVER['PHP_SELF'],
 			      $_SERVER['REMOTE_ADDR'],
-			      gethostbyaddr($_SERVER['REMOTE_ADDR']),
 			      isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '',
 			      $comments,
 			      date("Y-m-d"),

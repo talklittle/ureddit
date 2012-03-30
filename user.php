@@ -67,7 +67,7 @@ $viewed->log_user_view();
         </div>
         <?php
         if(logged_in()&& $_GET['id'] == $dbpdo->session('username'))
-	  echo "<div class=\"infobox\">Did you know that you are automatically given an @ureddit.com email address? Access using <a href=\"http://ureddit.com/webmail\">webmail</a> <em>or</em> any email client set for incoming port 993 for IMAP+SSL or port 110 for POP3, with outgoing port 465 for STMP-SSL. You can also set up a forwarding address <a href=\"" . PREFIX . "/settings\">here</a>.</div><br />";
+	  echo "<div class=\"infobox\">Did you know that you are automatically given an @ureddit.com email address? Read the <a href=\"http://ureddit.com/blog/2012/02/23/details-on-ureddit-com-email/\">blog post</a> for details.</div><br />";
         ?>
 
 

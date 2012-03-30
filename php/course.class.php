@@ -372,7 +372,7 @@ class course extends object
             ?>
             [<a href="<?=PREFIX ?>/class/<?=$this->id ?>/<?=$this->seo_string($this->value) ?>" class="link-class-desc">class page</a>]
             <?php
-	    if(logged_in())
+	    if(logged_in() && $full)
 	      {
 		?>
 		<span id="report<?=$this->id ?>">[<a class="link-class-desc" style="text-decoration: underline; cursor: pointer;" onclick="$.post('<?=PREFIX ?>/report.php',{class: <?=$this->id ?>},function(response){$('#report<?=$this->id ?>').html(response); return false;});">report class]</a></span>
