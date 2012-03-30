@@ -46,16 +46,17 @@ if($class->owner != $user->id || !in_array($user->id,$class->teachers))
         <h1>Statistics: <?=$class->value ?></h1>
 
         <?php
-    $impressions = $class->dbpdo->query("SELECT COUNT(*) FROM `views` WHERE `displayed_object_id` = ?", array($class->id));
-    $expanded = $class->dbpdo->query("SELECT COUNT(*) FROM `views` WHERE `displayed_object_id` = ? AND `comments` = ?", array($class->id, 'expanded'));
-    $full = $class->dbpdo->query("SELECT COUNT(*) FROM `views` WHERE `displayed_object_id` = ? AND `comments` = ?", array($class->id, 'expanded;full'));
-$mass_messages = $class->dbpdo->query("SELECT COUNT(*) FROM `activity` WHERE `child_id` = ? AND `action` LIKE ?", array($class->id, 'mass%'));
-$num_read = $class->dbpdo->query("SELECT COUNT(*) FROM `associations` WHERE `parent_id` = ? AND `type` = ?", array($class->id, 'read_mass_message'));
-$num_unread = $class->dbpdo->query("SELECT COUNT(*) FROM `associations` WHERE `parent_id` = ? AND `type` = ?", array($class->id, 'unread_mass_message'));
-$adds = $class->dbpdo->query("SELECT COUNT(*) FROM `activity` WHERE `child_id` = ? AND `action` = ?", array($class->id, 'added class'));
-$drops = $class->dbpdo->query("SELECT COUNT(*) FROM `activity` WHERE `child_id` = ? AND `action` = ?", array($class->id, 'dropped class'));
-$upvotes = $class->dbpdo->query("SELECT COUNT(*) FROM `activity` WHERE `child_id` = ? AND `action` = ?", array($class->id, 'upvoted'));
-$downvotes = $class->dbpdo->query("SELECT COUNT(*) FROM `activity` WHERE `child_id` = ? AND `action` = ?", array($class->id, 'downvoted'));
+    $expiration = 86400;
+$impressions = $class->dbpdo->query("SELECT COUNT(*) FROM `views` WHERE `displayed_object_id` = ?", array($class->id), 'impressions' . $class->id, $expiration);
+$expanded = $class->dbpdo->query("SELECT COUNT(*) FROM `views` WHERE `displayed_object_id` = ? AND `comments` = ?", array($class->id, 'expanded'), 'expanded' . $class->id, $expiration);
+$full = $class->dbpdo->query("SELECT COUNT(*) FROM `views` WHERE `displayed_object_id` = ? AND `comments` = ?", array($class->id, 'expanded;full'), 'full' . $class->id, $expiration);
+$mass_messages = $class->dbpdo->query("SELECT COUNT(*) FROM `activity` WHERE `child_id` = ? AND `action` LIKE ?", array($class->id, 'mass%'),'mass' . $class->id, $expiration);
+$num_read = $class->dbpdo->query("SELECT COUNT(*) FROM `associations` WHERE `parent_id` = ? AND `type` = ?", array($class->id, 'read_mass_message'), 'mass_read' . $class->id, $expiration);
+$num_unread = $class->dbpdo->query("SELECT COUNT(*) FROM `associations` WHERE `parent_id` = ? AND `type` = ?", array($class->id, 'unread_mass_message'),'mass_unread' . $class->id, $expiration);
+$adds = $class->dbpdo->query("SELECT COUNT(*) FROM `activity` WHERE `child_id` = ? AND `action` = ?", array($class->id, 'added class'), 'adds' . $class->id, $expiration);
+$drops = $class->dbpdo->query("SELECT COUNT(*) FROM `activity` WHERE `child_id` = ? AND `action` = ?", array($class->id, 'dropped class'), 'drops' . $class->id, $expiration);
+$upvotes = $class->dbpdo->query("SELECT COUNT(*) FROM `activity` WHERE `child_id` = ? AND `action` = ?", array($class->id, 'upvoted'), 'upvotes' . $class->id, $expiration);
+$downvotes = $class->dbpdo->query("SELECT COUNT(*) FROM `activity` WHERE `child_id` = ? AND `action` = ?", array($class->id, 'downvoted'), 'downvotes' . $class->id, $expiration);
         ?>
       <strong>Impressions:</strong> <?=$impressions[0]['COUNT(*)'] ?><br />
       <strong>Expanded views:</strong> <?=$expanded[0]['COUNT(*)'] ?><br />
@@ -78,8 +79,8 @@ $downvotes = $class->dbpdo->query("SELECT COUNT(*) FROM `activity` WHERE `child_
     <div id="teach-side">
       <div class="content" style="border-bottom: 3px solid #232323">
         <h2>Note:</h2>
-
-  Class statistics only take into account 7 March 2012 onwards. Furthermore, some data has only been collected since its corresponding feature was implemented, such as voting. If your class was created prior to 7 March 2012, the statistics gives to the left will be incomplete.
+        <p>Class statistics only take into account 7 March 2012 onwards. Furthermore, some data has only been collected since its corresponding feature was implemented, such as voting. If your class was created prior to 7 March 2012, the statistics gives to the left will be incomplete.</p>
+        <p>Statistics are updated daily.</p>
 
       </div>
     </div>

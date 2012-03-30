@@ -94,14 +94,27 @@ class dbpdo extends base
       }
   }
 
-  function query($q, $values)
+  function query($q, $values, $memcache_key = NULL, $memcache_expiration = 3600, $memcache_flags = 0)
   {
     $statement = $this->get_prepared_statement($q);
     if(preg_match('/^\s*INSERT/i', $q))
-      return $this->exec_statement($statement, $values, true);
+      $result = $this->exec_statement($statement, $values, true);
     else
-      return $this->exec_statement($statement, $values);
-    
+      {
+	if($this->config->memcache() && $memcache_key !== NULL)
+	  {
+	    if(!($result = $this->memcache_get($memcache_key)))
+	      {
+		$result = $this->exec_statement($statement, $values);
+		$this->memcache_set($memcache_key, $result, $memcache_expiration, $memcache_flags);
+	      }
+	  }
+	else
+	  {
+	    $result = $this->exec_statement($statement, $values);
+	  }
+      }
+    return $result;
   }
 
 
