@@ -801,6 +801,89 @@ a:link, a:visited, a:hover, a:active
 }
 
 
+@media only screen and (max-width: 480px)
+{
+    #main
+    {
+	width: 100%;
+	min-width: 0;
+    }
+
+    img#logo
+    {
+	width: 160px;
+	height: 50px;
+	margin-top: 25px;
+	margin-bottom: 25px;
+    }
+
+    #socialbar
+    {
+	height: 0;
+	max-height: 0;
+	display: none;
+    }
+
+    #catalog-category-list
+    {
+	float: none;
+	clear: both;
+	width: 100%;
+	border-bottom: 3px solid #242424;
+    }
+
+    #catalog-class-list
+    {
+	float: none;
+	clear: both;
+	width: 100%;
+    }
+
+    #catalog-class-list .content
+    {
+	border-left: 0;
+    }
+
+    .category, .teach, #footer
+    {
+	width: 100%;
+    }
+
+    .voting
+    {
+	width: 0;
+	height: 0;
+	display: none;
+    }
+
+    #catalog-class-list .content .category .content .class .content .class-name, #class-page .content .class .content .class-name, #class-page-roster .content .class-name, #my-classes .content .category .content .class .content .class-name, #user-schedule .content .category .content .class .content .class-name {
+	margin-right: 0;
+    }
+
+    #class-page, #class-page-roster, #whyregister, #register, #login, #user-schedule, #user, #my-classes, #my-statistics, #teach, #teach-side, #settings
+    {
+	border-left: 0;
+	width: 100%;
+	float: none;
+	clear: both;
+    }
+
+    #class-page, #register, #login, #user-schedule, #my-classes, #teach
+    {
+	width: 100%;
+	border-bottom: 3px solid #242424;
+    }
+
+    #class-page-roster .content, #whyregister .content, #user .content, #my-statistics .content, #teach-side .content
+    {
+	border-left: 0;
+    }
+
+    #teach .content textarea, #teach .content input, #teach .content select
+    {
+	width: 100%;
+    }
+}
 
 @media only screen and (min-width: 35em) {
   

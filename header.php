@@ -35,7 +35,7 @@
 	      {
 		?>
            <li>
-		<a href="<?=PREFIX ?>/teachers" <?=$page == 'index.php' && strpos($_SERVER['REQUEST_URI'],'teachers') !== false ? 'class="active"' : '' ?>>teacher admin</a> - <a href="<?=PREFIX ?>/settings" <?=$page == 'preferences.php' ? 'class="active"' : '' ?>>settings</a>
+		<a href="<?=PREFIX ?>/teachers" <?=$page == 'index.php' && strpos($_SERVER['REQUEST_URI'],'teachers') !== false ? 'class="active"' : '' ?>>teaching</a> - <a href="<?=PREFIX ?>/settings" <?=$page == 'preferences.php' ? 'class="active"' : '' ?>>settings</a>
            </li>
 		<?php
 	      }
