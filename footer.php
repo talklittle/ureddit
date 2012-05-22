@@ -1,6 +1,7 @@
   <footer>
   University of Reddit is not in any way affiliated with <a href="http://reddit.com" target="_blank">Reddit.com</a> or <a href="http://condenast.com" target="_blank">Conde Nast</a>.<br>
-     Hosting is provided by <a href="http://anastasllc.com" target="_blank">Anastas, LLC</a>.
+<a href="<?=PREFIX ?>/tos">Terms of Service</a> | <a href="<?=PREFIX ?>/privacy">Privacy Policy</a><br>
+     Hosting is donated by <a href="http://anastasllc.com" target="_blank">Anastas, LLC</a><br>
   </footer>
 
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>

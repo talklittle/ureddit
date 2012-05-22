@@ -3,6 +3,7 @@
 require_once('init.php');
 $loginmsg = "";
 
+$error = array();
 if(!empty($_POST))
   {
     $user = new user($dbpdo);
@@ -11,10 +12,10 @@ if(!empty($_POST))
 	try
 	  {
 	    $user->get_attribute_value('banned');
-	    die("<h1>you have been banned</h1>");
 	  }
 	catch (ObjectAttributeNotFoundException $e)
 	  {
+	    $error[] = 'that account has been banned';
 	  }
 
 	login($user);	
@@ -30,6 +31,10 @@ if(!empty($_POST))
 			    $user->id,
 			    $user->timestamp()
 			    ));
+      }
+    else
+      {
+	$error[] = "the username or password you entered is incorrect";
       }
   }
 
@@ -80,8 +85,12 @@ if(logged_in())
         <input type="password" name="password" id="password" /><br /><br />
 
         <input type="submit" />
-        </form>
-
+        </form><br />
+<?php
+    if(!empty($_POST) && count($error) > 0)
+      foreach($error as $err)
+	echo '<span style="color: red;">' . $err . '</span><br />';
+?>
         <p>
         <strong>Forgot your password?</strong> <a href="<?=PREFIX ?>/recover_password"><br>Reset my password</a></p>
         </p>

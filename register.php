@@ -6,6 +6,9 @@ $error = array();
 if(!empty($_POST))
   {
 
+    if(!isset($_POST['age']) || $_POST['age'] != "checked")
+      $error[] = "you must be at least 13 years of age to use this website.";
+
     $validation = array("username" => '/^([A-Z0-9_.-]){3,32}$/i', "password" => '/^(.*){6,}$/i', "email" => '/^([A-Z0-9._%+-])+@([A-Z0-9.-]+)\.[A-Z]{2,4}$/i');
     
     if(!preg_match($validation['username'],$_POST['username']))
@@ -137,8 +140,15 @@ if(!empty($_POST))
           email (optional):<br />
           <input type="email" name="email" id="email" value="<?=post('email'); ?>" size="25" /><br /><br />
 
+          <label><input type="checkbox" name="age" id="age"> I am at least 13 years of age.</label><br /><br />
+
           <input type="submit" />
-        </form>
+        </form><br />
+<?php
+    if(!empty($_POST) && count($error) > 0)
+      foreach($error as $err)
+	echo '<span style="color: red;">' . $err . '</span><br />';
+?>
       </div>
     </div>
     <div id="whyregister">
