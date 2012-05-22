@@ -14,9 +14,65 @@ $class->get_owner();
 if($class->owner != $user->id || !in_array($user->id,$class->teachers))
   send_user_to("/teachers/index.php");
 
+define('ga_email', config::google_analytics_email);
+define('ga_password',config::google_analytics_password);
+define('ga_profile_id',config::google_analytics_profile_id);
+
+require 'gapi.class.php';
+
+$ga = new gapi(ga_email,ga_password);
+
+$today = strtotime("now");
+$date_ranges = array(
+		     array(
+			   'title' => "Traffic: Last 7 Days",
+			   'start' => date("Y-m-d",$today-(60*60*24*7)), 
+			   'end' => date("Y-m-d",$today)
+			   ),
+		     array(
+			   'title' => "Traffic: Last 14 Days",
+			   'start' => date("Y-m-d",$today-(60*60*24*14)), 
+			   'end' => date("Y-m-d",$today)
+			   ),
+		     array(
+			   'title' => "Traffic: Last 30 Days",
+			   'start' => date("Y-m-d",$today-(60*60*24*30)), 
+			   'end' => date("Y-m-d",$today)
+			   ),
+		     array(
+			   'title' => "Traffic: Last 60 Days",
+			   'start' => date("Y-m-d",$today-(60*60*24*60)), 
+			   'end' => date("Y-m-d",$today)
+			   ),
+		    );
+$date_dimensions = array('pagepath','date');
+$date_metrics = array('pageviews','uniquePageviews','visits');
+$date_sort = 'date';
+$filter = 'pagePath =~ ^/c(lass/)?[0-9]+ && pagePath =~ ' . $class->id;
+
+$results = array();
+
+foreach($date_ranges as $date_range)
+  {
+    $stats = array();
+    $ga->requestReportData(ga_profile_id,$date_dimensions,$date_metrics,$date_sort,$filter,$date_range['start'],$date_range['end'],1,1000);
+    foreach($ga->getResults() as $result)
+      {
+	$date = $result->getDate();
+	if(!isset($stats[$date]))
+	  $stats[$date] = array();
+	foreach($date_metrics as $metric)
+	  {
+	    if(!isset($stats[$date][$metric]))
+	      $stats[$date][$metric] = 0;
+	    $get_func = 'get' . ucfirst($metric);
+	    $stats[$date][$metric] += $result->$get_func();
+	  }
+      }
+    $results[] = $stats;
+  }
 
 ?>
-
 <!doctype html>
 <!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
 <!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
@@ -32,7 +88,53 @@ if($class->owner != $user->id || !in_array($user->id,$class->teachers))
   <link rel="stylesheet" href="<?=PREFIX ?>/css/style.css">
 
   <script src="<?=PREFIX ?>/js/libs/modernizr-2.5.2.min.js"></script>
-</head>
+  <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script type="text/javascript">
+   google.load('visualization', '1.0', {'packages':['corechart']});
+   google.setOnLoadCallback(drawCharts);
+function drawCharts()
+{
+  <?php
+  $count = 0;
+  foreach($results as $stats)
+    {
+      ?>
+      var data = new google.visualization.DataTable();
+      data.addColumn('string', 'Date');
+
+      <?php
+      foreach($date_metrics as $metric)
+	{
+	  echo "data.addColumn('number', '$metric');\n";
+	}
+      ?>
+      data.addRows([
+		    <?php
+		    foreach($stats as $date => $metrics)
+		      {
+			$date = substr($date, 4);
+			$date = substr($date,0,2) . '-' . substr($date,2);
+			echo '[\'' . $date . '\',' . implode(',',$metrics) . '],' . "\n";
+		      }
+		    ?>
+		    ]);
+
+      // Set chart options
+      var options = {'title':'<?=$date_ranges[$count]["title"] ?>',
+		     'width':800,
+		     'height':300};
+      
+      // Instantiate and draw our chart, passing in some options.
+      var chart = new google.visualization.LineChart(document.getElementById('chart<?=$count ?>'));
+      chart.draw(data, options);
+      <?php
+      $count++;
+    }
+  ?>
+}
+</script>
+   </head>
+
 <body>
   <!--[if lt IE 7]><p class=chromeframe>Your browser is <em>ancient!</em> <a href="http://browsehappy.com/">Upgrade to a different browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to experience this site.</p><![endif]-->
   <?php
@@ -45,43 +147,42 @@ if($class->owner != $user->id || !in_array($user->id,$class->teachers))
       <div class="content">
         <h1>Statistics: <?=$class->value ?></h1>
 
-        <?php
-    $expiration = 86400;
-$impressions = $class->dbpdo->query("SELECT COUNT(*) FROM `views` WHERE `displayed_object_id` = ?", array($class->id), 'impressions' . $class->id, $expiration);
-$expanded = $class->dbpdo->query("SELECT COUNT(*) FROM `views` WHERE `displayed_object_id` = ? AND `comments` = ?", array($class->id, 'expanded'), 'expanded' . $class->id, $expiration);
-$full = $class->dbpdo->query("SELECT COUNT(*) FROM `views` WHERE `displayed_object_id` = ? AND `comments` = ?", array($class->id, 'expanded;full'), 'full' . $class->id, $expiration);
-$mass_messages = $class->dbpdo->query("SELECT COUNT(*) FROM `activity` WHERE `child_id` = ? AND `action` LIKE ?", array($class->id, 'mass%'),'mass' . $class->id, $expiration);
-$num_read = $class->dbpdo->query("SELECT COUNT(*) FROM `associations` WHERE `parent_id` = ? AND `type` = ?", array($class->id, 'read_mass_message'), 'mass_read' . $class->id, $expiration);
-$num_unread = $class->dbpdo->query("SELECT COUNT(*) FROM `associations` WHERE `parent_id` = ? AND `type` = ?", array($class->id, 'unread_mass_message'),'mass_unread' . $class->id, $expiration);
-$adds = $class->dbpdo->query("SELECT COUNT(*) FROM `activity` WHERE `child_id` = ? AND `action` = ?", array($class->id, 'added class'), 'adds' . $class->id, $expiration);
-$drops = $class->dbpdo->query("SELECT COUNT(*) FROM `activity` WHERE `child_id` = ? AND `action` = ?", array($class->id, 'dropped class'), 'drops' . $class->id, $expiration);
-$upvotes = $class->dbpdo->query("SELECT COUNT(*) FROM `activity` WHERE `child_id` = ? AND `action` = ?", array($class->id, 'upvoted'), 'upvotes' . $class->id, $expiration);
-$downvotes = $class->dbpdo->query("SELECT COUNT(*) FROM `activity` WHERE `child_id` = ? AND `action` = ?", array($class->id, 'downvoted'), 'downvotes' . $class->id, $expiration);
-        ?>
-      <strong>Impressions:</strong> <?=$impressions[0]['COUNT(*)'] ?><br />
-      <strong>Expanded views:</strong> <?=$expanded[0]['COUNT(*)'] ?><br />
-      <strong>Class Page views:</strong> <?=$full[0]['COUNT(*)'] ?><br /><br />
+<?php
+for($i = 0; $i < $count; $i++)
+  {
+    ?>
+    <div id="chart<?=$i ?>"></div>
+    <?php
+  }
+?>
 
-      <strong>Adds:</strong> <?=$adds[0]['COUNT(*)'] ?><br />
-      <strong>Drops:</strong> <?=$drops[0]['COUNT(*)'] ?><br /><br />
-
-      <!--
-      <strong>Upvotes:</strong> <?=$upvotes[0]['COUNT(*)'] ?><br />
-      <strong>Downvotes:</strong> <?=$downvotes[0]['COUNT(*)'] ?><br /><br />
-      -->
-
-      <strong>Distinct mass PMs:</strong> <?=$mass_messages[0]['COUNT(*)'] ?><br />
-      <strong>Percent of all mass PMs that have been read:</strong> <?=$num_read[0]['COUNT(*)'] + $num_read[0]['COUNT(*)'] == 0 ? 'unavailable' : 100*round($num_read[0]['COUNT(*)']/($num_read[0]['COUNT(*)'] + $num_unread[0]['COUNT(*)']),4) . '%' ?><br />
-
-  <br /><br />
       </div>
     </div>
     <div id="teach-side">
       <div class="content" style="border-bottom: 3px solid #232323">
-        <h2>Note:</h2>
-        <p>Class statistics only take into account 7 March 2012 onwards. Furthermore, some data has only been collected since its corresponding feature was implemented, such as voting. If your class was created prior to 7 March 2012, the statistics gives to the left will be incomplete.</p>
-        <p>Statistics are updated daily.</p>
-
+        <h2>Tools</h2>
+        <ul>
+          <li>
+            <a href="<?=PREFIX ?>/teachers">
+              Teacher Admin Panel
+            </a>
+          </li>
+          <li>
+            <a href="<?=PREFIX ?>/class/<?=$class->id ?>/edit">
+              Edit Class Details
+            </a>
+          </li>
+          <li>
+            <a href="<?=PREFIX ?>/class/<?=$class->id ?>/message">
+              Mass Message
+            </a>
+          </li>
+          <li>
+            <a href="<?=PREFIX ?>/class/<?=$class->id ?>/stats">
+              Traffic Statistics
+            </a>
+          </li>
+        </ul>
       </div>
     </div>
     <div id="separate-main-footer">
@@ -90,3 +191,78 @@ $downvotes = $class->dbpdo->query("SELECT COUNT(*) FROM `activity` WHERE `child_
   <?php require_once('../footer.php'); ?>
 </body>
 </html>
+
+
+<?php
+
+    die();
+
+?>
+
+<table>
+<tr>
+  <th>Pagepath</th>
+  <th>Date</th>
+  <th>Pageviews</th>
+  <th>Visits</th>
+</tr>
+<?php
+$myResults = array();
+foreach($ga->getResults() as $result)
+{
+?>
+<tr>
+  <td><?php echo $result ?></td>
+    <td><?php echo $result->getDate() ?></td>
+    <td><?php echo $result->getVisits() ?></td>
+    <td><?php echo $result->getPageviews() ?></td>
+    <td><?php echo $result->getUniquePageviews() ?></td>
+</tr>
+<?php
+  $class = "".$result;
+  $matches = array();
+  preg_match('/^\/c(lass\/)?([0-9]+)/i',$class,$matches);
+  $id = $matches[2];
+  if(!isset($myResults[$id]))
+    {
+      $myResults[$id] = array((int)$result->getVisits(), (int)$result->getPageviews(), (int)$result->getUniquePageviews());
+    }
+  else
+    {
+      $myResults[$id][0] += (int)$result->getVisits();
+      $myResults[$id][1] += (int)$result->getPageviews();
+      $myResults[$id][2] += (int)$result->getUniquePageviews();
+    }
+}
+
+foreach($myResults as $class => &$stats):
+?>
+<tr>
+  <td><?php echo $class ?></td>
+  <td><?php echo $stats[0] ?></td>
+  <td><?php echo $stats[1] ?></td>
+  <td><?php echo $stats[2] ?></td>
+</tr>
+<?php
+endforeach
+?>
+</table>
+
+<table>
+<tr>
+  <th>Total Results</th>
+  <td><?php echo $ga->getTotalResults() ?></td>
+</tr>
+<tr>
+  <th>Total Pageviews</th>
+  <td><?php echo $ga->getPageviews() ?>
+</tr>
+<tr>
+  <th>Total Visits</th>
+  <td><?php echo $ga->getVisits() ?></td>
+</tr>
+<tr>
+  <th>Results Updated</th>
+  <td><?php echo $ga->getUpdated() ?></td>
+</tr>
+</table>

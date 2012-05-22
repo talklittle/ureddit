@@ -108,6 +108,29 @@ Message:<br />
 
         Please click the button only once. It may take some time to deliver a mass message to several hundred people.
 
+        <h2>Tools</h2>
+        <ul>
+          <li>
+            <a href="<?=PREFIX ?>/teachers">
+              Teacher Admin Panel
+            </a>
+          </li>
+          <li>
+            <a href="<?=PREFIX ?>/class/<?=$class->id ?>/edit">
+              Edit Class Details
+            </a>
+          </li>
+          <li>
+            <a href="<?=PREFIX ?>/class/<?=$class->id ?>/message">
+              Mass Message
+            </a>
+          </li>
+          <li>
+            <a href="<?=PREFIX ?>/class/<?=$class->id ?>/stats">
+              Traffic Statistics
+            </a>
+          </li>
+        </ul>
       </div>
     </div>
     <div id="separate-main-footer">

@@ -215,6 +215,30 @@ What is the status of your class?<br />
             Have you already gauged interest in this class by making an [Offer] post in <a href="http://reddit.com/r/UniversityofReddit">our subreddit</a>?
           </li>
         </ul>
+
+        <h2>Tools</h2>
+        <ul>
+          <li>
+            <a href="<?=PREFIX ?>/teachers">
+              Teacher Admin Panel
+            </a>
+          </li>
+          <li>
+            <a href="<?=PREFIX ?>/class/<?=$class->id ?>/edit">
+              Edit Class Details
+            </a>
+          </li>
+          <li>
+            <a href="<?=PREFIX ?>/class/<?=$class->id ?>/message">
+              Mass Message
+            </a>
+          </li>
+          <li>
+            <a href="<?=PREFIX ?>/class/<?=$class->id ?>/stats">
+              Traffic Statistics
+            </a>
+          </li>
+        </ul>
       </div>
     </div>
     <div id="separate-main-footer">

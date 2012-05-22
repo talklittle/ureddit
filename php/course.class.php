@@ -439,7 +439,7 @@ class course extends object
 	      <div class="class-name">
 		Teacher qualifications
 	      </div>
-	      <div class="class-desc-nounderline">
+	      <div class="class-desc">
 	      <?php
 	      try
 		{
