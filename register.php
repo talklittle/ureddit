@@ -7,7 +7,7 @@ if(!empty($_POST))
   {
 
     if(!isset($_POST['age']) || $_POST['age'] != "checked")
-      $error[] = "you must be at least 13 years of age to use this website.";
+      $error[] = "you must be at least 13 years of age to use this website";
 
     $validation = array("username" => '/^([A-Z0-9_.-]){3,32}$/i', "password" => '/^(.*){6,}$/i', "email" => '/^([A-Z0-9._%+-])+@([A-Z0-9.-]+)\.[A-Z]{2,4}$/i');
     
