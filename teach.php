@@ -97,6 +97,9 @@ if(!empty($_POST))
     <div id="teach">
       <div class="content">
         <h1>Create a class</h1>
+
+    <p>UReddit uses Markdown for formatting text, just like Reddit. <a href="http://old-wp.slekx.com/the-markdown-tutorial/" target="_blank">Here</a> is an online tutorial if you are unfamiliar with the syntax.</p>
+
 <div style="color: red;">
 <?php
 if(count($error) != 0)

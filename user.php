@@ -89,16 +89,17 @@ $viewed = new user($dbpdo, $id);
 	    try
 	      {
 		$vru = $viewed->get_attribute_value('reddit_username');
-		echo "<p><a href=\"http://www.reddit.com/message/compose/?to=" . $vru . "\">You can PM this user on Reddit</a> - or via UReddit:</p>";
+		echo "<p><a href=\"http://www.reddit.com/message/compose/?to=" . $vru . "\">You can PM this user on Reddit</a>.</p>";
 	      }
 	    catch (ObjectAttributeNotFoundException $e)
 	      {
-		echo "<p>This user's account has not been linked to his or her Reddit account, if any. You can send this user a UReddit PM here:</p>";
+		echo "<p>This user's account has not been linked to his or her Reddit account, if any.</p>";
 	      }
 	    if(logged_in())
 	      {
 		?>
     <form method="post" action="<?=PREFIX ?>/user/<?=$username ?>">
+		  <p>You can send this user a UReddit PM here (UReddit uses Markdown for formatting text, just like Reddit; <a href="http://old-wp.slekx.com/the-markdown-tutorial/" target="_blank">here</a> is an online tutorial if you are unfamiliar with the syntax):</p>
     <?php
     if(isset($error) && count($error) > 0)
       { ?>
