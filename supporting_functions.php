@@ -263,14 +263,14 @@ function latest_reddit_post($dbpdo)
     {
       if(!($val = $dbpdo->memcache_get('latest_reddit_post')))
 	{
-	  $json = json_decode(stripslashes(file_get_contents('/srv/http/ureddit.com/public_html/reddit.json')), true);
+	  $json = json_decode(file_get_contents('/srv/http/ureddit.com/public_html/reddit.json'), true);
 	  $val = array('url' => 'http://reddit.com' . $json['data']['children'][0]['data']['permalink'], 'title' => $json['data']['children'][0]['data']['title']);
 	  $dbpdo->memcache_set('latest_reddit_post', $val);
 	}
     }
   else
     {
-      $json = json_decode(stripslashes(file_get_contents('/srv/http/ureddit.com/public_html/reddit.json')), true);
+      $json = json_decode(file_get_contents('/srv/http/ureddit.com/public_html/reddit.json'), true);
       $val = array('url' => 'http://reddit.com' . $json['data']['children'][0]['data']['permalink'], 'title' => $json['data']['children'][0]['data']['title']);
     }
 
