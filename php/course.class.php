@@ -244,7 +244,7 @@ class course extends object
       $comments[] = 'expanded';
     if($full)
       $comments[] = 'full';
-    $this->log_user_view(implode(';',$comments));
+    //$this->log_user_view(implode(';',$comments));
 
     if($this->session('user_id') !== false)
       {
