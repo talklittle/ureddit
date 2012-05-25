@@ -825,6 +825,7 @@ function md5crypt ($pw, $salt="", $magic="")
     return "$magic$salt\$$passwd";
 }
 
+/*
 function hex2bin ($str)
 {
     $len = strlen ($str);
@@ -836,6 +837,7 @@ function hex2bin ($str)
     }
     return $nstr;
 }
+*/
 
 function to64 ($v, $n)
 {
