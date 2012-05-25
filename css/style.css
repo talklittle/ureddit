@@ -80,7 +80,7 @@ body
 header
 {
     height: 100px;
-    background: url('../img/headerbg.png');
+    background: url('http://uofreddit.com/img/headerbg.png');
 }
 
 .button-add {
@@ -355,7 +355,7 @@ img#messages
 #socialbar
 {
     height: 100px;
-    background: url('../img/socialbarbg.png');
+    background: url('http://uofreddit.com/img/socialbarbg.png');
     width: 100%;
     text-align: center;
 }
