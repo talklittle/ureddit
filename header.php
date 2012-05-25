@@ -1,6 +1,6 @@
 <header><? $page = pathinfo($_SERVER['PHP_SELF']); $page = $page['basename']; ?>
     <a href="<?=PREFIX ?>/">
-      <img src="<?=PREFIX ?>/img/logo.png" id="logo" alt="University of Reddit">
+      <img src="<?=SRVDOMAIN . PREFIX ?>/img/logo.png" id="logo" alt="University of Reddit">
     </a>
      <nav>
         <ul>
@@ -24,7 +24,7 @@
 		$user = new user($dbpdo, $dbpdo->session('user_id'));
 		?>
            <li>
-		<a href="<?=PREFIX ?>/user/<?=$dbpdo->session('username') ?>" <?=$page == 'user.php' && $_GET['id'] == $dbpdo->session('username') ? 'class="active"' : '' ?>><?=$dbpdo->session('username') ?></a> <a href="<?=PREFIX ?>/messages"><img id="messages" <?=has_new_messages($dbpdo, $dbpdo->session('user_id')) ? 'src="' . PREFIX . '/img/new_messages.png" alt="new message(s)!"' : 'src="' . PREFIX . '/img/messages.png" alt="messages"' ?></img></a> - <a href="<?=PREFIX ?>/logout">log out<a>
+		<a href="<?=PREFIX ?>/user/<?=$dbpdo->session('username') ?>" <?=$page == 'user.php' && $_GET['id'] == $dbpdo->session('username') ? 'class="active"' : '' ?>><?=$dbpdo->session('username') ?></a> <a href="<?=PREFIX ?>/messages"><img id="messages" <?=has_new_messages($dbpdo, $dbpdo->session('user_id')) ? 'src="' . SRVDOMAIN . PREFIX . '/img/new_messages.png" alt="new message(s)!"' : 'src="' . SRVDOMAIN . PREFIX . '/img/messages.png" alt="messages"' ?></img></a> - <a href="<?=PREFIX ?>/logout">log out<a>
            </li>
 		<?php
 	      }

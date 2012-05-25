@@ -26,13 +26,8 @@ foreach($catalog->categories as $category_id)
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <title>University of Reddit<?=$active_category_id == -1 ? '' : ' : ' . $categories[$active_category_id]->value?></title>
   <meta name="description" content="">
-
   <meta name="viewport" content="width=device-width">
-  <link rel="stylesheet" href="<?=PREFIX ?>/css/style.css">
-  <?php include('fonts.php'); ?>
-
-  <script src="<?=PREFIX ?>/js/libs/modernizr-2.5.2.min.js"></script>
-  <script src="<?=PREFIX ?>/js/scripts.js"></script>
+  <?php include('includes.php'); ?>
 </head>
 <body>
   <!--[if lt IE 7]><p class=chromeframe>Your browser is <em>ancient!</em> <a href="http://browsehappy.com/">Upgrade to a different browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to experience this site.</p><![endif]-->

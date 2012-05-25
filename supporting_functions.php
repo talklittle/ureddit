@@ -3,6 +3,7 @@
 define('COOKIE_SESSID','ureddit_sessid');
 define('PREFIX','');
 define('USE_MARKDOWN','true');
+define('SRVDOMAIN','http' . (isset($_SERVER['HTTPS']) && strlen($_SERVER['HTTPS']) > 0 ? "s" : "") . '://uofreddit.com');
 
 function latest_blog_post($dbpdo)
 {
@@ -51,25 +52,25 @@ function votebox($class, $user = false)
     {
       if(isset($user->votes['downvoted']) && in_array($class->id, $user->votes['downvoted']))
 	{
-	  echo '<img src="' . PREFIX . '/img/down-filled.png" alt="-1\'d" class="downvoted" onclick="$.post(\'' . PREFIX . '/vote.php\', {action: \'remove\', id: \'' . $class->id . '\'}, function(response) {$(\'#class' . $class->id . ' > .content > .voting\').html(response);})">';
+	  echo '<img src="' . SRVDOMAIN . PREFIX . '/img/down-filled.png" alt="-1\'d" class="downvoted" onclick="$.post(\'' . PREFIX . '/vote.php\', {action: \'remove\', id: \'' . $class->id . '\'}, function(response) {$(\'#class' . $class->id . ' > .content > .voting\').html(response);})">';
 	}
       else
 	{
-	  echo '<img src="' . PREFIX . '/img/down.png" alt="-1" class="downvote" onclick="$.post(\'' . PREFIX . '/vote.php\', {action: \'downvote\', id: \'' . $class->id . '\'}, function(response) {$(\'#class' . $class->id . ' > .content > .voting\').html(response);})">';
+	  echo '<img src="' . SRVDOMAIN . PREFIX . '/img/down.png" alt="-1" class="downvote" onclick="$.post(\'' . PREFIX . '/vote.php\', {action: \'downvote\', id: \'' . $class->id . '\'}, function(response) {$(\'#class' . $class->id . ' > .content > .voting\').html(response);})">';
 	}
       if(isset($user->votes['upvoted']) && in_array($class->id, $user->votes['upvoted']))
 	{
-	  echo '<img src="' . PREFIX . '/img/up-filled.png" alt="+1\'d" class="upvoted" onclick="$.post(\'' . PREFIX . '/vote.php\', {action: \'remove\', id: \'' . $class->id . '\'}, function(response) {$(\'#class' . $class->id . ' > .content > .voting\').html(response);})">';
+	  echo '<img src="' . SRVDOMAIN . PREFIX . '/img/up-filled.png" alt="+1\'d" class="upvoted" onclick="$.post(\'' . PREFIX . '/vote.php\', {action: \'remove\', id: \'' . $class->id . '\'}, function(response) {$(\'#class' . $class->id . ' > .content > .voting\').html(response);})">';
 	}
       else
 	{
-	  echo '<img src="' . PREFIX . '/img/up.png" alt="+1" class="upvote" onclick="$.post(\'' . PREFIX . '/vote.php\', {action: \'upvote\', id: \'' . $class->id . '\'}, function(response) {$(\'#class' . $class->id . ' > .content > .voting\').html(response);})">';
+	  echo '<img src="' . SRVDOMAIN . PREFIX . '/img/up.png" alt="+1" class="upvote" onclick="$.post(\'' . PREFIX . '/vote.php\', {action: \'upvote\', id: \'' . $class->id . '\'}, function(response) {$(\'#class' . $class->id . ' > .content > .voting\').html(response);})">';
 	}
     }
   else
     {
-      echo '<a href="' . PREFIX . '/login"><img src="' . PREFIX . '/img/down.png" alt="-1" class="downvote"></a>';
-      echo '<a href="' . PREFIX . '/login"><img src="' . PREFIX . '/img/up.png" alt="+1" class="upvote"></a>';
+      echo '<a href="' . PREFIX . '/login"><img src="' . SRVDOMAIN . PREFIX . '/img/down.png" alt="-1" class="downvote"></a>';
+      echo '<a href="' . PREFIX . '/login"><img src="' . SRVDOMAIN . PREFIX . '/img/up.png" alt="+1" class="upvote"></a>';
 
     }
   echo $score . '&nbsp;';

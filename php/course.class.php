@@ -208,7 +208,7 @@ class course extends object
 		  echo ++$count . '. <a href="' . PREFIX . '/user/' . $user[0] . '" style="color: black;">' . $user[0] . '</a>';
 		  if(isset($user[1]))
 		    {
-		      echo ' <a href="http://www.reddit.com/message/compose/?to=' . $user[1] . '"><img src="' . PREFIX . '/img/reddit-small.png" style="border: 0; height: 1em;" /></a>';
+		      echo ' <a href="http://www.reddit.com/message/compose/?to=' . $user[1] . '"><img src="' . SRVDOMAIN . PREFIX . '/img/reddit-small.png" style="border: 0; height: 1em;" /></a>';
 		    }
 		  echo '<br />';
 		}
@@ -272,7 +272,7 @@ class course extends object
 
           signup_button($user,$this->id);
           ?>
-          <div class="class-name">
+          <div class="class-name<?=($expanded == true ? ' expanded' : '') ?>">
         <?php
         echo htmlspecialchars(stripslashes($this->value));
         try
@@ -339,7 +339,7 @@ class course extends object
 		    try
 		      {
 			$ru = $user->get_attribute_value('reddit_username');
-			$text .= "<a href=\"http://reddit.com/user/$ru\"><img style=\"border: 0; width: 1em; height: 1em; margin: 0 3px;\" src=\"" . PREFIX . "/img/reddit-small.png\"></a>";
+			$text .= "<a href=\"http://reddit.com/user/$ru\"><img style=\"border: 0; width: 1em; height: 1em; margin: 0 3px;\" src=\"" . SRVDOMAIN . PREFIX . "/img/reddit-small.png\"></a>";
 		      }
 		    catch (ObjectAttributeNotFoundException $e)
 		      {
@@ -348,7 +348,7 @@ class course extends object
 		    $teachers[] = $text;
 		  }
 		    
-		echo ' - ' . implode($teachers, ", ") . ' ';
+		echo ' <button class="button">by ' . implode($teachers, ", ") . '</button> ';
               }
 	    catch (ObjectNotFoundException $e)
 	      {
@@ -361,7 +361,7 @@ class course extends object
 
 	    try
 	      {
-                echo "[<a href=\"" . htmlspecialchars(stripslashes($this->get_attribute_value('url'))) . "\" class=\"link-class-desc\">class URL</a>] ";
+                echo "<a href=\"" . htmlspecialchars(stripslashes($this->get_attribute_value('url'))) . "\"><button class=\"button\">class URL</button></a> ";
 	      }
    	    catch (ObjectAttributeNotFoundException $e)
               {
@@ -370,12 +370,12 @@ class course extends object
               echo "[<a href=\"/class/" . $this->id . "/files\" class=\"link-class-desc\">class files</a>] ";
 
             ?>
-            [<a href="<?=PREFIX ?>/class/<?=$this->id ?>/<?=$this->seo_string($this->value) ?>" class="link-class-desc">class page</a>]
+            <a href="<?=PREFIX ?>/class/<?=$this->id ?>/<?=$this->seo_string($this->value) ?>"><button class="button">class page</button></a>
             <?php
 	    if(logged_in() && $full)
 	      {
 		?>
-		<span id="report<?=$this->id ?>">[<a class="link-class-desc" style="text-decoration: underline; cursor: pointer;" onclick="$.post('<?=PREFIX ?>/report.php',{class: <?=$this->id ?>},function(response){$('#report<?=$this->id ?>').html(response); return false;});">report class]</a></span>
+		<span id="report<?=$this->id ?>"><a style="text-decoration: underline; cursor: pointer;" onclick="$.post('<?=PREFIX ?>/report.php',{class: <?=$this->id ?>},function(response){$('#report<?=$this->id ?>').html(response); return false;});"><button class="button">report class</button></a></span>
 		<?php
 	      }
 	    ?>
@@ -387,7 +387,7 @@ class course extends object
 	if($full)
 	  {
 	    ?>
-              <div class="class-name">
+              <div class="class-name expanded">
                 Prerequisites
 	      </div>
 	      <div class="class-desc">
@@ -404,7 +404,7 @@ class course extends object
 	      ?>
 	      </div>
 
-	      <div class="class-name">
+	      <div class="class-name expanded">
 	        Syllabus
 	      </div>
 	      <div class="class-desc">
@@ -420,7 +420,7 @@ class course extends object
 	      ?>
 	      </div>
 
-	      <div class="class-name">
+	      <div class="class-name expanded">
 	        Additional information
 	      </div>
 	      <div class="class-desc">
@@ -436,7 +436,7 @@ class course extends object
 	      ?>
 	      </div>
 
-	      <div class="class-name">
+	      <div class="class-name expanded">
 		Teacher qualifications
 	      </div>
 	      <div class="class-desc">
