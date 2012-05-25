@@ -4,14 +4,14 @@
      Hosting is donated by <a href="http://anastasllc.com" target="_blank">Anastas, LLC</a><br>
   </footer>
 
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="<?=SRVDOMAIN . PREFIX ?>/js/libs/jquery-1.7.1.min.js"><\/script>')</script>
-  <script src="<?=SRVDOMAIN . PREFIX ?>/js/libs/modernizr-2.5.2.min.js"></script>
 
   <script src="<?=PREFIX ?>/js/plugins.js"></script>
 
   <script type="text/javascript">
   var _gaq = _gaq || [];
-  _gaq.push(['_setAccount', 'UA--18227368-1']);
+  _gaq.push(['_setAccount', 'UA-18227368-1']);
   _gaq.push(['_trackPageview']);
 
   (function() {
