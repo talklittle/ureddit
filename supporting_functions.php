@@ -100,7 +100,7 @@ class statuses:
       $text = array("0" => "canceled", "1" => "+add", "2" => "closed", "3" => "+add", "4" => "closed", "5" => "finished");
       ?>
       <div class="signup-button">
-        <a href="<?=PREFIX ?>/login" class="link-signup-button"><?=$text[$status] ?></a>
+        <a href="<?=PREFIX ?>/login"><button class="button-add"><?=$text[$status] ?></button></a>
       </div></div>
       <?php
       return;
@@ -114,8 +114,10 @@ class statuses:
           {
             ?>
             <div class="signup-button">
-	      <a onclick="$.get('<?=PREFIX ?>/enroll.php',{id: '<?=$class->id ?>'}, function(data) { $('#button<?=$class->id ?>').html(data) });" class="link-signup-button">
+	      <a onclick="$.get('<?=PREFIX ?>/enroll.php',{id: '<?=$class->id ?>'}, function(data) { $('#button<?=$class->id ?>').html(data) });">
+	      <button class="button-add">
 	      +add
+	      </button>
 	      </a>
 	    </div>
 	    <?php
@@ -123,7 +125,9 @@ class statuses:
             ?>
             <div class="signup-button">
 	      <a class="link-signup-button">
+	      <button class="button-add">
 	      finished
+	      </button>
 	      </a>
 	    </div>
 	    <?php
@@ -131,7 +135,9 @@ class statuses:
             ?>
             <div class="signup-button">
 	      <a class="link-signup-button">
+	      <button class="button-add">
 	      closed
+	      </button>
 	      </a>
 	    </div>
 	    <?php
@@ -151,9 +157,11 @@ class statuses:
   else
     {
       ?>
-  <div class="deregister-button">
+  <div class="signup-button">
     <a onclick="$.get('<?=PREFIX ?>/drop_class.php',{id: '<?=$class->id ?>'}, function(data) { $('#button<?=$class->id ?>').html(data) });" class="link-signup-button">
-    -drop
+    <button class="button-added">
+    enrolled
+    </button>
     </a>
   </div>
      <?

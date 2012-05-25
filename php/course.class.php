@@ -270,7 +270,7 @@ class course extends object
 		 <?php
 	       }
 
-          signup_button($user,$this->id);
+    signup_button($user,$this->id);
           ?>
           <div class="class-name<?=($expanded == true ? ' expanded' : '') ?>">
         <?php
