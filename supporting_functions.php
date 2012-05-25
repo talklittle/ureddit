@@ -512,7 +512,7 @@ function logged_in()
 function logout($dbpdo)
 {
   $dbpdo->query("DELETE FROM `sessions` WHERE `object_id` = ?", array($dbpdo->session('user_id')));
-  setcookie('ureddit_sessid',"",time()-60*60*24);
+  setcookie(COOKIE_SESSID,"",time()-60*60*24);
   
   $_SESSION = array();
   session_destroy();
@@ -531,6 +531,7 @@ function login($user)
   $_SESSION['logged_in'] = "true";
   $_SESSION['user_id'] = $user->id;
   $_SESSION['username'] = $user->value;
+  setcookie(COOKIE_SESSID,session_id(),time()-60*60*24);
 }
 
 function send_email($from, $to, $subject, $message, $internalid = false)
