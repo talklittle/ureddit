@@ -72,6 +72,7 @@ body
 {
     /*background-color: #efefef;*/
     background-color: white;
+    font-family: 'Open Sans', verdana, arial, sans-serif;
 }
 
 header
@@ -616,7 +617,7 @@ img.upvote, img.upvoted
 #catalog-class-list .content .category .content .class .content .class-name, #class-page .content .class .content .class-name, #class-page-roster .content .class-name, #my-classes .content .category .content .class .content .class-name, #user-schedule .content .category .content .class .content .class-name
 {
     margin-right: 5em;
-    font-weight: bold;
+    font-weight: normal;
 }
 
 #catalog-class-list .content .category .content .class .content .class-desc, #my-classes .content .category .content .class .content .class-desc

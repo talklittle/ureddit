@@ -86,6 +86,7 @@ foreach($date_ranges as $date_range)
 
   <meta name="viewport" content="width=device-width">
   <link rel="stylesheet" href="<?=PREFIX ?>/css/style.css">
+  <?php include('../fonts.php'); ?>
 
   <script src="<?=PREFIX ?>/js/libs/modernizr-2.5.2.min.js"></script>
   <script type="text/javascript" src="https://www.google.com/jsapi"></script>

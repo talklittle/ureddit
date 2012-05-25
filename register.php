@@ -112,6 +112,9 @@ if(!empty($_POST))
 
   <meta name="viewport" content="width=device-width">
   <link rel="stylesheet" href="<?=PREFIX ?>/css/style.css">
+  <?php include('fonts.php'); ?>
+
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,400,700' rel='stylesheet' type='text/css'>
 
   <script src="<?=PREFIX ?>/js/libs/modernizr-2.5.2.min.js"></script>
 </head>
