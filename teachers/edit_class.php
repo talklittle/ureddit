@@ -5,7 +5,7 @@ require_once('../init.php');
 if(!logged_in())
     send_user_to("/login.php");
 
-$user = new course($dbpdo, $_SESSION['user_id']);
+$user = new user($dbpdo, $_SESSION['user_id']);
 $class = new course($dbpdo, $_GET['id']);
 $class->get_owner();
 $class->get_teachers();
@@ -216,29 +216,7 @@ What is the status of your class?<br />
           </li>
         </ul>
 
-        <h2>Tools</h2>
-        <ul>
-          <li>
-            <a href="<?=PREFIX ?>/teachers">
-              Teacher Admin Panel
-            </a>
-          </li>
-          <li>
-            <a href="<?=PREFIX ?>/class/<?=$class->id ?>/edit">
-              Edit Class Details
-            </a>
-          </li>
-          <li>
-            <a href="<?=PREFIX ?>/class/<?=$class->id ?>/message">
-              Mass Message
-            </a>
-          </li>
-          <li>
-            <a href="<?=PREFIX ?>/class/<?=$class->id ?>/stats">
-              Traffic Statistics
-            </a>
-          </li>
-        </ul>
+    <?php include('tools.php'); ?>
       </div>
     </div>
     <div id="separate-main-footer">

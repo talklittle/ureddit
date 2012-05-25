@@ -11,7 +11,7 @@ $user = new user($dbpdo, $_SESSION['user_id']);
 $class->get_teachers();
 $class->get_owner();
 
-if($class->owner != $user->id || !in_array($user->id,$class->teachers))
+if($class->owner != $user->id && !in_array($user->id,$class->teachers))
   send_user_to("/teachers/index.php");
 
 define('ga_email', config::google_analytics_email);
@@ -158,29 +158,7 @@ for($i = 0; $i < $count; $i++)
     </div>
     <div id="teach-side">
       <div class="content" style="border-bottom: 3px solid #232323">
-        <h2>Tools</h2>
-        <ul>
-          <li>
-            <a href="<?=PREFIX ?>/teachers">
-              Teacher Admin Panel
-            </a>
-          </li>
-          <li>
-            <a href="<?=PREFIX ?>/class/<?=$class->id ?>/edit">
-              Edit Class Details
-            </a>
-          </li>
-          <li>
-            <a href="<?=PREFIX ?>/class/<?=$class->id ?>/message">
-              Mass Message
-            </a>
-          </li>
-          <li>
-            <a href="<?=PREFIX ?>/class/<?=$class->id ?>/stats">
-              Traffic Statistics
-            </a>
-          </li>
-        </ul>
+    <?php include('tools.php'); ?>
       </div>
     </div>
     <div id="separate-main-footer">

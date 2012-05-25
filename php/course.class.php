@@ -84,11 +84,17 @@ class course extends object
 	$this->add_parent($id, 'teacher', 0);
 	$this->teachers = array($id);
       }
-    elseif(is_array($this->teachers) && !in_array($this->teachers, $id))
+    elseif(is_array($this->teachers) && !in_array($id, $this->teachers))
       {
 	$this->add_parent($id, 'teacher', 0);
 	$this->teachers[] = $id;
       }
+  }
+
+  function remove_teacher($id)
+  {
+    $this->remove_parent($id,'teacher');
+    $this->get_teachers();
   }
 
   function get_reports()
@@ -294,9 +300,10 @@ class course extends object
 	      {
 		?>
 		<span style="font-weight: normal; font-size: 0.8em;">
-		  [ <a href="<?=PREFIX ?>/class/<?=$this->id ?>/edit">edit</a> ]
-		  [ <a href="<?=PREFIX ?>/class/<?=$this->id ?>/message">mass message</a> ]
-		  [ <a href="<?=PREFIX ?>/class/<?=$this->id ?>/stats">statistics</a> ]
+		  [&nbsp;<a href="<?=PREFIX ?>/class/<?=$this->id ?>/edit">edit</a>&nbsp;]
+		  [&nbsp;<a href="<?=PREFIX ?>/class/<?=$this->id ?>/message">mass message</a>&nbsp;]
+		  [&nbsp;<a href="<?=PREFIX ?>/class/<?=$this->id ?>/stats">statistics</a>&nbsp;]
+		  [&nbsp;<a href="<?=PREFIX ?>/class/<?=$this->id ?>/teachers">teachers</a>&nbsp;]
 		</span>
 		<?php
 	      }
@@ -367,7 +374,7 @@ class course extends object
               {
 	      }
             if(exec("ls files | grep class" . $this->id))
-              echo "[<a href=\"/class/" . $this->id . "/files\" class=\"link-class-desc\">class files</a>] ";
+              echo "[<a href=\"/class/" . $this->id . "/files\"><button class=\"button\">class files</button></a>] ";
 
             ?>
             <a href="<?=PREFIX ?>/class/<?=$this->id ?>/<?=$this->seo_string($this->value) ?>"><button class="button">class page</button></a>
