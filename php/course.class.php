@@ -296,6 +296,8 @@ class course extends object
 	    */
 	    if($this->teachers === NULL)
 	      $this->get_teachers();
+	    if($this->owner === NULL)
+	      $this->get_owner();
 	    if(in_array($this->session('user_id'), $this->teachers))
 	      {
 		?>
@@ -303,7 +305,7 @@ class course extends object
 		  [&nbsp;<a href="<?=PREFIX ?>/class/<?=$this->id ?>/edit">edit</a>&nbsp;]
 		  [&nbsp;<a href="<?=PREFIX ?>/class/<?=$this->id ?>/message">mass message</a>&nbsp;]
 		  [&nbsp;<a href="<?=PREFIX ?>/class/<?=$this->id ?>/stats">statistics</a>&nbsp;]
-		  [&nbsp;<a href="<?=PREFIX ?>/class/<?=$this->id ?>/teachers">teachers</a>&nbsp;]
+		  <?=($this->owner == $this->dbpdo->session('user_id') ? "[&nbsp;<a href=\"" . PREFIX  . "/class/" . $this->id . "/teachers\">teachers</a>&nbsp;]" : '') ?>
 		</span>
 		<?php
 	      }
@@ -374,7 +376,7 @@ class course extends object
               {
 	      }
             if(exec("ls files | grep class" . $this->id))
-              echo "[<a href=\"/class/" . $this->id . "/files\"><button class=\"button\">class files</button></a>] ";
+              echo "<a href=\"/class/" . $this->id . "/files\"><button class=\"button\">class files</button></a> ";
 
             ?>
             <a href="<?=PREFIX ?>/class/<?=$this->id ?>/<?=$this->seo_string($this->value) ?>"><button class="button">class page</button></a>
