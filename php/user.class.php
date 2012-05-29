@@ -100,10 +100,26 @@ class user extends object
 	    $this->id = $users[0]['id'];
 	    $this->lookup($this->id);
 	  }
+	if($this->is_banned())
+	  die('banned');
 	return true;
       }
     else
       return false;
+  }
+
+  function is_banned()
+  {
+    try
+      {
+	if($this->get_attribute_value('banned') == 'true')
+	  return true;
+      }
+    catch (ObjectAttributeNotFoundException $e)
+      {
+	return false;
+      }
+
   }
 
   function get_inbox($offset, $limit)
