@@ -131,7 +131,7 @@ class statuses:
 	      </a>
 	    </div>
 	    <?php
-          } else {
+	  } elseif($status == "2" || $status == "4") {
             ?>
             <div class="signup-button">
 	      <a class="link-signup-button">
@@ -139,6 +139,14 @@ class statuses:
 	      closed
 	      </button>
 	      </a>
+	    </div>
+	    <?php
+	  } elseif($status == "0") {
+            ?>
+            <div class="signup-button">
+	      <button class="button-add">
+	      canceled
+	      </button>
 	    </div>
 	    <?php
           }
