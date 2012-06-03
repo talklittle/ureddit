@@ -281,6 +281,8 @@ class course extends object
           <div class="class-name<?=($expanded == true ? ' expanded' : '') ?>">
         <?php
         echo htmlspecialchars(stripslashes($this->value));
+        if(date("U") - strtotime($this->created) < 60*60*24*7)
+          echo ' <span style="color: red;">(new!)</span>';
         try
 	  {
 	    /*
