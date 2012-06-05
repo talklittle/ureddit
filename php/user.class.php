@@ -68,6 +68,11 @@ class user extends object
     return md5(md5($password) . "uofr!1336");
   }
 
+  function crypt_password($password, $salt = "")
+  {
+    return crypt($password, $salt);
+  }
+
   function get_taught_classes()
   {
     $this->get_children('class','teacher');
@@ -90,9 +95,33 @@ class user extends object
     if(count($users) > 0)
       {
 	$this->id = $users[0]['id'];
-	$hash = $this->hash_password($password, $this->id);
-	$password = $this->dbpdo->query("SELECT value FROM object_attributes WHERE type = 'password_hash' AND value = ?", array($hash));
-	if(count($password) > 0)
+	
+	// update to crypt() to increase security
+	try
+	  {
+	    $crypt = $this->crypt_password($password, $this->id);
+	    $crypt_check = $this->get_attribute_value('password_crypt');
+	    if($crypt != $crypt_check)
+	      return false;
+	    $passwords = array($crypt);
+	  }
+	catch (ObjectAttributeNotFoundException $e)
+	  {
+	    $hash = $this->hash_password($password, $this->id);
+	    $passwords = $this->dbpdo->query("SELECT value FROM object_attributes WHERE type = 'password_hash' AND value = ?", array($hash));
+
+	    if(count($passwords) == 0)
+	      return false;
+
+
+	    $crypt = $this->crypt_password($password, $this->id);
+	    $date = $this->timestamp();
+	    $this->dbpdo->query("INSERT INTO object_attributes (`object_id`,`type`,`value`,`creation`,`modification`,`ring`) VALUES (?, ?, ?, ?, ?, ?)",
+				array($this->id, 'password_crypt', $crypt, $date, $date, '0'));
+	    return $this->verify_credentials($username, $password);
+	  }
+
+	if(count($passwords) > 0)
 	  {
 	    $this->lookup($this->id);
 	    if($this->is_banned())

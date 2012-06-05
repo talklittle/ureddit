@@ -38,8 +38,7 @@ if(!empty($_POST))
     
     if(count($error) == 0)
       {
-	//$username = mysql_real_escape_string($_POST['username']);
-	$password = md5(md5($_POST['password']) . "uofr!1336");
+	$password = $_POST['password'];
 	$email = $_POST['email'];
 	strlen($email) > 0 ? $email = $_POST['email'] : "";
 	$datetime = date("Y-m-d H:i:s");
@@ -47,8 +46,10 @@ if(!empty($_POST))
 	$user = new user($dbpdo);
 
 	$user->define('user',$username,0);
-	$user->define_attribute('password_hash',$password,0);
+	$user->save();
+
 	$user->define_attribute('email',$email,0);
+	$user->define_attribute('password_crypt',$user->crypt_password($password,$user->id), 0);
 	$user->save();
 
 	$fUsername = "$username@ureddit.com";
