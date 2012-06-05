@@ -8,6 +8,8 @@ require('php/catalog.class.php');
 require('php/category.class.php');
 require('php/course.class.php');
 require('php/user.class.php');
+require('php/lecture.class.php');
+require('php/link.class.php');
 
 require('dbconnect.php');
 require('supporting_functions.php');

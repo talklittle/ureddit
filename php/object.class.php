@@ -548,6 +548,26 @@ class object extends base
       $this->save();
   }
 
+  function delete()
+  {
+    $assocs = $this->dbpdo->query("SELECT id, parent_id, child_id, type FROM associations WHERE parent_id = ? OR child_id = ?",
+				  array($this->id, $this->id));
+    foreach($assocs as $assoc)
+      {
+	$this->dbpdo->query("DELETE FROM association_attributes WHERE association_id = ?",
+			    array($assoc['id']));
+	$this->remove_association($assoc['parent_id'],$assoc['child_id'],$assoc['type']);
+      }
+    
+    $attrs = $this->dbpdo->query('SELECT DISTINCT(type) FROM object_attributes WHERE object_id = ?',
+				 array($this->id));
+    foreach($attrs as $attr)
+      $this->remove_attribute($attr['type']);
+
+    $this->dbpdo->query("DELETE FROM objects WHERE id = ?",
+			array($this->id));
+  }
+
 }
 
 ?>

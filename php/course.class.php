@@ -9,6 +9,7 @@ class course extends object
   public $reports = NULL;
   public $owner = NULL;
   public $categories = NULL;
+  public $lectures = NULL;
 
   function __construct($dbpdo, $id = NULL)
   {
@@ -66,6 +67,27 @@ class course extends object
       $this->roster = $this->children['user'];
     else
       $this->roster = array();
+  }
+
+  function get_lectures()
+  {
+    $this->get_children('lecture','component');
+    if(isset($this->children['lecture']))
+      $this->lectures = $this->children['lecture'];
+    else
+      $this->lectures = array();
+  }
+
+  function add_lecture($id)
+  {
+    $this->add_child($id, 'component', 0);
+    $this->get_lectures();
+  }
+
+  function remove_lecture($id)
+  {
+    $this->remove_child($id,'component');
+    $this->get_lectures();
   }
 
   function get_teachers()
@@ -243,6 +265,78 @@ class course extends object
     $this->display($expanded, $full);
   }
 
+  function display_lectures($editing = false)
+  {
+    ?>
+<ol><?php
+
+$count = 0;
+
+$this->get_lectures();
+foreach($this->lectures as $lecture_id)
+  {
+    $lecture = new lecture($this->dbpdo, $lecture_id);
+    echo '<li><strong>' . $lecture->value . '</strong>';
+    if($editing)
+      echo ' <small>[<a href="' . PREFIX . '/teachers/edit_lecture.php?id=' . $lecture_id . '">edit</a>] [<a href="' . PREFIX . '/teachers/delete_lecture.php?id=' . $lecture_id . '">delete</a>]</small>';
+    echo "<br>";
+    echo '<p>';
+    echo $this->process_text($lecture->description);
+    echo '</p>';
+
+
+    $lecture->get_links();
+    echo '<ul>';
+    foreach($lecture->links as $link_id)
+      {
+	$link = new link($lecture->dbpdo, $link_id);
+	echo '<li><a href="' . $link->url . '" target="_blank">' . $link->title . '</a>';
+	if($editing)
+	  echo ' <small>[<a href="' . PREFIX . '/teachers/delete_link.php?lecture=' . $lecture->id . '&link=' . $link->id . '">delete</a>]</small>';
+	echo '</li>';
+      }
+    if($editing)
+      {
+    ?>
+    <li>
+       <form method="post" action="<?=PREFIX ?>/teachers/new_link.php">
+       New link title: <input type="text" name="title" id="title"><br>
+       New link URL: <input type="text" name="url" id="url"><br>
+       <input type="hidden" name="lecture" id="lecture" value="<?=$lecture->id ?>">
+       <input type="submit"></form>
+    </li>
+    <?php
+	  $last = $lecture->order;
+       }
+    echo '</ul>';
+  }
+
+if($editing)
+  {
+?>
+
+<li>
+<strong>New Lecture</strong>
+<form method="post" action="<?=PREFIX ?>/class/<?=$this->id ?>/lectures">
+  <p>
+  Lecture Title:<br>
+  <input type="text" name="title" id="title" class="teach" value="<?=post('title','') ?>">
+  </p>
+
+  <p>
+  Lecture Description:<br>
+  <textarea name="desc" id="desc" class="teach"><?=post('desc','') ?></textarea>
+  </p>
+
+<input type="hidden" name="order" value="<?=isset($last) ? $last : '0' ?>">
+<input type="submit" value="Add">
+</form>
+</li>
+</ol>
+   <?php
+    }
+  }
+
   function display($expanded = false, $full = false)
   {
     $comments = array();
@@ -304,10 +398,7 @@ class course extends object
 	      {
 		?>
 		<span style="font-weight: normal; font-size: 0.8em;">
-		  [&nbsp;<a href="<?=PREFIX ?>/class/<?=$this->id ?>/edit">edit</a>&nbsp;]
-		  [&nbsp;<a href="<?=PREFIX ?>/class/<?=$this->id ?>/message">mass message</a>&nbsp;]
-		  [&nbsp;<a href="<?=PREFIX ?>/class/<?=$this->id ?>/stats">statistics</a>&nbsp;]
-		  <?=($this->owner == $this->dbpdo->session('user_id') ? "[&nbsp;<a href=\"" . PREFIX  . "/class/" . $this->id . "/teachers\">teachers</a>&nbsp;]" : '') ?>
+		  [&nbsp;<a href="<?=PREFIX ?>/class/<?=$this->id ?>/admin">edit class</a>&nbsp;]
 		</span>
 		<?php
 	      }
@@ -398,6 +489,16 @@ class course extends object
 	if($full)
 	  {
 	    ?>
+              <div class="class-name expanded">
+                Lectures
+	      </div>
+	      <div class="class-desc">
+	      <?php
+	      $this->display_lectures();
+
+	      ?>
+	      </div>
+
               <div class="class-name expanded">
                 Prerequisites
 	      </div>
