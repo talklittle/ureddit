@@ -273,6 +273,8 @@ class course extends object
 $count = 0;
 
 $this->get_lectures();
+if(!$editing and count($this->lectures) == 0)
+  echo '<em>no lectures added</em>';
 foreach($this->lectures as $lecture_id)
   {
     $lecture = new lecture($this->dbpdo, $lecture_id);
