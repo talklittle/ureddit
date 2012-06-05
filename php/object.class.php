@@ -66,7 +66,7 @@ class object extends base
 
   function lookup($id)
   {
-    if($this->config->memcache())
+    if(config::use_memcache)
       {
 	$data = $this->memcache_get('v3_object_' . $id);
 	if(!$data)
@@ -100,7 +100,7 @@ class object extends base
   function lookup_with_attribute($id, $attribute_type)
   {
     $q = "SELECT o.id AS o_id, o.type AS o_type, o.value AS o_value, o.ring AS o_ring, o.creation AS o_creation, o.modification AS o_modification, oa.id AS oa_id, oa.type AS oa_type, oa.value AS oa_value, oa.ring AS oa_ring FROM objects AS o LEFT OUTER JOIN object_attributes AS oa ON oa.object_id = o.id WHERE oa.type = ? AND o.id = ?";
-    if($this->config->memcache())
+    if(config::use_memcache)
       {
 	$data = $this->memcache_get('v3_object_' . $id . '_with_attribute_' . $attribute_type);
 	if(!$data)
@@ -189,7 +189,7 @@ class object extends base
       }
     else
       {
-	if($this->config->memcache())
+	if(config::use_memcache)
 	  {
 	    $this->memcache_delete('v3_object_' . $this->id . '_attribute_' . $type);
 	    $this->memcache_delete('v3_object_' . $this->id . '_attribute_%');
@@ -204,7 +204,7 @@ class object extends base
 
   function get_attribute_value($type, $redo_search = true)
   {
-    if($this->config->memcache())
+    if(config::use_memcache)
       {
 	$value = $this->memcache_get('v3_object_' . $this->id . '_attribute_' . $type);
 	if($value !== false)
@@ -215,7 +215,7 @@ class object extends base
       $this->get_attributes($type);
     if(isset($this->attributes[$type]))
       {
-	if($this->config->memcache())
+	if(config::use_memcache)
 	  $this->memcache_set('v3_object_' . $this->id . '_attribute_' . $type, $this->attributes[$type]['value']);
 	
 	return $this->attributes[$type]['value'];
@@ -233,7 +233,7 @@ class object extends base
 			      ));
     if(isset($this->attributes[$type]))
       unset($this->attributes[$type]);
-    if($this->config->memcache())
+    if(config::use_memcache)
       $this->memcache_delete('v3_object_' . $this->id . '_attribute_' . $type);
   }
 
@@ -243,7 +243,7 @@ class object extends base
 
     $q = "SELECT p.id AS parent_id, p.type AS parent_type, a.id AS association_id, a.type AS association_type FROM objects AS p INNER JOIN associations AS a ON p.id = a.parent_id WHERE a.child_id = ? AND a.type LIKE ? AND p.type LIKE ?";
 
-    if($offset === NULL && $limit === NULL && $this->config->memcache())
+    if($offset === NULL && $limit === NULL && config::use_memcache)
       {
 	$key = 'v3_object_' . $this->id . '_parents_' . $parent_type . '_' . $association_type;
 	$data = $this->memcache_get($key);
@@ -279,7 +279,7 @@ class object extends base
 
   function get_children_with_attribute($child_type, $association_type, $attribute)
   {
-    if($this->config->memcache())
+    if(config::use_memcache)
       {
 	$key = 'v3_object_' . $this->id . '_children_' . $child_type . '_association_' . $association_type . '_with_attribute_' . $attribute;
 	$data = $this->memcache_get($key);
@@ -312,7 +312,7 @@ class object extends base
     $this->children = array();
     $q = "SELECT c.id AS child_id, c.type AS child_type, a.id AS association_id, a.type AS association_type FROM objects AS c INNER JOIN associations AS a ON a.child_id = c.id WHERE a.parent_id = ? AND a.type LIKE ? AND c.type LIKE ?";
 
-    if($offset === NULL && $limit === NULL && $this->config->memcache())
+    if($offset === NULL && $limit === NULL && config::use_memcache)
       {
 	$key = 'v3_object_' . $this->id . '_children_' . $child_type . '_' . $association_type;
 	$data = $this->memcache_get($key);
@@ -368,7 +368,7 @@ class object extends base
   function create_association($parent_id, $child_id, $type, $ring)
   {
     $date = $this->timestamp();
-    if($this->config->memcache())
+    if(config::use_memcache)
       {
 	if($this->id == $parent_id)
 	  {
@@ -417,7 +417,7 @@ class object extends base
 			      $child_id,
 			      $type
 			      ));
-    if($this->config->memcache())
+    if(config::use_memcache)
       {
 	if($this->id == $parent_id)
 	  {
@@ -497,7 +497,7 @@ class object extends base
 					      $date,
 					      $this->id
 					      ));
-	if($this->config->memcache())
+	if(config::use_memcache)
 	  $this->memcache_delete('v3_object_' . $this->id);
       }
 
@@ -526,11 +526,11 @@ class object extends base
 					  $date,
 					  $info['id']
 					  ));
-		if($this->config->memcache())
+		if(config::use_memcache)
 		  $this->memcache_delete('v3_object_' . $this->id . '_attribute_' . $attribute);
 	      }
 	    $this->get_parents();
-	    if($this->config->memcache())
+	    if(config::use_memcache)
 	    foreach($this->parents as $parent_type => $parents)
 	      foreach($parents as $parent_id)
 	        foreach($this->attributes as $attribute => &$values)

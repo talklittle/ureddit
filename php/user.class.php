@@ -156,7 +156,7 @@ class user extends object
   function add_class($id)
   {
     $this->add_parent($id, 'enrolled_student', 0);
-    if($this->config->memcache())
+    if(config::use_memcache)
       $this->memcache_delete('v3_roster_' . $id . '_with_attribute_' . 'reddit_username');
     $this->log_to_feed('added class', $id);
     $this->upvote($id);
@@ -165,7 +165,7 @@ class user extends object
   function drop_class($id)
   {
     $this->remove_parent($id, 'enrolled_student');
-    if($this->config->memcache())
+    if(config::use_memcache)
       $this->memcache_delete('v3_roster_' . $id . '_with_attribute_' . 'reddit_username');
     $this->log_to_feed('dropped class', $id);
     $class = new course($this->dbpdo, $id);

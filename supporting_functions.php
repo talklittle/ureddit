@@ -16,7 +16,7 @@ function latest_blog_post($dbpdo)
 
 function latest_commit($dbpdo)
 {
-  if($dbpdo->config->memcache())
+  if(config::use_memcache)
     {
       if(!($val = $dbpdo->memcache->get('latest_commit')))
 	{
@@ -276,7 +276,7 @@ function object_type_value_to_id($dbpdo, $type, $value)
 
 function latest_reddit_post($dbpdo)
 {
-  if($dbpdo->config->memcache())
+  if(config::use_memcache)
     {
       if(!($val = $dbpdo->memcache_get('latest_reddit_post')))
 	{
@@ -297,7 +297,7 @@ function latest_reddit_post($dbpdo)
 function latest_tweet($dbpdo)
 {
   $config = $dbpdo->config;
-  if($config->memcache())
+  if(config::use_memcache)
     {
       if(!($val = $dbpdo->memcache_get('latest_tweet')))
 	{

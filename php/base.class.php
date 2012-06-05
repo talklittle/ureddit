@@ -12,10 +12,10 @@ class base {
   function __construct($config)
   {
     $this->config = $config;
-    if($this->config->memcache())
+    if(config::use_memcache)
       {
 	$this->memcache = new Memcache;
-	if(!$this->memcache->pconnect($this->config->memcache_host(), $this->config->memcache_port()))
+	if(!$this->memcache->pconnect(config::memcache_host, $config::memcache_port))
 	  $this->error("Connection to memcached failed.");
       }
   }
@@ -57,7 +57,7 @@ class base {
 
   function process_text($text)
   {
-    if($this->config->use_markdown() == true)
+    if(config::use_markdown == true)
       return Markdown(htmlspecialchars(stripslashes($text)));
     return nl2br(htmlspecialchars(stripslashes($text)));
   }

@@ -34,7 +34,7 @@ class course extends object
 
   function get_roster_with_attribute($attribute)
   {
-    if($this->config->memcache())
+    if(config::use_memcache)
       {
 	$data = $this->memcache_get('v3_roster_' . $this->id . '_with_attribute_' . $attribute);
 	if(!$data)

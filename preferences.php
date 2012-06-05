@@ -12,7 +12,7 @@ try
   }
 catch (ObjectAttributeNotFoundException $e)
   {
-    $user_signature = encrypt($user->value, $user->config->private_key());
+    $user_signature = encrypt($user->value, config::private_key);
     $user->define_attribute('signature', $user_signature, 0);
     $user->save();
   }

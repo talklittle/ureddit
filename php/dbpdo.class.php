@@ -37,7 +37,7 @@ class dbpdo extends base
     try
       {
 	$this->mh = new PDO(
-			    $this->config->driver() . ':host=' . $this->config->host() . ';dbname=' . $this->config->db(), 
+			    config::db . ':host=' . $this->config->host() . ';dbname=' . $this->config->db(), 
 			    $this->config->user(),
 			    $this->config->pass(),
 			    array(PDO::ATTR_PERSISTENT => true)
@@ -101,7 +101,7 @@ class dbpdo extends base
       $result = $this->exec_statement($statement, $values, true);
     else
       {
-	if($this->config->memcache() && $memcache_key !== NULL)
+	if(config::use_memcache && $memcache_key !== NULL)
 	  {
 	    if(!($result = $this->memcache_get($memcache_key)))
 	      {
