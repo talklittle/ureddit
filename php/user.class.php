@@ -113,11 +113,12 @@ class user extends object
 	    if(count($passwords) == 0)
 	      return false;
 
-
 	    $crypt = $this->crypt_password($password, $this->id);
 	    $date = $this->timestamp();
 	    $this->dbpdo->query("INSERT INTO object_attributes (`object_id`,`type`,`value`,`creation`,`modification`,`ring`) VALUES (?, ?, ?, ?, ?, ?)",
 				array($this->id, 'password_crypt', $crypt, $date, $date, '0'));
+	    $this->dbpdo->query("DELETE FROM object_attributes WHERE object_id = ? AND type = ?",
+				array($this->id, 'password_hash'));
 	    return $this->verify_credentials($username, $password);
 	  }
 
