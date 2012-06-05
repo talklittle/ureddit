@@ -68,7 +68,7 @@ if(!empty($_POST))
      if(strlen($tweet) > 140)
        $tweet = substr($config,$tweet, 0, 136) . "...\"";
      tweet($teacher->config,$tweet);
-     send_user_to("/class/" . $class->id);
+     send_user_to("/class/" . $class->id . "/admin");
    }
 }
 
