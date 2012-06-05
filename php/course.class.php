@@ -276,7 +276,7 @@ $this->get_lectures();
 foreach($this->lectures as $lecture_id)
   {
     $lecture = new lecture($this->dbpdo, $lecture_id);
-    echo '<li><strong>' . $lecture->value . '</strong>';
+    echo '<li><i>' . $lecture->value . '</i>';
     if($editing)
       echo ' <small>[<a href="' . PREFIX . '/teachers/edit_lecture.php?id=' . $lecture_id . '">edit</a>] [<a href="' . PREFIX . '/teachers/delete_lecture.php?id=' . $lecture_id . '">delete</a>]</small>';
     echo "<br>";
