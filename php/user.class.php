@@ -63,7 +63,7 @@ class user extends object
     return false;
   }
 
-  function hash_password($password)
+  function hash_password($password, $id = "")
   {
     return md5(md5($password) . "uofr!1336");
   }
@@ -86,26 +86,24 @@ class user extends object
 
   function verify_credentials($username, $password)
   {
-    $hash = $this->hash_password($password);
-    $users = $this->dbpdo->query("SELECT objects.id FROM objects INNER JOIN object_attributes ON objects.value = ? AND object_attributes.type = 'password_hash' AND object_attributes.object_id = objects.id AND object_attributes.value = ?",
-			   array(
-				 $username,
-				 $hash
-				 ));
-
+    $users = $this->dbpdo->query("SELECT id FROM objects WHERE type = 'user' AND value = ?", array($username));
     if(count($users) > 0)
       {
-	if($this->id === NULL)
+	$this->id = $users[0]['id'];
+	$hash = $this->hash_password($password, $this->id);
+	$password = $this->dbpdo->query("SELECT value FROM object_attributes WHERE type = 'password_hash' AND value = ?", array($hash));
+	if(count($password) > 0)
 	  {
-	    $this->id = $users[0]['id'];
 	    $this->lookup($this->id);
+	    if($this->is_banned())
+	      {
+		die('banned');
+		return false;
+	      }
+	    return true;
 	  }
-	if($this->is_banned())
-	  die('banned');
-	return true;
       }
-    else
-      return false;
+    return false;
   }
 
   function is_banned()
