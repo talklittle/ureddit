@@ -30,6 +30,10 @@ if(!empty($_POST))
    $qualifications = $_POST['qualifications'];
    $status = $_POST['status'];
 
+   $haystack = $name . $desc . $syllabus . $prereq . $addinfo . $url . $qualifications;
+   if(strpos($haystack, "manhoodacademy") !== FALSE || strpos($haystack, "manhood101") !== FALSE)
+     $error[] = "Misogyny is not allowed.";
+
    if(strlen($url) > 0 && !preg_match('/^((http|https|irc):\/\/).*/',$url))
       $error[] = "Your class URL must either be empty or start with http://, https://, or irc://.";
 

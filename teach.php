@@ -21,7 +21,7 @@ if(!empty($_POST))
    $live = $_POST['live'];
    $qualifications = $_POST['qualifications'];
 
-   $haystack = $plain_name . $desc . $syllabus . $prereq . $addinfo . $url;
+   $haystack = $plain_name . $desc . $syllabus . $prereq . $addinfo . $url . $qualifications;
    if(strpos($haystack, "manhoodacademy") !== FALSE || strpos($haystack, "manhood101") !== FALSE)
      $error[] = "Misogyny is not allowed.";
    
