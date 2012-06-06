@@ -34,6 +34,14 @@ catch (CourseNotFoundException $e)
 </head>
 <body>
   <!--[if lt IE 7]><p class=chromeframe>Your browser is <em>ancient!</em> <a href="http://browsehappy.com/">Upgrade to a different browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to experience this site.</p><![endif]-->
+<div id="fb-root"></div>
+  <script>(function(d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) return;
+      js = d.createElement(s); js.id = id;
+      js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
+      fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));</script>
   <?php
   require_once('header.php');
   require_once('social.php');
@@ -51,6 +59,7 @@ catch (CourseNotFoundException $e)
         <?php
           $class->display_with_container(true, true);
         ?>
+
 <div id="disqus_thread"></div>
 <script type="text/javascript">
     /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
@@ -71,6 +80,11 @@ catch (CourseNotFoundException $e)
     </div>
     <div id="class-page-roster">
       <div class="content">
+<div style="display: inline-block; position: relative; top: 3px;"><a href="https://twitter.com/share" class="twitter-share-button" data-url="<?=$class->url() ?>" data-text="UReddit: <?=$class->value ?>" data-via="uofreddit" data-count="none">Tweet</a><script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script></div>
+
+<div style="display: inline-block; position: relative; top: 3px;"><div class="g-plusone" data-size="medium" data-annotation="none" data-href="http://reddit.com"></div><script type="text/javascript">(function() { var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true; po.src = 'https://apis.google.com/js/plusone.js'; var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s); })(); </script></div>
+
+<div style="display: inline-block; margin-bottom: 1em;" class="fb-like" data-href="<?=$class->url() ?>" data-send="false" data-layout="button_count" data-width="40" data-show-faces="false" data-action="like"></div>
         <?php
           $class->display_roster();
         ?>

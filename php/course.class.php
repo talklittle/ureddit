@@ -215,6 +215,12 @@ class course extends object
     return $score;
   }
 
+  function url()
+  {
+    //return 'http://ureddit.com/c' . $this->id;
+    return 'http://ureddit.com/class/' . $this->id . '/' . $this->seo_string($this->value);
+  }
+
   function display_full()
   {
 
@@ -462,7 +468,6 @@ if($editing)
 	      {
 
 	      }
-
 	    try
 	      {
                 echo "<a href=\"" . htmlspecialchars(stripslashes($this->get_attribute_value('url'))) . "\"><button class=\"button\">class URL</button></a> ";
@@ -494,6 +499,7 @@ if($editing)
               <div class="class-name expanded">
                 Lectures
 	      </div>
+
 	      <div class="class-desc">
 	      <?php
 	      $this->display_lectures();
