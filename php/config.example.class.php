@@ -32,6 +32,9 @@ class config
   const google_analytics_password = '';
   const google_analytics_profile_id = '';
 
+  const postfix = true;
+  const wordpress = true;
+
   function host()
   {
     $const = $this::db . "HOST";

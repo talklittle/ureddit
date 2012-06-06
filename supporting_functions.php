@@ -7,11 +7,16 @@ define('SRVDOMAIN','http' . (isset($_SERVER['HTTPS']) && strlen($_SERVER['HTTPS'
 
 function latest_blog_post($dbpdo)
 {
-  $res = $dbpdo->query("SELECT `post_title`, `post_name`, `post_date` FROM `wp_posts` WHERE `post_status`='publish' AND `post_type`='post' ORDER BY `ID` DESC LIMIT 1", array());
-  $year = date("Y", strtotime($res[0]['post_date']));
-  $month = date("m", strtotime($res[0]['post_date']));
-  $day = date("d", strtotime($res[0]['post_date']));
-  return array('title' => $res[0]['post_title'], 'url' => '/blog/' . $year . '/' . $month . '/' . $day . '/' . $res[0]['post_name']);
+  if(config::wordpress)
+    {
+      $res = $dbpdo->query("SELECT `post_title`, `post_name`, `post_date` FROM `wp_posts` WHERE `post_status`='publish' AND `post_type`='post' ORDER BY `ID` DESC LIMIT 1", array());
+      $year = date("Y", strtotime($res[0]['post_date']));
+      $month = date("m", strtotime($res[0]['post_date']));
+      $day = date("d", strtotime($res[0]['post_date']));
+      return array('title' => $res[0]['post_title'], 'url' => '/blog/' . $year . '/' . $month . '/' . $day . '/' . $res[0]['post_name']);
+    }
+  else
+    return array('title' => "Install WordPress or remove this box.", 'url' => "http://wordpress.com");
 }
 
 function latest_commit($dbpdo)

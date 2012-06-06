@@ -238,7 +238,8 @@ class user extends object
 			      ));
 
     $recepient = new user($this->dbpdo, $recepient_id);
-    @send_email($this->value . '@ureddit.com', $recepient->value . '@ureddit.com', $subject, $this->process_text($message), $association_id);
+    if(config::postfix)
+      @send_email($this->value . '@ureddit.com', $recepient->value . '@ureddit.com', $subject, $this->process_text($message), $association_id);
     $this->log_to_feed('PMed', $recepient_id);
   }
 }
