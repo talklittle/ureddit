@@ -213,8 +213,23 @@ class user extends object
       $this->schedule = array();
   }
 
+  function ban()
+  {
+    $this->define_attribute('banned','true',0);
+    $this->save();
+  }
+
   function message($recepient_id, $subject, $message)
   {
+    $haystack = strtolower($subject . $message);
+    if(strpos($haystack, "manhoodacademy") !== FALSE || strpos($haystack, "manhood101") !== FALSE)
+      {
+	$error[] = "Misogyny is not allowed.";
+	$this->ban();
+      }
+
+
+
     $association_id = $this->create_association($this->id, $recepient_id, 'unread_message', 0);
     $date = $this->timestamp();
     $this->dbpdo->query("INSERT INTO association_attributes (association_id, type,value,ring,creation,modification) VALUES (?, ?, ?, ?, ?, ?)",

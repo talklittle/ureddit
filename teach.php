@@ -21,9 +21,13 @@ if(!empty($_POST))
    $live = $_POST['live'];
    $qualifications = $_POST['qualifications'];
 
-   $haystack = $plain_name . $desc . $syllabus . $prereq . $addinfo . $url . $qualifications;
+   $haystack = strtolower($plain_name . $desc . $syllabus . $prereq . $addinfo . $url . $qualifications);
    if(strpos($haystack, "manhoodacademy") !== FALSE || strpos($haystack, "manhood101") !== FALSE)
-     $error[] = "Misogyny is not allowed.";
+     {
+       $error[] = "Misogyny is not allowed.";
+       $user = new user($dbpdo, $dbpdo->session('user_id'));
+       $user->ban();
+     }
    
    if(strlen($url) > 0 && !preg_match('/^((http|https|irc):\/\/).*/',$url))
       $error[] = "Your class URL must either be empty or start with http://, https://, or irc://.";
