@@ -73,7 +73,7 @@ if(!empty($_POST))
 				$fUsername,
 				$emailpassword,
 				$fName,
-				first_letter_subdir($maildir),
+				"ureddit.com"/$local_art,
 				$local_part,
 				$quota,
 				$fDomain,
