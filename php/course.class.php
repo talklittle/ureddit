@@ -470,7 +470,7 @@ if($editing)
 	      }
 	    try
 	      {
-                echo "<a href=\"" . htmlspecialchars(stripslashes($this->get_attribute_value('url'))) . "\"><button class=\"button\">class URL</button></a> ";
+                echo "<a href=\"" . htmlspecialchars(stripslashes($this->get_attribute_value('url'))) . "\"><button class=\"button\">class location</button></a> ";
 	      }
    	    catch (ObjectAttributeNotFoundException $e)
               {
@@ -478,9 +478,12 @@ if($editing)
             if(exec("ls files | grep class" . $this->id))
               echo "<a href=\"/class/" . $this->id . "/files\"><button class=\"button\">class files</button></a> ";
 
+	    if(!$full)
+	      {
             ?>
             <a href="<?=PREFIX ?>/class/<?=$this->id ?>/<?=$this->seo_string($this->value) ?>"><button class="button">class page</button></a>
             <?php
+	       }
 	    if(logged_in() && $full)
 	      {
 		?>
