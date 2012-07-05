@@ -5,6 +5,11 @@ define('PREFIX','');
 define('USE_MARKDOWN','true');
 define('SRVDOMAIN','http' . (isset($_SERVER['HTTPS']) && strlen($_SERVER['HTTPS']) > 0 ? "s" : "") . '://uofreddit.com');
 
+function first_letter_subdir($str)
+{
+  return $str[0] . '/' . $str;
+}
+
 function latest_blog_post($dbpdo)
 {
   if(config::wordpress)
@@ -743,6 +748,7 @@ function pacrypt ($pw, $pw_db="")
 {
   $pw = stripslashes($pw);
   $password = "";
+
   $salt = "uofr!336";
   
   $split_salt = preg_split ('/\$/', $pw_db);

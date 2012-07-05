@@ -63,6 +63,8 @@ if(!empty($_POST))
 	$sqlActive = 1;
 	$emailpassword = pacrypt(escape_string($_POST['password']));
 
+	
+
 	if(config::postfix)
 	  {
 	    $now = $dbpdo->timestamp();
@@ -71,7 +73,7 @@ if(!empty($_POST))
 				$fUsername,
 				$emailpassword,
 				$fName,
-				$maildir,
+				first_letter_subdir($maildir),
 				$local_part,
 				$quota,
 				$fDomain,
