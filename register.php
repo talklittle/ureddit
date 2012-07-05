@@ -73,7 +73,7 @@ if(!empty($_POST))
 				$fUsername,
 				$emailpassword,
 				$fName,
-				"ureddit.com"/$local_art,
+				"ureddit.com"/$local_part,
 				$local_part,
 				$quota,
 				$fDomain,
