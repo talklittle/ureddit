@@ -16,44 +16,22 @@ catch (CourseNotFoundException $e)
     send_user_to("/");
   }
 
-?>
 
-<!doctype html>
-<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
-<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
-<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <title>University of Reddit : <?=$class->value ?></title>
-  <meta name="description" content="">
+$params['title'] = 'University of Reddit : ' . $class->value;
+require('header2.php');
 
-  <meta name="viewport" content="width=device-width">
-  <?php include('includes.php'); ?>
-</head>
-<body>
-  <!--[if lt IE 7]><p class=chromeframe>Your browser is <em>ancient!</em> <a href="http://browsehappy.com/">Upgrade to a different browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to experience this site.</p><![endif]-->
-<div id="fb-root"></div>
-  <script>(function(d, s, id) {
-      var js, fjs = d.getElementsByTagName(s)[0];
-      if (d.getElementById(id)) return;
-      js = d.createElement(s); js.id = id;
-      js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
-      fjs.parentNode.insertBefore(js, fjs);
-    }(document, 'script', 'facebook-jssdk'));</script>
-  <?php
-  require_once('header.php');
-  require_once('social.php');
-
-  if(isset($_GET['category_id']) && count($dbpdo->query("SELECT `id` FROM `objects` WHERE `id` = ? AND `type` = 'category' LIMIT 1", array($_GET['category_id'])) != 0))
+if(isset($_GET['category_id']) && count($dbpdo->query("SELECT `id` FROM `objects` WHERE `id` = ? AND `type` = 'category' LIMIT 1", array($_GET['category_id'])) != 0))
+  {
     $active_category_id = $_GET['category_id'];
-  else
+  }
+else
+  {
     $active_category_id = -1;
+  }
 
-  $catalog = new catalog($dbpdo);
-  ?>
-  <div id="main" role="main">
+$catalog = new catalog($dbpdo);
+
+?>
     <div id="class-page">
       <div class="content">
         <?php
@@ -90,9 +68,4 @@ catch (CourseNotFoundException $e)
         ?>
       </div>
     </div>
-    <div id="separate-main-footer">
-    </div>
-  </div>
-  <?php require_once('footer.php'); ?>
-</body>
-</html>
+<?php require_once('footer2.php'); ?>

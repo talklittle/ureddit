@@ -16,4 +16,7 @@ require('dbconnect.php');
 require('supporting_functions.php');
 require('check_login.php');
 
+$params = array();
+$params['title'] = "University of Reddit";
+
 ?>

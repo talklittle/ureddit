@@ -5,6 +5,19 @@ define('PREFIX','');
 define('USE_MARKDOWN','true');
 define('SRVDOMAIN','http' . (isset($_SERVER['HTTPS']) && strlen($_SERVER['HTTPS']) > 0 ? "s" : "") . '://uofreddit.com');
 
+function render($__template, $__context=null) 
+{
+  if (is_array($__context))
+    {
+      foreach ($__context as $__key => $__value)
+	{
+	  $$__key = $__value;
+	}
+    }
+  
+  include($__template);
+}
+
 function first_letter_subdir($str)
 {
   return $str[0] . '/' . $str;

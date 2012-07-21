@@ -4,55 +4,9 @@ require_once('init.php');
 
 if(empty($_GET))
   {
+    $params['title'] = 'University of Reddit : Help';
+    require('header2.php');
 ?>
-
-<!doctype html>
-<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
-<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
-<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <title>University of Reddit</title>
-  <meta name="description" content="">
-
-  <meta name="viewport" content="width=device-width">
-  <?php include('includes.php'); ?>
-  <style type="text/css">
-  p {
-    margin: 0 0 5px 50px;
-  }
-
-  h1 {
-    margin-top: 10px;
-    margin-bottom: 10px;
-  }
-
-  h2 {
-    margin-left: 25px;
-    margin-bottom: 3px;
-  }
-
-  h3 {
-    margin-left: 30px;
-    margin-bottom: 3px;
-  }
-
-  ul {
-    margin: 10px 0 10px 100px;
-  }
--->
-</style>
-</head>
-<body>
-  <!--[if lt IE 7]><p class=chromeframe>Your browser is <em>ancient!</em> <a href="http://browsehappy.com/">Upgrade to a different browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to experience this site.</p><![endif]-->
-  <?php
-  require_once('header.php');
-  require_once('social.php');
-
-  ?>
-  <div id="main" role="main">
     <div id="help">
       <div class="content">
 <?php
@@ -85,12 +39,8 @@ echo process($str);
 ?>
       </div>
     </div>
-  </div>
-  <?php require_once('footer.php'); ?>
-</body>
-</html>
-
 <?php
+    require_once('footer2.php');
   }
 else
   {

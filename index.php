@@ -14,36 +14,11 @@ foreach($catalog->categories as $category_id)
     $category = new category($dbpdo, $category_id);
     $categories[$category_id] = $category;
   }
-?>
 
-<!doctype html>
-<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
-<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
-<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <title>University of Reddit<?=$active_category_id == -1 ? '' : ' : ' . $categories[$active_category_id]->value?></title>
-  <meta name="description" content="">
-  <meta name="viewport" content="width=device-width">
-  <?php include('includes.php'); ?>
-</head>
-<body>
-  <!--[if lt IE 7]><p class=chromeframe>Your browser is <em>ancient!</em> <a href="http://browsehappy.com/">Upgrade to a different browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to experience this site.</p><![endif]-->
-<div id="fb-root"></div>
-  <script>(function(d, s, id) {
-      var js, fjs = d.getElementsByTagName(s)[0];
-      if (d.getElementById(id)) return;
-      js = d.createElement(s); js.id = id;
-      js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
-      fjs.parentNode.insertBefore(js, fjs);
-    }(document, 'script', 'facebook-jssdk'));</script>
-  <?php
-  require_once('header.php');
-  require_once('social.php');
-  ?>
-  <div id="main" role="main">
+$params['title'] = "University of Reddit" . ($active_category_id == -1 ? '' : ' : ' . $categories[$active_category_id]->value);
+require('header2.php');
+
+?>
     <div id="catalog-category-list">
       <div class="content">
         <div class="category<?=$active_category_id === -1 ? ' active' : '' ?>" id="category-all">
@@ -71,9 +46,4 @@ foreach($catalog->categories as $category_id)
         ?>
       </div>
     </div>
-    <div id="separate-main-footer">
-    </div>
-  </div>
-  <?php require_once('footer.php'); ?>
-</body>
-</html>
+<?php require('footer2.php'); ?>

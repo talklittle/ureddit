@@ -81,7 +81,7 @@ foreach($date_ranges as $date_range)
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <title>University of Reddit</title>
+  <title>University of Reddit : View Statistics</title>
   <meta name="description" content="">
 
   <meta name="viewport" content="width=device-width">
@@ -161,84 +161,4 @@ for($i = 0; $i < $count; $i++)
     <?php include('tools.php'); ?>
       </div>
     </div>
-    <div id="separate-main-footer">
-    </div>
-  </div>
-  <?php require_once('../footer.php'); ?>
-</body>
-</html>
-
-
-<?php
-
-    die();
-
-?>
-
-<table>
-<tr>
-  <th>Pagepath</th>
-  <th>Date</th>
-  <th>Pageviews</th>
-  <th>Visits</th>
-</tr>
-<?php
-$myResults = array();
-foreach($ga->getResults() as $result)
-{
-?>
-<tr>
-  <td><?php echo $result ?></td>
-    <td><?php echo $result->getDate() ?></td>
-    <td><?php echo $result->getVisits() ?></td>
-    <td><?php echo $result->getPageviews() ?></td>
-    <td><?php echo $result->getUniquePageviews() ?></td>
-</tr>
-<?php
-  $class = "".$result;
-  $matches = array();
-  preg_match('/^\/c(lass\/)?([0-9]+)/i',$class,$matches);
-  $id = $matches[2];
-  if(!isset($myResults[$id]))
-    {
-      $myResults[$id] = array((int)$result->getVisits(), (int)$result->getPageviews(), (int)$result->getUniquePageviews());
-    }
-  else
-    {
-      $myResults[$id][0] += (int)$result->getVisits();
-      $myResults[$id][1] += (int)$result->getPageviews();
-      $myResults[$id][2] += (int)$result->getUniquePageviews();
-    }
-}
-
-foreach($myResults as $class => &$stats):
-?>
-<tr>
-  <td><?php echo $class ?></td>
-  <td><?php echo $stats[0] ?></td>
-  <td><?php echo $stats[1] ?></td>
-  <td><?php echo $stats[2] ?></td>
-</tr>
-<?php
-endforeach
-?>
-</table>
-
-<table>
-<tr>
-  <th>Total Results</th>
-  <td><?php echo $ga->getTotalResults() ?></td>
-</tr>
-<tr>
-  <th>Total Pageviews</th>
-  <td><?php echo $ga->getPageviews() ?>
-</tr>
-<tr>
-  <th>Total Visits</th>
-  <td><?php echo $ga->getVisits() ?></td>
-</tr>
-<tr>
-  <th>Results Updated</th>
-  <td><?php echo $ga->getUpdated() ?></td>
-</tr>
-</table>
+<?php require_once('../footer2.php'); ?>
