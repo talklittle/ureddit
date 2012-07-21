@@ -16,7 +16,7 @@ class api extends base
 												       ));
   }
 
-  function __construct($dbpdo, $type, $id = NULL)
+  function __construct($dbpdo, $jsonp, $type, $id = NULL)
   {
     $this->dbpdo = $dbpdo;
     $response = array();
@@ -127,7 +127,7 @@ class api extends base
 	break;
       }
 
-    echo json_encode($response);
+    echo $jsonp ? $jsonp . '(' . json_encode($response) . ');' : json_encode($response);
   }
 
 }
