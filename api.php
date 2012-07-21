@@ -4,7 +4,7 @@ require_once('init.php');
 
 if(empty($_GET))
   {
-    $params['title'] = 'University of Reddit : Help';
+    $params['title'] = 'University of Reddit : API';
     require('header2.php');
 ?>
     <div id="help">
