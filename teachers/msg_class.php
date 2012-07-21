@@ -50,7 +50,7 @@ if(!empty($_POST))
   }
 }
 
-$params['title'] .= 'Mass Message';
+$params['title'] .= ' : Mass Message';
 require('../header2.php');
 
 ?>

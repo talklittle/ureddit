@@ -1,6 +1,6 @@
 <?php
 require_once('../init.php');
-$params['title'] .= ' : Taught Classes';
+$params['title'] .= ' : My Classes';
 require('../header2.php');
 ?>
     <div id="my-classes">

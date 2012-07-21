@@ -1,7 +1,7 @@
 <?php
 
 require_once('init.php');
-$params['title'] .= ' Privacy Policy';
+$params['title'] .= ' : Privacy Policy';
 require('header2.php');
 
 ?>
