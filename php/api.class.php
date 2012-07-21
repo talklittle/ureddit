@@ -3,10 +3,25 @@
 class api extends base
 {
 
+  function log_api_request($type, $id)
+  {
+    $datetime = date("Y-m-d H:i:s");
+    $ip = $_SERVER['REMOTE_ADDR'];
+
+    $this->dbpdo->query("INSERT INTO `api_requests` (`datetime`,`type`,`id`,`ip`) VALUES (?, ?, ?, ?)", array(
+												       $datetime,
+												       $type,
+												       $id,
+												       $ip
+												       ));
+  }
+
   function __construct($dbpdo, $type, $id = NULL)
   {
     $this->dbpdo = $dbpdo;
     $response = array();
+
+    $this->log_api_request($type, $id);
 
     if($type === NULL || strlen($type) == 0)
       {
