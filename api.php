@@ -73,7 +73,7 @@ $str = <<<EOD
   * `class`: requires `id`. Returns all class information, including the roster (a list of user `id`s), lectures (a list of lecture `id`s), and teachers (a list of user `id`s).
   * `lecture`: requires `id`. Returns the lecture name and description and any associated links (a list of link `id`s).
   * `link`: requires `id`. Returns the link title and URL.
-  * `user`: requires `id`. Returns the user username, registration date, and roster.
+  * `user`: requires `id`. Returns the user username, registration date, and schedule.
 
 **Output**
 
