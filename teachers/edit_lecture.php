@@ -36,7 +36,7 @@ if(!empty($_POST))
 }
 
 $params['title'] .= ' : Edit Lecture';
-require('header2.php');
+require('../header2.php');
 
 ?>
     <div id="teach">
