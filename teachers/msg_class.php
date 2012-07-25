@@ -12,7 +12,7 @@ $class->get_teachers();
 $class->get_owner();
 
 if($class->owner != $user->id && !in_array($user->id,$class->teachers))
-  send_user_to("/teachers/");
+  send_user_to("/class/" . $class->id . "/" . $class->seo_string($class->value));
 
 $success = false;
 $error = array();

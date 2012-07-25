@@ -12,7 +12,7 @@ $class->get_teachers();
 $class->get_owner();
 
 if($class->owner != $user->id && !in_array($user->id,$class->teachers))
-  send_user_to("/teachers/index.php");
+  send_user_to("/class/" . $class->id . "/" . $class->seo_string($class->value));
 
 define('ga_email', config::google_analytics_email);
 define('ga_password',config::google_analytics_password);

@@ -14,9 +14,8 @@ $class->get_teachers();
 $class->get_categories();
 $class->get_attributes();
 
-$teacher_check = @mysql_fetch_assoc(mysql_query("SELECT COUNT(*) FROM `classes` WHERE `id`='$class_id' AND `teacher_id`='$user_id'"));
 if($class->owner != $user->id && !in_array($user->id, $class->teachers))
-  send_user_to("/teachers");
+  send_user_to("/class/" . $class->id . "/" . $class->seo_string($class->value));
 
 $lecture->get_links();
 if(in_array($_GET['link'],$lecture->links))
