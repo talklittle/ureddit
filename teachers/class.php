@@ -16,6 +16,18 @@ catch (CourseNotFoundException $e)
     send_user_to("/");
   }
 
+if(!logged_in())
+  send_user_to("/class/" . $class->id . "/" . $class->seo_string($class->value));
+
+$user = new user($dbpdo, $_SESSION['user_id']);
+$class->get_owner();
+$class->get_teachers();
+$class->get_categories();
+$class->get_attributes();
+
+if($class->owner != $user->id && !in_array($user->id, $class->teachers))
+  send_user_to("/class/" . $class->id . "/" . $class->seo_string($class->value));
+
 $params['title'] .= ' : ' . $class->value;
 require('../header2.php');
 
