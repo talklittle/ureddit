@@ -53,7 +53,7 @@ if(!empty($_POST))
 	    //$user->define_attribute('password_hash', $newpass, 0);
 	    $user->define_attribute('password_crypt', $newcrypt, 0);
 
-	    $newemailpass = pacrypt(escape_string($_POST['newpass']));
+	    $newemailpass = pacrypt(escape_string($_POST['newpass']),$user->id);
 
 	    $dbpdo->query("UPDATE pf_mailbox SET password = ? WHERE username = ?",
 			  array(

@@ -57,11 +57,11 @@ if(!empty($_POST))
 	$quotamb = 1;
 	$qm = 1024000;
 	$quota = $quotamb * $qm;
-	$maildir = strtolower($fUsername) . "/";
+	$maildir = "ureddit.com/" . $username . "/";
 	$local_part = $username;
 	$fDomain = "ureddit.com";
 	$sqlActive = 1;
-	$emailpassword = pacrypt(escape_string($_POST['password']));
+	$emailpassword = pacrypt(escape_string($_POST['password']),$user->id);
 
 	
 
@@ -73,7 +73,7 @@ if(!empty($_POST))
 				$fUsername,
 				$emailpassword,
 				$fName,
-				"ureddit.com"/$local_part,
+				"ureddit.com/" . $local_part . "/",
 				$local_part,
 				$quota,
 				$fDomain,

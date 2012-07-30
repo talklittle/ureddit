@@ -757,12 +757,12 @@ function encode_header($string, $default_charset = "utf-8")
     return $string;
 }
 
-function pacrypt ($pw, $pw_db="")
+function pacrypt ($pw, $salt,$pw_db="")
 {
   $pw = stripslashes($pw);
   $password = "";
 
-  $salt = "uofr!336";
+  //$salt = "uofr!336";
   
   $split_salt = preg_split ('/\$/', $pw_db);
   if (isset ($split_salt[2])) {
