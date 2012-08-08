@@ -221,16 +221,56 @@ class course extends object
     return 'http://ureddit.com/class/' . $this->id . '/' . $this->seo_string($this->value);
   }
 
+  function latest_update()
+  {
+    $latest = $this->dbpdo->query("SELECT * FROM `associations` WHERE `parent_id` = ? AND `type` LIKE '%_mass_message' ORDER BY `id` DESC LIMIT 1", array($this->id));
+    
+    if(empty($latest))
+      return NULL;
+
+    $datetime = $latest[0]['creation'];
+    $assoc_id = $latest[0]['id'];
+    $assoc_attributes = $this->dbpdo->query("SELECT * FROM `association_attributes` WHERE `association_id` = ? ORDER BY `type` ASC", array($assoc_id));
+    foreach($assoc_attributes as $attr)
+      {
+	if($attr['type'] == 'body')
+	  $body = $attr['value'];
+	if($attr['type'] == 'subject')
+	  $subject = $attr['value'];
+      }
+
+    $str = $subject . " <small>(" . $datetime . "</small>)<br>";
+    $str .= $this->process_text("\"$body\"");
+    return $str;
+  }
+
   function display_full()
   {
 
   }
 
+  function display_latest_update()
+  {
+    ?>
+	      <div class="class-name">
+	        <strong>Latest Update</strong>
+	      </div>
+	      <div class="class-desc">
+	      <?php 
+                $latest =  $this->latest_update();
+    if($latest === NULL)
+      echo "<p><em>none</em></p>";
+    else
+      echo $latest;
+	      ?></div><?php
+  }
+
+
   function display_roster()
   {
     ?>
 	      <div class="class-name">
-	        Roster
+	        <strong>Roster</strong>
 	      </div>
 	      <div class="class-desc">
 	      <?php 

@@ -64,6 +64,7 @@ $catalog = new catalog($dbpdo);
 
 <div style="display: inline-block; margin-bottom: 1em;" class="fb-like" data-href="<?=$class->url() ?>" data-send="false" data-layout="button_count" data-width="40" data-show-faces="false" data-action="like"></div>
         <?php
+          $class->display_latest_update();
           $class->display_roster();
         ?>
       </div>
