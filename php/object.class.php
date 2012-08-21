@@ -310,7 +310,7 @@ class object extends base
   function get_children($child_type = '%', $association_type='%', $offset = NULL, $limit = NULL, $orderfield = NULL, $order = NULL)
   {
     $this->children = array();
-    $q = "SELECT c.id AS child_id, c.type AS child_type, a.id AS association_id, a.type AS association_type "
+    $q = "SELECT c.id AS child_id, c.type AS child_type, c.value AS child_value, a.id AS association_id, a.type AS association_type "
        . "FROM objects AS c "
        . "INNER JOIN associations AS a ON a.child_id = c.id "
        . "WHERE a.parent_id = ? AND a.type LIKE ? AND c.type LIKE ?";
@@ -342,7 +342,12 @@ class object extends base
       {
 	if(!isset($this->children[$assoc['child_type']]) || !is_array($this->children[$assoc['child_type']]))
 	  $this->children[$assoc['child_type']] = array();
-	$this->children[$assoc['child_type']][] = $assoc['child_id'];
+	
+	$child = array();
+	$child['id'] = $assoc['child_id'];
+	$child['value'] = $assoc['child_value'];
+	$this->children[$assoc['child_type']][] = $child;
+	
 	if(!isset($this->associations[$assoc['association_type']]) || !is_array($this->associations[$assoc['association_type']]))
 	  $this->associations[$assoc['association_type']] = array();
 	$this->associations[$assoc['association_type']][] = $assoc['association_id'];

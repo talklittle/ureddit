@@ -20,7 +20,10 @@ class course extends object
   {
     $this->get_parents('user','owner');
     if(isset($this->parents['user']))
-      $this->owner = $this->parents['user'][0];
+      {
+	$this->owner_api = $this->parents['user'][0];
+	$this->owner = $this->owner_api['id'];
+      }
     else
       $this->owner = array();
   }
@@ -64,7 +67,14 @@ class course extends object
   {
     $this->get_children('user','enrolled_student');
     if(isset($this->children['user']))
-      $this->roster = $this->children['user'];
+      {
+	$this->roster_api = $this->children['user'];
+	$this->roster = array();
+	foreach($this->roster_api as $user)
+	  {
+	    $this->roster[] = $user['id'];
+	  }
+      }
     else
       $this->roster = array();
   }
@@ -73,7 +83,14 @@ class course extends object
   {
     $this->get_children('lecture','component');
     if(isset($this->children['lecture']))
-      $this->lectures = $this->children['lecture'];
+      {
+	$this->lectures_api = $this->children['lecture'];
+	$this->lectures = array();
+	foreach($this->lectures_api as $lecture)
+	  {
+	    $this->lectures[] = $lecture['id'];
+	  }
+      }
     else
       $this->lectures = array();
   }
@@ -94,7 +111,14 @@ class course extends object
   {
     $this->get_parents('user','teacher');
     if(isset($this->parents['user']))
-      $this->teachers = $this->parents['user'];
+      {
+	$this->teachers_api = $this->parents['user'];
+	$this->teachers = array();
+	foreach($this->teachers_api as $user)
+	  {
+	    $this->teachers[] = $user['id'];
+	  }
+      }
     else
       $this->teachers = array();
   }

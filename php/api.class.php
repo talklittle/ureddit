@@ -32,7 +32,7 @@ class api extends base
       {
       case "catalog":
 	$catalog = new catalog($this->dbpdo);
-	$response['categories'] = $catalog->categories;
+	$response['categories'] = $catalog->categories_api;
 	break;
       case "category":
 	if($id === NULL)
@@ -41,7 +41,7 @@ class api extends base
 	  {
 	    $category = new category($this->dbpdo, $id);
 	    $response['name'] = $category->value;
-	    $response['classes'] = $category->classes;
+	    $response['classes'] = $category->classes_api;
 	  }
 	break;
       case "class":
@@ -67,10 +67,10 @@ class api extends base
 	    $response['status_description'] = $statuses[$status];
 	    
 	    $class->get_owner();
-	    $response['owner'] = $class->owner;
+	    $response['owner'] = $class->owner_api;
 	    
 	    $class->get_teachers();
-	    $response['teachers'] = $class->teachers;
+	    $response['teachers'] = $class->teachers_api;
 	    
 	    $response['description'] = $class->get_attribute_value('description');
 	    $response['prerequisites'] = $class->get_attribute_value('prerequisites');
@@ -79,13 +79,13 @@ class api extends base
 	    $response['teacher qualifications'] = $class->get_attribute_value('teacher_qualifications');
 	    
 	    $class->get_lectures();
-	    $response['lectures'] = $class->lectures;
+	    $response['lectures'] = $class->lectures_api;
 	    //$response[''] = $class->get_attribute();
 	    
 	    $response['score'] = $class->calculate_score();
 	    
 	    $class->get_roster();
-	    $response['roster'] = $class->roster;
+	    $response['roster'] = $class->roster_api;
 	    
 	  }
 	break;
@@ -99,7 +99,7 @@ class api extends base
 	    $response['registered'] = $user->created;
 	    
 	    $user->get_schedule();
-	    $response['schedule'] = $user->schedule;
+	    $response['schedule'] = $user->schedule_api;
 	  }
 	break;
       case "lecture":

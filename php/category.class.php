@@ -15,7 +15,14 @@ class category extends object
   {
     $this->get_children('class','categorization');
     if(isset($this->children['class']))
-      $this->classes = $this->children['class'];
+      {
+	$this->classes_api = $this->children['class'];
+	$this->classes = array();
+	foreach($this->classes_api as $clazz)
+	  {
+	    $this->classes[] = $clazz['id'];
+	  }
+      }
     else
       $this->classes = array();
   }

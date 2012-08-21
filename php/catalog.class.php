@@ -14,7 +14,14 @@ class catalog extends object
   {
     $this->get_children('category','init');
     if(isset($this->children['category']))
-      $this->categories = $this->children['category'];
+      {
+	$this->categories_api = $this->children['category'];
+	$this->categories = array();
+	foreach($this->categories_api as $category)
+	  {
+	    $this->categories[] = $category['id'];
+	  }
+      }
     else
       $this->categories = array();
   }

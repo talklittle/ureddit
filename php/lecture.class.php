@@ -35,7 +35,14 @@ class lecture extends object
   {
     $this->get_children('link','detail');
     if(isset($this->children['link']))
-      $this->links = $this->children['link'];
+      {
+	$this->links_api = $this->children['link'];
+	$this->links = array();
+	foreach($this->links_api as $link)
+	  {
+	    $this->links[] = $link['id'];
+	  }
+      }
     else
       $this->links = array();
     return $this->links;

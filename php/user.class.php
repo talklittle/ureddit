@@ -208,7 +208,14 @@ class user extends object
 
     $this->get_parents('class','enrolled_student');
     if(isset($this->parents['class']))
-      $this->schedule = $this->parents['class'];
+      {
+	$this->schedule_api = $this->parents['class'];
+	$this->schedule = array();
+	foreach($this->schedule_api as $clazz)
+	  {
+	    $this->schedule[] = $clazz['id'];
+	  }
+      }
     else
       $this->schedule = array();
   }
