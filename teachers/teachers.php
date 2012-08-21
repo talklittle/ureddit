@@ -48,7 +48,7 @@ foreach($class->teachers as $teacher_id)
 
     if($class->owner != $teacher->id)
       {
-	?> - <small>[<a href="<?=PREFIX ?>/teachers/remove_teacher.php?id=<?=$class->id ?>&username=<?=$teacher->value ?>">remove</a>]</small><?php
+	?> - <small><a href="<?=PREFIX ?>/teachers/remove_teacher.php?id=<?=$class->id ?>&username=<?=$teacher->value ?>">[remove]</a></small><?php
       }
     ?><br><?php
   }

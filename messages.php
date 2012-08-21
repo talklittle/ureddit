@@ -13,7 +13,7 @@ $user = new user($dbpdo, $dbpdo->session('user_id'));
   ?>
     <div id="inbox">
       <div class="content">
-        [<a href="<?=PREFIX ?>/messages/sent">outbox</a>]
+        <a href="<?=PREFIX ?>/messages/sent">[outbox]</a>
         <h1>Inbox</h1>
 	<?php
         display_messages($user);

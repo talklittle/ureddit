@@ -21,12 +21,20 @@ if(!empty($_POST))
    $live = $_POST['live'];
    $qualifications = $_POST['qualifications'];
 
+   $blacklist = array(
+		      "manhoodacademy"
+		      ,"manhood101"
+		      ,"nigger"
+		      ,"game_of_trolls"
+		      );
    $haystack = strtolower($plain_name . $desc . $syllabus . $prereq . $addinfo . $url . $qualifications);
-   if(strpos($haystack, "manhoodacademy") !== FALSE || strpos($haystack, "manhood101") !== FALSE)
+   foreach($blacklist as $black)
      {
-       $error[] = "Misogyny is not allowed.";
-       $user = new user($dbpdo, $dbpdo->session('user_id'));
-       $user->ban();
+       if(strpos($haystack, $black) !== FALSE)
+	 {
+	   $error[] = "Please fill out all fields appropriately.";
+	   break;
+	 }
      }
    
    if(strlen($url) > 0 && !preg_match('/^((http|https|irc):\/\/).*/',$url))
