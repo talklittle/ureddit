@@ -211,7 +211,8 @@ function get_feed($user)
       else
 	{
 	  $object = new object($user->dbpdo, $action['child_id']);
-	  $items[] = '<li><strong>' . $user->value . '</strong> ' . $action['action'] . ' <strong>' . $object->value . '</strong><br><small><em>' . $action['datetime'] . '</em></small></li>';
+	  if($object !== NULL)
+	    $items[] = '<li><strong>' . $user->value . '</strong> ' . $action['action'] . ' <strong>' . $object->value . '</strong><br><small><em>' . $action['datetime'] . '</em></small></li>';
 	}
     }
   if(empty($items))

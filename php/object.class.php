@@ -38,7 +38,14 @@ class object extends base
 	  }
 	else
 	  {
-	    $this->lookup($id);
+	    try
+	      {
+		$this->lookup($id);
+	      }
+	    catch(ObjectNotFoundException $e)
+	      {
+		return NULL;
+	      }
 	  }
       }
   }
