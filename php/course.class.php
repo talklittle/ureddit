@@ -326,7 +326,7 @@ foreach($this->lectures as $lecture_id)
     $lecture = new lecture($this->dbpdo, $lecture_id);
     echo '<li><i>' . $lecture->value . '</i>';
     if($editing)
-      echo ' <small>[<a href="' . PREFIX . '/teachers/edit_lecture.php?id=' . $lecture_id . '">edit</a>] [<a href="' . PREFIX . '/teachers/delete_lecture.php?id=' . $lecture_id . '">delete</a>]</small>';
+      echo ' <small><a href="' . PREFIX . '/teachers/edit_lecture.php?id=' . $lecture_id . '">[edit]</a> <a href="' . PREFIX . '/teachers/delete_lecture.php?id=' . $lecture_id . '">[delete]</a></small>';
     echo "<br>";
     echo '<p>';
     echo $this->process_text($lecture->description);
@@ -340,7 +340,7 @@ foreach($this->lectures as $lecture_id)
 	$link = new link($lecture->dbpdo, $link_id);
 	echo '<li><a href="' . $link->url . '" target="_blank">' . $link->title . '</a>';
 	if($editing)
-	  echo ' <small>[<a href="' . PREFIX . '/teachers/delete_link.php?lecture=' . $lecture->id . '&link=' . $link->id . '">delete</a>]</small>';
+	  echo ' <small><a href="' . PREFIX . '/teachers/delete_link.php?lecture=' . $lecture->id . '&link=' . $link->id . '">[delete]</a></small>';
 	echo '</li>';
       }
     if($editing)
@@ -411,9 +411,9 @@ if($editing)
 	       {
 		 ?>
                    <div class="showhide">
-	           [<a
+	           <a
 		   onclick="$.get('<?=PREFIX ?>/show_class.php',{id: '<?=$this->id ?>', show: '<?=$expanded == 'true' ? 'false' : 'true' ?>'}, function(data){$('#class<?=$this->id ?> > .content').html(data);});"
-		   ><?=($expanded == true ? "-" : "+") ?></a>]
+		   >[<?=($expanded == true ? "-" : "+") ?>]</a>
 		   </div> 
 		 <?php
 	       }
