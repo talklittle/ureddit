@@ -202,7 +202,7 @@ class object extends base
     $this->unsaved = true;
   }
 
-  function get_attribute_value($type, $redo_search = true)
+  function get_attribute_value($type, $default_value = null, $redo_search = true)
   {
     if(config::use_memcache)
       {
@@ -221,7 +221,7 @@ class object extends base
 	return $this->attributes[$type]['value'];
       }
     else
-      throw new ObjectAttributeNotFoundException;
+      return $default_value;
   }
 
   function remove_attribute($type)
