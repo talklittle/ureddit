@@ -457,7 +457,7 @@ function display_messages($user, $offset = 0, $limit=15)
       <div class="content">
         <div class="subject"><?=$user->inbox[2*$i]['value'] ?></div>
 	 <div class="body"><?=$user->process_text($user->inbox[2*$i+1]['value']) ?></div>
-	 <div class="signature">from <strong><?=($sender->type == 'class' ? $author->value . '</strong> (regarding class <strong><a href="' . PREFIX . "/class/" . $sender->id . '">' . $sender->value . '</a></strong>)' : $sender->value) . '</strong>'?> at <?=$user->inbox[2*$i]['creation'] ?> [<a href="<?=PREFIX ?>/user/<?=($sender->type == 'class' ? $author->value : $sender->value) ?>" class="link-class-desc">reply</a>]</div>
+	 <div class="signature">from <strong><?=($sender->type == 'class' ? $author->value . '</strong> (regarding class <strong><a href="' . PREFIX . "/class/" . $sender->id . '">' . $sender->value . '</a></strong>)' : $sender->value) . '</strong>'?> at <?=$user->inbox[2*$i]['creation'] ?> <a href="<?=PREFIX ?>/user/<?=($sender->type == 'class' ? $author->value : $sender->value) ?>" class="link-class-desc">[reply]</a></div>
       </div>
 	 </div>
       <?php
@@ -501,7 +501,7 @@ function display_sent_messages($user, $offset = 0, $limit=15)
       <div class="content">
         <div class="subject"><?=$user->outbox[2*$i]['value'] ?></div>
 	 <div class="body"><?=$user->process_text($user->outbox[2*$i+1]['value']) ?></div>
-        <div class="signature">to <strong><?=$receipient->value ?></strong> at <?=$user->outbox[$i]['creation'] ?> [<a href="<?=PREFIX ?>/user/<?=$recepient->value ?>" class="link-class-desc">reply</a>]</div>
+        <div class="signature">to <strong><?=$receipient->value ?></strong> at <?=$user->outbox[$i]['creation'] ?> <a href="<?=PREFIX ?>/user/<?=$recepient->value ?>" class="link-class-desc">[reply]</a></div>
       </div>
       </div>
       <?php
