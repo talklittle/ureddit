@@ -31,7 +31,7 @@ if(!empty($_POST))
 	    mail($email,"Your new University of Reddit password","The new password for the University of Reddit account named " . $user->value . " registered with this email address is:\n\n$newpass",$headers);
 	    if(config::postfix)
 	      {
-		$emailpass = pacrypt(escape_string($newpass));
+		$emailpass = pacrypt(escape_string($newpass), $user->id);
 		$dbpdo->query("UPDATE pf_mailbox SET password = ? WHERE username = ?", array($emailpass, $user->value . "@ureddit.com"));
 	      }
 
