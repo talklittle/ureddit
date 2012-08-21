@@ -411,9 +411,9 @@ if($editing)
 	       {
 		 ?>
                    <div class="showhide">
-	           [<a
+	           <a
 		   onclick="$.get('<?=PREFIX ?>/show_class.php',{id: '<?=$this->id ?>', show: '<?=$expanded == 'true' ? 'false' : 'true' ?>'}, function(data){$('#class<?=$this->id ?> > .content').html(data);});"
-		   ><?=($expanded == true ? "-" : "+") ?></a>]
+		   >[<?=($expanded == true ? "-" : "+") ?>]</a>
 		   </div> 
 		 <?php
 	       }
