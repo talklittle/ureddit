@@ -310,7 +310,10 @@ class object extends base
   function get_children($child_type = '%', $association_type='%', $offset = NULL, $limit = NULL, $orderfield = NULL, $order = NULL)
   {
     $this->children = array();
-    $q = "SELECT c.id AS child_id, c.type AS child_type, a.id AS association_id, a.type AS association_type FROM objects AS c INNER JOIN associations AS a ON a.child_id = c.id WHERE a.parent_id = ? AND a.type LIKE ? AND c.type LIKE ?";
+    $q = "SELECT c.id AS child_id, c.type AS child_type, a.id AS association_id, a.type AS association_type "
+       . "FROM objects AS c "
+       . "INNER JOIN associations AS a ON a.child_id = c.id "
+       . "WHERE a.parent_id = ? AND a.type LIKE ? AND c.type LIKE ?";
 
     if($offset === NULL && $limit === NULL && config::use_memcache)
       {
