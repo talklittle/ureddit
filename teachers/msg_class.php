@@ -76,7 +76,7 @@ Message:<br />
 <textarea name="msg" class="teach"><?=!empty($_POST) && isset($error) && count($error) > 0 ? htmlspecialchars(stripslashes($_POST['msg'])) : "" ?></textarea>
 <br /><br />
 
-<input type="submit" value="Send PMs" style="padding: 3px;" />
+<input type="submit" value="Send PMs" style="padding: 3px;" onclick="$(this).attr('disabled','disabled');"/>
 </form>
       </div>
     </div>
