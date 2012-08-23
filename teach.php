@@ -63,9 +63,12 @@ if(!empty($_POST))
 	 {
 	   $class = new course($dbpdo, $id);
 	   $now = date("U");
-	   $creation = date("U",$class->creation);
+	   $creation = date("U",strtotime($class->created));
 	   if($now - $creation < 300)
-	     $error[] = "You are creating classes too quickly.";
+	     {
+	       $error[] = "You are creating classes too quickly.";
+	       break;
+	     }
 	 }
      }
    
