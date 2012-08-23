@@ -230,6 +230,18 @@ class object extends base
     else
       throw new ObjectAttributeNotFoundException;
   }
+  
+  function get_attribute_value_or_null($type, $redo_search = true)
+  {
+    try
+    {
+      return $this->get_attribute_value($type, $redo_search);
+    }
+    catch (ObjectAttributeNotFoundException $e)
+    {
+      return null;
+    }
+  }
 
   function remove_attribute($type)
   {

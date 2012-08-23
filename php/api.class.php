@@ -102,10 +102,10 @@ class api extends base
 	      }
 	    
 	    $response['description'] = $class->get_attribute_value('description');
-	    $response['prerequisites'] = $class->get_attribute_value('prerequisites');
-	    $response['syllabus'] = $class->get_attribute_value('syllabus');
-	    $response['additional information'] = $class->get_attribute_value('additional_information');
-	    $response['teacher qualifications'] = $class->get_attribute_value('teacher_qualifications');
+	    $response['prerequisites'] = $class->get_attribute_value_or_null('prerequisites');
+	    $response['syllabus'] = $class->get_attribute_value_or_null('syllabus');
+	    $response['additional information'] = $class->get_attribute_value_or_null('additional_information');
+	    $response['teacher qualifications'] = $class->get_attribute_value_or_null('teacher_qualifications');
 	    
 	    $class->get_lectures();
 	    $response['lectures'] = array();
