@@ -32,7 +32,15 @@ class api extends base
       {
       case "catalog":
 	$catalog = new catalog($this->dbpdo);
-	$response['categories'] = $catalog->categories;
+	$response['categories'] = array();
+	foreach($catalog->categories as $category_id)
+	  {
+	    $category = new category($this->dbpdo, $category_id);
+	    $category_info = array();
+	    $category_info['id'] = $category->id;
+	    $category_info['value'] = $category->value;
+	    $response['categories'][] = $category_info;
+	  }
 	break;
       case "category":
 	if($id === NULL)
@@ -41,7 +49,16 @@ class api extends base
 	  {
 	    $category = new category($this->dbpdo, $id);
 	    $response['name'] = $category->value;
-	    $response['classes'] = $category->classes;
+	    $response['classes'] = array();
+	    foreach($category->classes as $class_id)
+	      {
+		$course = new course($this->dbpdo, $class_id);
+		$course_info = array();
+		$course_info['id'] = $course->id;
+		$course_info['value'] = $course->value;
+		$response['classes'][] = $course_info;
+	      }
+
 	  }
 	break;
       case "class":
@@ -67,10 +84,22 @@ class api extends base
 	    $response['status_description'] = $statuses[$status];
 	    
 	    $class->get_owner();
-	    $response['owner'] = $class->owner;
+	    $owner = new user($this->dbpdo, $class->owner);
+	    $owner_info = array();
+	    $owner_info['id'] = $owner->id;
+	    $owner_info['value'] = $owner->value;
+	    $response['owner'] = $owner_info;
 	    
 	    $class->get_teachers();
-	    $response['teachers'] = $class->teachers;
+	    $response['teachers'] = array();
+	    foreach($class->teachers as $user_id)
+	      {
+	      	$teacher = new user($this->dbpdo, $user_id);
+		$teacher_info = array();
+		$teacher_info['id'] = $teacher->id;
+		$teacher_info['value'] = $teacher->value;
+		$response['teachers'][] = $teacher_info;
+	      }
 	    
 	    $response['description'] = $class->get_attribute_value('description');
 	    $response['prerequisites'] = $class->get_attribute_value('prerequisites');
@@ -79,13 +108,29 @@ class api extends base
 	    $response['teacher qualifications'] = $class->get_attribute_value('teacher_qualifications');
 	    
 	    $class->get_lectures();
-	    $response['lectures'] = $class->lectures;
+	    $response['lectures'] = array();
+	    foreach($class->lectures as $lecture_id)
+	      {
+		$lecture = new lecture($this->dbpdo, $lecture_id);
+		$lecture_info = array();
+		$lecture_info['id'] = $lecture->id;
+		$lecture_info['value'] = $lecture->value;
+		$response['lectures'][] = $lecture_info;
+	      }
 	    //$response[''] = $class->get_attribute();
 	    
 	    $response['score'] = $class->calculate_score();
 	    
 	    $class->get_roster();
-	    $response['roster'] = $class->roster;
+	    $response['roster'] = array();
+	    foreach($class->roster as $user_id)
+	      {
+	      	$user = new user($this->dbpdo, $user_id);
+		$user_info = array();
+		$user_info['id'] = $user->id;
+		$user_info['value'] = $user->value;
+		$response['roster'][] = $user_info;
+	      }
 	    
 	  }
 	break;
@@ -99,7 +144,16 @@ class api extends base
 	    $response['registered'] = $user->created;
 	    
 	    $user->get_schedule();
-	    $response['schedule'] = $user->schedule;
+	    $response['schedule'] = array();
+	    foreach($user->schedule as $class_id)
+	      {
+		$course = new course($this->dbpdo, $class_id);
+		$course_info = array();
+		$course_info['id'] = $course->id;
+		$course_info['value'] = $course->value;
+		$response['schedule'][] = $course_info;
+	      }
+
 	  }
 	break;
       case "lecture":
@@ -109,7 +163,15 @@ class api extends base
 	  {
 	    $lecture = new lecture($this->dbpdo, $id);
 	    $response['description'] = $lecture->description;
-	    $response['links'] = $lecture->links;
+	    $response['links'] = array();
+	    foreach($lecture->links as $link_id)
+	      {
+		$link = new link($this->dbpdo, $class_id);
+		$link_info = array();
+		$link_info['id'] = $link->id;
+		$link_info['value'] = $link->value;
+		$response['links'][] = $link_info;
+	      }
 	  }
 	break;
       case "link":
