@@ -26,6 +26,9 @@ if(!empty($_POST))
 		      ,"manhood101"
 		      ,"nigger"
 		      ,"game_of_trolls"
+		      ,"gameoftrolls"
+		      ,"seigheil"
+		      ,"seig heil"
 		      );
    $haystack = strtolower($plain_name . $desc . $syllabus . $prereq . $addinfo . $url . $qualifications);
    foreach($blacklist as $black)
@@ -52,10 +55,22 @@ if(!empty($_POST))
    if(strlen($desc) == 0)
      $error[] = "You must enter a course description.";
 
+   $teacher = new user($dbpdo, $_SESSION['user_id']);
+   $teacher->get_taught_classes();
+   if(count($teacher->teaching) > 0)
+     {
+       foreach($teacher->teaching as $id)
+	 {
+	   $class = new course($dbpdo, $id);
+	   $now = date("U");
+	   $creation = date("U",$class->creation);
+	   if($now - $creation < 300)
+	     $error[] = "You are creating classes too quickly.";
+	 }
+     }
+   
    if(count($error) == 0)
    {
-     $teacher = new user($dbpdo, $_SESSION['user_id']);
-
      $class = new course($dbpdo);
      $class->define('class',$name,0);
      $class->save();
