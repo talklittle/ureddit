@@ -19,4 +19,21 @@ require('check_login.php');
 $params = array();
 $params['title'] = "University of Reddit";
 
+if(logged_in())
+  {
+    try
+      {
+	$user = new user($dbpdo, $dbpdo->session('user_id'));
+	if($user === NULL || $user->is_banned())
+	  {
+	    header("Location: http://sadtrombone.com/");
+	    die();
+	  }
+      }
+    catch(ObjectNotFoundException $e)
+      {
+	die();
+      }
+  }
+
 ?>
