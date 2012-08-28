@@ -53,3 +53,10 @@ CREATE TABLE `object_attributes` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+CREATE TABLE `sessions` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `object_id` int(11) NOT NULL,
+  `session_id` varchar(64) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `object_id` (`object_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
