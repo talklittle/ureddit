@@ -60,3 +60,16 @@ CREATE TABLE `sessions` (
   PRIMARY KEY (`id`),
   KEY `object_id` (`object_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
+CREATE TABLE `activity` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `parent_id` int(11) NOT NULL,
+  `action` text NOT NULL,
+  `child_id` int(11) DEFAULT NULL,
+  `indirect_id` int(11) DEFAULT NULL,
+  `datetime` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `parent_id` (`parent_id`),
+  KEY `object_id` (`child_id`),
+  KEY `indirect_object_id` (`indirect_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
