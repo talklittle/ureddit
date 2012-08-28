@@ -67,7 +67,7 @@ elseif($success == true)
 ?>
 </div><br />
 
-<form method="post" action="<?=PREFIX ?>/teachers/msg_class.php?id=<?=$_GET['id'] ?>">
+<form method="post" action="<?=PREFIX ?>/teachers/msg_class.php?id=<?=$_GET['id'] ?>" id="form">
 Subject:<br />
 <input type="text" name="subj" class="teach" value="<?=!empty($_POST) && isset($error) && count($error) > 0 ? htmlspecialchars(stripslashes($_POST['subj'])) : "" ?>" />
 <br /><br />
@@ -76,7 +76,7 @@ Message:<br />
 <textarea name="msg" class="teach"><?=!empty($_POST) && isset($error) && count($error) > 0 ? htmlspecialchars(stripslashes($_POST['msg'])) : "" ?></textarea>
 <br /><br />
 
-<input type="submit" value="Send PMs" style="padding: 3px;" onclick="$(this).attr('disabled','disabled');"/>
+<input type="submit" value="Send PMs" style="padding: 3px;" onclick="$(this).attr('disabled','disabled'); $('#form').submit();"/>
 </form>
       </div>
     </div>
