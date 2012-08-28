@@ -26,11 +26,10 @@ CREATE TABLE `association_attributes` (
 CREATE TABLE `logins` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `object_id` int(11) NOT NULL,
-  `username` varchar(32) NOT NULL,
-  `password` varchar(64) NOT NULL,
-  `contact_email` varchar(256) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `datetime` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `object_id` (`object_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
 
 CREATE TABLE `objects` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
