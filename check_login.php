@@ -12,7 +12,7 @@ if(!logged_in() && cookie_exists())
 	    $user = new user($dbpdo, $user[0]['object_id']);
 	    if($user === NULL || $user->is_banned())
 	      {
-		header("Location: http://sadtrombone.com/");
+		header("Location: http://sadtrombone.com/?play=true");
 		die();
 	      }
 	    login($user);
