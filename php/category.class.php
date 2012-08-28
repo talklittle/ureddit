@@ -55,7 +55,14 @@ class category extends object
 	  $found = false;
 	  foreach($this->classes as $class_id)
 	    {
-	      $class = new course($this->dbpdo, $class_id);
+	      try
+		{
+		  $class = new course($this->dbpdo, $class_id);
+		}
+	      catch(CourseNotFoundException $e)
+	      {
+		continue;
+	      }
 	      try
 	        {
 		  if(in_array($class->get_attribute_value('status'), $show_statuses))

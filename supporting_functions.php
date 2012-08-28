@@ -229,12 +229,19 @@ function display_schedule($user)
 
   foreach($user->schedule as $class_id)
     {
-      $class = new course($user->dbpdo, $class_id);
-      if($class->get_attribute_value('status') == '0')
+      try
+	{
+	  $class = new course($user->dbpdo, $class_id);
+	  if($class->get_attribute_value('status') == '0')
+	    continue;
+	  $class->get_categories();
+	  foreach($class->categories as $category_id)
+	    $categories[$category_id][] = $class;
+	}
+      catch(CourseNotFoundException $e)
+      {
 	continue;
-      $class->get_categories();
-      foreach($class->categories as $category_id)
-	$categories[$category_id][] = $class;
+      }
     }
   foreach($categories as $category_id => &$classes)
     {
