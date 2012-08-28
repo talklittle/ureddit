@@ -567,6 +567,16 @@ class object extends base
       $this->save();
   }
 
+  function soft_delete()
+  {
+    $this->define_attribute('deleted','true',0);
+  }
+
+  function soft_undelete()
+  {
+    $this->remove_attribute('deleted');
+  }
+
   function delete()
   {
     $assocs = $this->dbpdo->query("SELECT id, parent_id, child_id, type FROM associations WHERE parent_id = ? OR child_id = ?",

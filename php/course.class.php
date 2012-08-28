@@ -14,7 +14,11 @@ class course extends object
   function __construct($dbpdo, $id = NULL)
   {
     parent::__construct($dbpdo, $id);
+    if($this->get_attribute_value_or_null('deleted') !== NULL)
+      throw new CourseNotFoundException;
   }
+
+       
 
   function get_owner()
   {
