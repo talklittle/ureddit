@@ -38,6 +38,9 @@ require('header2.php');
       <div class="content">
         <?php
           include('socialbuttons.php');
+?>
+	  <? echo "<div class=\"infobox\" style=\"margin-left: 5px;\">Would you like to request a class? Post your request at <a href=\"http://reddit.com/r/URedditRequests\" target=\"_blank\">/r/URedditRequests</a>!</div><br />"; ?>
+<?php
           if($active_category_id == -1)
 	    foreach($categories as $category_id => $category)
 	      $category->display(true, 'open');
