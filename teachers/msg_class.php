@@ -46,7 +46,7 @@ if(!empty($_POST))
     if(strlen($tweet) > 140)
       $tweet = substr($tweet, 0, 136) . "...\"";
       //$tweet .= ": \"$subj\"";
-    tweet($user->config, $tweet);
+    //tweet($user->config, $tweet);
   }
 }
 
