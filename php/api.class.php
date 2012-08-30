@@ -27,7 +27,7 @@ class api extends base
       {
 	$response['error'] = 'Please choose an object about which you would like information. Options are: catalog, category, class, user, lecture, link. You must supply an ID for all types except catalog.';
       }
-
+      
     switch($type)
       {
       case "catalog":
@@ -117,7 +117,6 @@ class api extends base
 		$lecture_info['value'] = $lecture->value;
 		$response['lectures'][] = $lecture_info;
 	      }
-	    //$response[''] = $class->get_attribute();
 	    
 	    $response['score'] = $class->calculate_score();
 	    
@@ -131,7 +130,26 @@ class api extends base
 		$user_info['value'] = $user->value;
 		$response['roster'][] = $user_info;
 	      }
-	    
+	   
+	    $viewer_id = $this->session('logged_in') ? $this->session('user_id') : NULL;
+	    if ($viewer_id !== NULL)
+	      {
+	      	$viewer = new user($this->dbpdo, $viewer_id);
+		$response['enrolled'] = $viewer->is_taking_class($class->id);
+		
+		$viewer->get_votes();
+		if (in_array($class->id, $viewer->votes['upvoted']))
+		  $response['likes'] = true;
+		elseif (in_array($class->id, $viewer->votes['downvoted']))
+		  $response['likes'] = false;
+		else
+		  $response['likes'] = NULL;
+	      }
+	    else
+	      {
+		$response['enrolled'] = NULL;
+		$response['likes'] = NULL;
+	      }
 	  }
 	break;
       case "user":
